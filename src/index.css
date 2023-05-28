@@ -1,0 +1,66 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@700&display=swap');
+
+@font-face {
+    font-family: 'Gilroy';
+    src: url('../src/assets/fonts/Gilroy-Regular.ttf') format('truetype');
+    font-weight: normal;
+  }
+  
+  @font-face {
+    font-family: 'Gilroy';
+    src: url('../src/assets/fonts/Gilroy-Black.ttf') format('truetype');
+    font-weight: 900;
+  }
+
+  @font-face {
+    font-family: 'Gilroy';
+    src: url('../src/assets/fonts/Gilroy-ExtraBold.ttf') format('truetype');
+    src: url('../src/assets/fonts/Gilroy-ExtraBold.otf') format('opentype');
+    font-weight: 800;
+  }
+
+  @font-face {
+    font-family: 'Gilroy';
+    src: url('../src/assets/fonts/Gilroy-Bold.ttf') format('truetype');
+    font-weight: 700;
+  }
+
+  @font-face {
+    font-family: 'Gilroy';
+    src: url('../src/assets/fonts/Gilroy-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+  }
+
+  @font-face {
+    font-family: 'Gilroy';
+    src: url('../src/assets/fonts/Gilroy-Medium.ttf') format('truetype'); 
+    font-weight: 500;
+  }
+
+  @font-face {
+    font-family: 'Gilroy';
+    src: url('../src/assets/fonts/Gilroy-Light.ttf') format('truetype'); 
+    src: url('../src/assets/fonts/Gilroy-Light.otf') format('opentype'); 
+    font-weight: 300;
+  }
+
+  @font-face {
+    font-family: 'Gilroy';
+    src: url('../src/assets/fonts/Gilroy-UltraLight.ttf') format('truetype');
+    font-weight: 200;
+  }
+
+
+  @font-face {
+    font-family: 'Gilroy';
+    src: url('../src/assets/fonts/Gilroy-Thin.ttf') format('truetype');
+    font-weight: 100;
+  }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: 'Gilroy', sans-serif;
+}

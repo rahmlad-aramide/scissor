@@ -1,0 +1,24 @@
+import featureData from '../../utils/featureData/featureData';
+const Features = () => {
+  return (
+    <section id="features">
+      <div className="bg-[#F9FBFD]">
+        <div className="flex justify-between w-[90%] mx-auto pt-14 pb-16">
+          <div className="font-bold text-[40px] leading-[48px]">
+            One Stop. <br /> Four{' '}
+            <span className="text-primary">Possibilities</span>.
+          </div>
+          <div className="flex">
+            {featureData.map((data, index) => (
+              <div key={index} className="text-dark first:ml-0 ml-[72px]">
+                <div className="text-[32px] font-semibold">{data.figure}</div>
+                <div className="font-medium max-w-[14ch]">{data.item}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+export default Features;
