@@ -8,7 +8,7 @@ const Features = () => {
             One Stop. <br /> Four{' '}
             <span className="text-primary">Possibilities</span>.
           </div>
-          <div className="flex">
+          <div className="flex w-[60%]">
             {featureData.map((data, index) => (
               <div key={index} className="text-dark first:ml-0 ml-[72px]">
                 <div className="text-[32px] font-semibold">{data.figure}</div>

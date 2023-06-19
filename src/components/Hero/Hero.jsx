@@ -39,9 +39,7 @@ const Hero = () => {
       <div className="flex mt-8 mb-20">
         <div className="mx-auto flex items-center">
           <Link to="/sign-up">
-            <Button buttonWidth={'fit'} onClick={() => alert('Hello')}>
-              Sign Up
-            </Button>
+            <Button buttonWidth={'fit'}>Sign Up</Button>
           </Link>
           <HashLink
             to="/#features"

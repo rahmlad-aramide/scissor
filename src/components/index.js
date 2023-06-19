@@ -5,3 +5,5 @@ export { default as Features } from './Features/Features';
 export { default as Hero } from './Hero/Hero';
 export { default as Input } from './Input/Input';
 export { default as Navbar } from './Navbar/Navbar';
+export { default as Pricing } from './Pricing/Pricing';
+export { default as WhyScissor } from './WhyScissor/WhyScissor';
