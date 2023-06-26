@@ -12,7 +12,7 @@ const Pricing = () => {
     setHoveredElement(null);
   };
   return (
-    <section>
+    <section id="pricing">
       <div className="text-dark">
         <div className="flex flex-col w-full mx-auto mb-16">
           <div className="flex mx-auto">
@@ -117,7 +117,7 @@ const Pricing = () => {
             ))}
           </div>
         </div>
-        <div className="flex mt-16">
+        <div className="flex mt-16 mb-28">
           <div className="mx-auto">
             <Button
               style={{

@@ -2,7 +2,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './components';
-import { Error, Home, Login, SignUp } from './pages';
+import { Error, Home, Login, SignUp, GetInTouch } from './pages';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -30,10 +30,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Navbar />}>
             <Route index element={<Home />} />
-            <Route path="login" element={<Login />} />
-            <Route path="sign-up" element={<SignUp />} />
             <Route path="*" element={<Error />} />
+            <Route path="/get-quote" element={<GetInTouch />} />
           </Route>
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </UserProvider>
     </>

@@ -43,6 +43,7 @@ const Hero = () => {
           </Link>
           <HashLink
             to="/#features"
+            smooth
             className="text-[#0065FE] font-semibold ml-14"
           >
             Learn More

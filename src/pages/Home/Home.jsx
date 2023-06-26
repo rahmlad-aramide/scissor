@@ -1,4 +1,13 @@
-import { FAQs, Features, Hero, Pricing, WhyScissor } from '../../components';
+import {
+  FAQs,
+  Features,
+  Hero,
+  Pricing,
+  WhyScissor,
+  TrimForm,
+  Revolutionize,
+  Footer,
+} from '../../components';
 
 const Home = () => {
   return (
@@ -7,7 +16,10 @@ const Home = () => {
       <Features />
       <WhyScissor />
       <Pricing />
+      <TrimForm />
       <FAQs />
+      <Revolutionize />
+      <Footer />
     </>
   );
 };

@@ -25,6 +25,8 @@ export default {
         'hero-pattern': "url('./src/assets/images/hero-pattern.jpg')",
         'trim-texture': "url('./src/assets/images/bg-trim.jpg')",
         'revolutionize-texture': "url('./src/assets/images/bg-revolutionizing.jpg')",
+        'get1': "url('./src/assets/images/get-in-touch.png')",
+        'get2': "url('./src/assets/images/get-in-touch2.png')",
       },
       fontFamily: {
         'kanit': ['Kanit', 'sans-serif'],

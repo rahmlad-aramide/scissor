@@ -7,9 +7,12 @@ import {
 
 import crossedEye from '../../assets/icons/crossed-eye.svg';
 import eye from '../../assets/icons/eye.svg';
+import googleLogo from '../../assets/icons/google-logo.svg';
+import appleLogo from '../../assets/icons/apple-logo.svg';
+
 import { ToastContainer } from 'react-toastify';
 import { warn, notify } from '../../App';
-import { Button, Input } from '../../components';
+import { Button, Input, Footer } from '../../components';
 
 const defaultFormFields = {
   username: '',
@@ -86,83 +89,99 @@ const Login = () => {
   };
   return (
     <>
-      <section className="h-screen bg-white bg-hero-pattern bg-cover bg-bottom">
+      <section className="h-screen bg-white">
         <ToastContainer />
-        <div className="flex h-screen w-full flex-col items-center justify-start md:flex-row md:justify-center">
-          <div className="order-1 flex h-fit w-full items-center justify-center pt-16 md:order-2 md:h-full md:w-[45%]">
-            <div className="my-auto w-[90%] rounded-xl border border-primary/10 bg-white/50 py-10 backdrop-blur-lg shadow">
+        <div className="flex h-full md:min-h-screen w-full flex-col items-center justify-start md:flex-row md:justify-center">
+          <div className="order-1 flex h-fit w-full items-center justify-center md:order-2 md:h-full md:w-[45%]">
+            <div className="my-auto w-[90%] rounded-xl py-10">
               <div className="h-full w-full overflow-y-auto">
-                <form
-                  onSubmit={handleSubmit}
-                  className="mx-auto w-[90%] max-w-[600px]"
-                >
+                <div className="mx-auto w-[90%] max-w-[600px]">
                   <div>
-                    <h1 className="mb-5 text-[24px] text-primary">
-                      Login to Scissor
+                    <h1 className="mb-4 text-sm text-neutral-500 text-center">
+                      Log in with:
                     </h1>
                   </div>
-                  <div className="mb-4 flex flex-col">
-                    <label
-                      htmlFor="username"
-                      className="mb-2 text-lg text-primary"
-                    >
-                      Username
-                    </label>
-                    <div className="">
-                      <Input
-                        py="12px"
-                        type="text"
-                        name="username"
-                        id="username"
-                        placeholder="Enter your username"
-                        value={username}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="mb-6 flex w-full flex-col">
-                    <label
-                      htmlFor="password"
-                      className="mb-2 text-lg text-primary"
-                    >
-                      Password
-                    </label>
-                    <div className="flex rounded-lg bg-white border border-primary h-fit pr-2">
-                      <Input
-                        type={showPassword ? 'text' : 'password'}
-                        name="password"
-                        id="password"
-                        placeholder="Enter your password"
-                        value={password}
-                        onChange={handleChange}
-                        required
-                        style={{
-                          border: 'none',
-                          outline: 'none',
-                          paddingTop: '12px',
-                          paddingBottom: '12px',
-                        }}
-                      />
-                      <span
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="flex cursor-pointer items-center justify-center"
+                  <div className="my-4 flex justify-center">
+                    <div className="mr-6">
+                      <button
+                        onClick={signInWithGoogle}
+                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 active:scale-100"
                       >
-                        <img
-                          className="h-6"
-                          src={showPassword ? crossedEye : eye}
-                          alt="Show Password"
-                        />
-                      </span>
+                        <img src={googleLogo} alt="google" className="mr-1" />{' '}
+                        Google
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        onClick={signInWithGoogle}
+                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 active:scale-100"
+                      >
+                        <img src={appleLogo} alt="apple" className="mr-1" />{' '}
+                        Apple
+                      </button>
                     </div>
                   </div>
-                  <Button type="submit" buttonWidth={`full`}>
-                    Sign In
-                  </Button>
-                </form>
-                <div className="mx-4 max-w-[600px] md:mx-8 my-4">
-                  <div className="flex justify-center text-tertiary">
-                    I don&apos;t have an account?{' '}
+                  <div className="flex items-center justify-center mb-8">
+                    <div className="h-[1px] w-full bg-neutral-400"></div>
+                    <div className="mx-5 mb-1 mt-0.5 flex justify-center text-neutral-500">
+                      Or
+                    </div>
+                    <div className="h-[1px] w-full bg-neutral-400"></div>
+                  </div>
+                  <form onSubmit={handleSubmit}>
+                    <div className="mb-4 flex flex-col">
+                      <div className="mb-4">
+                        <Input
+                          py="12px"
+                          type="text"
+                          name="username"
+                          id="username"
+                          placeholder="Email address or username"
+                          value={username}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-8 flex w-full flex-col">
+                      <div className="flex rounded-lg bg-white border border-primary h-fit pr-2">
+                        <Input
+                          type={showPassword ? 'text' : 'password'}
+                          name="password"
+                          id="password"
+                          placeholder="Enter your password"
+                          value={password}
+                          onChange={handleChange}
+                          required
+                          style={{
+                            border: 'none',
+                            outline: 'none',
+                            paddingTop: '12px',
+                            paddingBottom: '12px',
+                          }}
+                        />
+                        <span
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="flex cursor-pointer items-center justify-center"
+                        >
+                          <img
+                            className="h-6"
+                            src={showPassword ? crossedEye : eye}
+                            alt="Show Password"
+                          />
+                        </span>
+                      </div>
+                    </div>
+                    <div>
+                      <Button type="submit" buttonWidth={`full`}>
+                        Log In
+                      </Button>
+                    </div>
+                  </form>
+                </div>
+                <div className="mx-4 max-w-[600px] md:mx-8">
+                  <div className="flex justify-center text-neutral-500 text-sm my-4">
+                    Don&apos;t have an account?{' '}
                     <Link
                       className="pl-1.5 underline text-primary"
                       to="/sign-up"
@@ -171,24 +190,24 @@ const Login = () => {
                       Sign Up
                     </Link>
                   </div>
-                  <div className="flex items-center justify-center">
-                    <div className="h-[1px] w-full bg-black"></div>
-                    <div className="mx-2 mb-1 mt-0.5 flex justify-center">
-                      or
-                    </div>
-                    <div className="h-[1px] w-full bg-black"></div>
+                  <div className="text-neutral-400 text-center text-xs">
+                    By signing in with an account, you agree to
+                    <br />
+                    Sciccor&apos;s{' '}
+                    <span className="text-neutral-500">
+                      Terms of Service, Privacy Policy
+                    </span>{' '}
+                    and{' '}
+                    <span className="text-neutral-500">
+                      Acceptable Use Policy.
+                    </span>
                   </div>
-                  <button
-                    onClick={signInWithGoogle}
-                    className="mt-3 flex w-full justify-center rounded-full border border-gray-800 bg-black py-1 text-white transition duration-200 hover:bg-transparent hover:text-black active:bg-black"
-                  >
-                    Sign In with Google
-                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <Footer />
       </section>
     </>
   );
