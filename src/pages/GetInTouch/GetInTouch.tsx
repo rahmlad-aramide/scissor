@@ -1,3 +1,4 @@
+import React from 'react';
 const GetInTouch = () => {
   const firstImageUrl = '/path/to/first-image.png';
   const secondImageUrl = '/path/to/second-image.png';
@@ -11,7 +12,7 @@ const GetInTouch = () => {
   };
   return (
     <section style={containerStyles} className="min-h-screen">
-      <div className="bg-cover bg-get1 bg-get2 min-h-screen">Testing Bg</div>
+      <div className="bg-cover min-h-screen">Testing Bg</div>
     </section>
   );
 };

@@ -84,21 +84,3 @@ export const signUserOut = async () => {
 export const onAuthStateChangedListener = (callback) => {
   onAuthStateChanged(auth, callback);
 };
-
-// export const createDynamicLink = async () => {
-//   const link = 'https://example.com'; // Destination URL
-
-//   // const dynamicLink = await dynamicLinks().buildLink({
-//   const dynamicLink = await firebase.dynamicLinks().buildLink({
-//     link,
-//     domainUriPrefix: 'https://aao.page.link', // Your Dynamic Links domain
-//     android: {
-//       packageName: 'com.example.android', // Android app package name (optional)
-//     },
-//     ios: {
-//       bundleId: 'com.example.ios', // iOS app bundle ID (optional)
-//     },
-//   });
-
-//   console.log('Dynamic Link:', dynamicLink);
-// };

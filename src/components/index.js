@@ -4,6 +4,7 @@ export { default as FAQs } from './FAQs/FAQs';
 export { default as Features } from './Features/Features';
 export { default as Footer } from './Footer/Footer';
 export { default as Hero } from './Hero/Hero';
+export { default as Loader } from './Loader/Loader';
 export { default as Input } from './Input/Input';
 export { default as Navbar } from './Navbar/Navbar';
 export { default as Pricing } from './Pricing/Pricing';

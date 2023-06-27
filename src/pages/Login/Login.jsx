@@ -12,7 +12,7 @@ import appleLogo from '../../assets/icons/apple-logo.svg';
 
 import { ToastContainer } from 'react-toastify';
 import { warn, notify } from '../../App';
-import { Button, Input, Footer } from '../../components';
+import { Button, Input, Footer, Loader } from '../../components';
 
 const defaultFormFields = {
   username: '',
@@ -20,13 +20,18 @@ const defaultFormFields = {
 };
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingGoogle, setLoadingGoogle] = useState(false);
+  const [loadingApple, setLoadingApple] = useState(false);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { username, password } = formFields;
 
-  const signInWithGoogle = async () => {
+  const signInWithApple = async () => {
+    setLoadingApple(true);
     try {
       await signInWithGooglePopup();
       notify('Signed in successfully');
+      setLoadingApple(false);
     } catch (error) {
       switch (error.code) {
         case 'auth/wrong-password':
@@ -46,8 +51,41 @@ const Login = () => {
           break;
         default:
           warn('An error has occured', error);
+          setLoadingApple(false);
       }
       console.log(error);
+      setLoadingApple(false);
+    }
+  };
+  const signInWithGoogle = async () => {
+    setLoadingGoogle(true);
+    try {
+      await signInWithGooglePopup();
+      notify('Signed in successfully');
+      setLoadingGoogle(false);
+    } catch (error) {
+      switch (error.code) {
+        case 'auth/wrong-password':
+          warn('Incorrect password, try again!');
+          break;
+        case 'auth/user-not-found':
+          warn('User not found, check your email address!');
+          break;
+        case 'auth/network-request-failed':
+          warn('Connection problem, check your network and try again!');
+          break;
+        case 'auth/internal-error':
+          warn('An error has occured, try again!');
+          break;
+        case 'auth/email-already-in-use':
+          warn('This email is already in use!');
+          break;
+        default:
+          warn('An error has occured', error);
+          setLoadingGoogle(false);
+      }
+      console.log(error);
+      setLoadingGoogle(false);
     }
   };
 
@@ -60,10 +98,12 @@ const Login = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       await signInUserWithEmailAndPassword(username, password);
       notify('Signed in successfully');
       resetFormFields();
+      setLoading(false);
     } catch (error) {
       switch (error.code) {
         case 'auth/wrong-password':
@@ -83,8 +123,10 @@ const Login = () => {
           break;
         default:
           warn('An error has occured', error);
+          setLoading(false);
       }
       console.log(error);
+      setLoading(false);
     }
   };
   return (
@@ -104,20 +146,38 @@ const Login = () => {
                   <div className="my-4 flex justify-center">
                     <div className="mr-6">
                       <button
+                        disabled={loadingGoogle}
                         onClick={signInWithGoogle}
-                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 active:scale-100"
+                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 disabled:scale-100 disabled:cursor-not-allowed active:scale-100"
                       >
-                        <img src={googleLogo} alt="google" className="mr-1" />{' '}
-                        Google
+                        {loadingGoogle ? (
+                          <Loader />
+                        ) : (
+                          <>
+                            <img
+                              src={googleLogo}
+                              alt="google"
+                              className="mr-1"
+                            />
+                            Google
+                          </>
+                        )}
                       </button>
                     </div>
                     <div>
                       <button
-                        onClick={signInWithGoogle}
-                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 active:scale-100"
+                        disabled={loadingApple}
+                        onClick={signInWithApple}
+                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 active:scale-100 disabled:scale-100 disabled:cursor-not-allowed"
                       >
-                        <img src={appleLogo} alt="apple" className="mr-1" />{' '}
-                        Apple
+                        {loadingApple ? (
+                          <Loader />
+                        ) : (
+                          <>
+                            <img src={appleLogo} alt="apple" className="mr-1" />{' '}
+                            Apple
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>
@@ -173,8 +233,12 @@ const Login = () => {
                       </div>
                     </div>
                     <div>
-                      <Button type="submit" buttonWidth={`full`}>
-                        Log In
+                      <Button
+                        disabled={loading}
+                        type="submit"
+                        buttonWidth={`full`}
+                      >
+                        {loading ? <Loader /> : 'Log in'}
                       </Button>
                     </div>
                   </form>

@@ -1,67 +1,57 @@
-import { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  signInWithGooglePopup,
-  createUserDocumentFromAuth,
-  createAuthUserWithEmailAndPassword,
-} from '../../utils/firebase/firebase.utils';
+import { ToastContainer } from 'react-toastify';
+import { notify, warn } from '../../App';
+import { Button, Input, Footer } from '../../components';
+import { signInWithGooglePopup, createUserDocumentFromAuth, createAuthUserWithEmailAndPassword } from '../../utils/firebase/firebase.utils';
 import crossedEye from '../../assets/icons/crossed-eye.svg';
 import eye from '../../assets/icons/eye.svg';
 import googleLogo from '../../assets/icons/google-logo.svg';
 import appleLogo from '../../assets/icons/apple-logo.svg';
 
-import { ToastContainer } from 'react-toastify';
-import { inform, notify, warn } from '../../App';
-import { Button, Input, Footer, Loader } from '../../components';
+interface FormFields {
+  displayName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
-const defaultFormFields = {
+
+const defaultFormFields: FormFields = {
   displayName: '',
   email: '',
   password: '',
   confirmPassword: '',
 };
 
-const SignUp = () => {
+const SignUp: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [loadingGoogle, setLoadingGoogle] = useState(false);
-  const [loadingApple, setLoadingApple] = useState(false);
-  const signInWithGoogle = async () => {
-    setLoadingGoogle(true);
-    await signInWithGooglePopup();
-    setLoadingGoogle(false);
-  };
-  const signInWithApple = async () => {
-    setLoadingApple(true);
-    await signInWithGooglePopup();
-    setLoadingApple(false);
-  };
-  const [formFields, setFormFields] = useState(defaultFormFields);
+  const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFields;
-  const handleChange = (e) => {
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
   };
-  const resetFormFields = () => {
+
+  const resetFormFields = (): void => {
     setFormFields(defaultFormFields);
   };
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-    setLoading(true);
+
     if (password !== confirmPassword) {
-      inform('Password do not match');
-      setLoading(false);
+      alert('Password do not match');
       return;
     }
+
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
+      const userCredential: any = await createAuthUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
       await createUserDocumentFromAuth(user, { displayName });
       notify('Signed up successfully');
       resetFormFields();
-      setLoading(false);
     } catch (error) {
       switch (error.code) {
         case 'auth/wrong-password':
@@ -76,15 +66,15 @@ const SignUp = () => {
         case 'auth/email-already-in-use':
           warn('This email is already in use!');
           break;
-        case 'auth/popup-closed-by-user':
-          warn('Authentication popup closed!');
-          break;
         default:
-          warn('An error has occured', error);
+          warn(`An error has occurred', ${error}`);
       }
       console.log(error);
-      setLoading(false);
     }
+  };
+
+  const signInWithGoogle = async (): Promise<void> => {
+    await signInWithGooglePopup();
   };
 
   return (
@@ -95,10 +85,7 @@ const SignUp = () => {
           <div className="order-1 flex h-fit w-full items-center justify-center pt-16 md:order-2 md:h-full md:w-[45%]">
             <div className="my-auto h-full w-[90%] overflow-y-auto rounded-xl py-5">
               <div className="h-full w-full overflow-y-auto">
-                <form
-                  onSubmit={handleSubmit}
-                  className="mx-auto w-[90%] max-w-[600px]"
-                >
+                <form onSubmit={handleSubmit} className="mx-auto w-[90%] max-w-[600px]">
                   <div>
                     <h1 className="mb-4 text-sm text-neutral-500 text-center">
                       Sign up with:
@@ -107,38 +94,18 @@ const SignUp = () => {
                   <div className="my-4 flex justify-center">
                     <div className="mr-6">
                       <button
-                        disabled={loadingGoogle}
                         onClick={signInWithGoogle}
-                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 disabled:scale-100 disabled:cursor-not-allowed active:scale-100"
+                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 active:scale-100"
                       >
-                        {loadingGoogle ? (
-                          <Loader />
-                        ) : (
-                          <>
-                            <img
-                              src={googleLogo}
-                              alt="google"
-                              className="mr-1"
-                            />
-                            Google
-                          </>
-                        )}
+                        <img src={googleLogo} alt="google" className="mr-1" /> Google
                       </button>
                     </div>
                     <div>
                       <button
-                        disabled={loadingApple}
-                        onClick={signInWithApple}
-                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 active:scale-100 disabled:scale-100 disabled:cursor-not-allowed"
+                        onClick={signInWithGoogle}
+                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 active:scale-100"
                       >
-                        {loadingApple ? (
-                          <Loader />
-                        ) : (
-                          <>
-                            <img src={appleLogo} alt="apple" className="mr-1" />{' '}
-                            Apple
-                          </>
-                        )}
+                        <img src={appleLogo} alt="apple" className="mr-1" /> Apple
                       </button>
                     </div>
                   </div>
@@ -239,8 +206,8 @@ const SignUp = () => {
                       </div>
                     </div>
                   </div>
-                  <Button disabled={loading} type="submit" buttonWidth={`full`}>
-                    {loading ? <Loader /> : 'Sign up with Email'}
+                  <Button type="submit" buttonWidth={`full`}>
+                    Sign up with Email
                   </Button>
                 </form>
                 <div className="mx-4 max-w-[600px] md:mx-8">
@@ -273,4 +240,5 @@ const SignUp = () => {
     </>
   );
 };
+
 export default SignUp;
