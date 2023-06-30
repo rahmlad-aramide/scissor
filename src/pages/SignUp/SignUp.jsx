@@ -1,43 +1,55 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   signInWithGooglePopup,
-  createUserDocumentFromAuth,
-  createAuthUserWithEmailAndPassword,
+  // createUserDocumentFromAuth,
 } from '../../utils/firebase/firebase.utils';
+import { signUp } from '../../api';
 import crossedEye from '../../assets/icons/crossed-eye.svg';
 import eye from '../../assets/icons/eye.svg';
 import googleLogo from '../../assets/icons/google-logo.svg';
 import appleLogo from '../../assets/icons/apple-logo.svg';
 
 import { ToastContainer } from 'react-toastify';
+// eslint-disable-next-line no-unused-vars
 import { inform, notify, warn } from '../../App';
 import { Button, Input, Footer, Loader } from '../../components';
 
 const defaultFormFields = {
-  displayName: '',
+  name: '',
   email: '',
   password: '',
   confirmPassword: '',
 };
 
 const SignUp = () => {
+  const navigateTo = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingGoogle, setLoadingGoogle] = useState(false);
   const [loadingApple, setLoadingApple] = useState(false);
+
+  const redirectToLogin = () => {
+    setTimeout(() => {
+      navigateTo('/login');
+    }, 2500);
+  };
   const signInWithGoogle = async () => {
     setLoadingGoogle(true);
     await signInWithGooglePopup();
+    notify('Redirecting you to login page');
+    redirectToLogin();
     setLoadingGoogle(false);
   };
   const signInWithApple = async () => {
     setLoadingApple(true);
     await signInWithGooglePopup();
+    notify('Redirecting you to login page');
+    redirectToLogin();
     setLoadingApple(false);
   };
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { displayName, email, password, confirmPassword } = formFields;
+  const { name, email, password, confirmPassword } = formFields;
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
@@ -48,41 +60,34 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const formData = {
+      name: formFields.name,
+      email: formFields.email,
+      passowrd: formFields.password,
+    };
     if (password !== confirmPassword) {
       inform('Password do not match');
       setLoading(false);
       return;
     }
     try {
-      const { user } = await createAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
-      await createUserDocumentFromAuth(user, { displayName });
-      notify('Signed up successfully');
+      // const res = await signUp(formData);
+      const res = await signUp({
+        name: 'Abdrahman Oladimeji',
+        email: 'abdrahmanoladimeji05@gmail.com',
+        hashed_password: 'password',
+        address: 'Oyo, Oyo State',
+        phone_number: '09023600083',
+      });
+      console.log(res);
+      console.log(formData);
+      notify('Success, redirecting you to login page');
       resetFormFields();
+      redirectToLogin();
       setLoading(false);
-    } catch (error) {
-      switch (error.code) {
-        case 'auth/wrong-password':
-          warn('Incorrect password, try again!');
-          break;
-        case 'auth/user-not-found':
-          warn('User not found, check your email address!');
-          break;
-        case 'auth/network-request-failed':
-          warn('Connection problem, check your network and try again!');
-          break;
-        case 'auth/email-already-in-use':
-          warn('This email is already in use!');
-          break;
-        case 'auth/popup-closed-by-user':
-          warn('Authentication popup closed!');
-          break;
-        default:
-          warn('An error has occured', error);
-      }
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      warn(err);
       setLoading(false);
     }
   };
@@ -154,10 +159,10 @@ const SignUp = () => {
                       <Input
                         py="12px"
                         type="text"
-                        name="displayName"
-                        id="displayName"
-                        placeholder="Enter your username"
-                        value={displayName}
+                        name="name"
+                        id="name"
+                        placeholder="Enter your full name"
+                        value={name}
                         onChange={handleChange}
                         required
                       />

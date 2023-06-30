@@ -1,10 +1,7 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  signInWithGooglePopup,
-  signInUserWithEmailAndPassword,
-} from '../../utils/firebase/firebase.utils';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { signInWithGooglePopup } from '../../utils/firebase/firebase.utils';
+import { login, signIn } from '../../api';
 import crossedEye from '../../assets/icons/crossed-eye.svg';
 import eye from '../../assets/icons/eye.svg';
 import googleLogo from '../../assets/icons/google-logo.svg';
@@ -21,16 +18,26 @@ const defaultFormFields = {
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  // const [response, setResponse] = useState('');
+  const [error, setError] = useState('');
   const [loadingGoogle, setLoadingGoogle] = useState(false);
   const [loadingApple, setLoadingApple] = useState(false);
   const [formFields, setFormFields] = useState(defaultFormFields);
+  const navigateTo = useNavigate();
   const { username, password } = formFields;
+
+  const navigateToDashboard = () => {
+    setTimeout(() => {
+      navigateTo('/dashboard');
+    }, 2500);
+  };
 
   const signInWithApple = async () => {
     setLoadingApple(true);
     try {
       await signInWithGooglePopup();
-      notify('Signed in successfully');
+      notify("Successful, you're being redirected");
+      navigateToDashboard();
       setLoadingApple(false);
     } catch (error) {
       switch (error.code) {
@@ -57,11 +64,13 @@ const Login = () => {
       setLoadingApple(false);
     }
   };
+
   const signInWithGoogle = async () => {
     setLoadingGoogle(true);
     try {
       await signInWithGooglePopup();
-      notify('Signed in successfully');
+      notify("Successful, you're being redirected");
+      navigateToDashboard();
       setLoadingGoogle(false);
     } catch (error) {
       switch (error.code) {
@@ -99,33 +108,40 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    console.log(formFields);
     try {
-      await signInUserWithEmailAndPassword(username, password);
-      notify('Signed in successfully');
+      // const res = await login({
+      //   grant_type: '',
+      //   username: 'abdrahmanoladimeji05@gmail.com',
+      //   password: 'password',
+      //   scope: '',
+      //   client_id: '',
+      //   client_secret: '',
+      // });
+      // const res = await signIn({email: formFields.username, password: formFields.password});
+      const res = await signIn();
+      console.log(res);
+      // console.log(formFields, formFields.username, formFields.password);
+      // const token = res.data.access_token;
+      // console.log('Token', token);
+      // localStorage.setItem('username', formFields.username);
+      // localStorage.setItem('password', formFields.password);
+      // localStorage.setItem('token', token);
+
+      notify(res);
+      // notify("Successful, you're being redirected");
       resetFormFields();
+      // navigateToDashboard();
       setLoading(false);
-    } catch (error) {
-      switch (error.code) {
-        case 'auth/wrong-password':
-          warn('Incorrect password, try again!');
-          break;
-        case 'auth/user-not-found':
-          warn('User not found, check your email address!');
-          break;
-        case 'auth/network-request-failed':
-          warn('Connection problem, check your network and try again!');
-          break;
-        case 'auth/internal-error':
-          warn('An error has occured, try again!');
-          break;
-        case 'auth/email-already-in-use':
-          warn('This email is already in use!');
-          break;
-        default:
-          warn('An error has occured', error);
-          setLoading(false);
+    } catch (err) {
+      setError(err);
+      if (error.message === 'AxiosError: Request failed with status code 422') {
+        console.log(error.message);
+        notify('Incorrect username and/or password, pls try again!');
+      } else {
+        notify(err);
       }
-      console.log(error);
+      console.log(err);
       setLoading(false);
     }
   };

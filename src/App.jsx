@@ -2,7 +2,7 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './components';
-import { Error, Home, Login, SignUp, GetInTouch } from './pages';
+import { Error, Home, Login, SignUp, GetInTouch, Dashboard } from './pages';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -23,6 +23,15 @@ export const notify = (val) => toast.success(`${val}`, toastParams);
 export const warn = (val) => toast.error(`${val}`, toastParams);
 export const inform = (val) => toast.info(`${val}`, toastParams);
 
+const AuthenticatedRoute = ({ Component, ...rest }) => {
+  const userId = null;
+  if (!userId) {
+    window.location.href = '/login';
+    return;
+  }
+  return <Component {...rest} />;
+};
+
 function App() {
   return (
     <>
@@ -32,6 +41,10 @@ function App() {
             <Route index element={<Home />} />
             <Route path="*" element={<Error />} />
             <Route path="/get-quote" element={<GetInTouch />} />
+            <Route
+              path="/dashboard"
+              element={<AuthenticatedRoute Component={Dashboard} />}
+            />
           </Route>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
