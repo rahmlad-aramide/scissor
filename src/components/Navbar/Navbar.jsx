@@ -32,7 +32,7 @@ const Navbar = () => {
               <img src={logo} alt="Scissor" />
             </NavLink>
           </div>
-          <ul className="flex">
+          <ul className="hidden md:flex">
             <li>
               <NavHashLink
                 to="/#"

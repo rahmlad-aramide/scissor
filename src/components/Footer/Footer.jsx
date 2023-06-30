@@ -13,7 +13,7 @@ const Footer = () => {
   return (
     <section>
       <div className="grid grid-cols-12 gap-[4.5rem] w-[90%] mx-auto mb-5 mt-[5.6875rem]">
-        <div className="col-span-3 flex justify-end">
+        <div className="col-span-12 md:col-span-3 flex justify-center md:justify-end">
           <div className="flex flex-col">
             <div className="mb-10">
               <img src={logo} alt="Scissors" />
@@ -32,7 +32,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="col-span-2">
+        <div className="col-span-6 md:col-span-2">
           <div>
             <div className="text-neutral-900 font-bold mb-2">Why Scissor?</div>
             <ul className="min-h-[8rem] text-neutral-800">
@@ -60,7 +60,7 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        <div className="col-span-2">
+        <div className="col-span-6 md:col-span-2">
           <div>
             <div className="text-neutral-900 font-bold mb-2">Solutions</div>
             <ul className="min-h-[8rem] text-neutral-800">
@@ -85,7 +85,7 @@ const Footer = () => {
             ))}
           </div>
         </div>
-        <div className="col-span-2">
+        <div className="col-span-6 md:col-span-2">
           <div>
             <div className="text-neutral-900 font-bold mb-2">Products</div>
             <ul className="min-h-[8rem] text-neutral-800">
@@ -110,7 +110,7 @@ const Footer = () => {
             ))}
           </div>
         </div>
-        <div className="col-span-3">
+        <div className="col-span-6 md:col-span-3">
           <div className="text-neutral-900 font-bold mb-2">Company</div>
           {company.map((d, index) => (
             <ul key={index}>
