@@ -87,7 +87,7 @@ This will generate an optimized build in the `dist` directory, ready for deploym
 
 ## Dependencies
 
-List the main dependencies and their versions used in the project.
+These are the main dependencies and their versions used in the project.
 
 - [React](https://reactjs.org) (version 18.2.0)
 - [React Router Dom](https://reactrouter.com) (version 6.11.2)
