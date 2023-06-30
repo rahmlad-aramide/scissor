@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '../../components';
 import { pricingData } from '../../utils/pricingData/pricingData';
 import line from './../../assets/images/vertical-line.svg';
@@ -119,15 +120,17 @@ const Pricing = () => {
         </div>
         <div className="flex mt-16 mb-28">
           <div className="mx-auto">
-            <Button
-              style={{
-                backgroundColor: 'white',
-                color: '#005AE2',
-                marginRight: '12px',
-              }}
-            >
-              Get Custom Pricing
-            </Button>
+            <Link to="/get-quote">
+              <Button
+                style={{
+                  backgroundColor: 'white',
+                  color: '#005AE2',
+                  marginRight: '12px',
+                }}
+              >
+                Get Custom Pricing
+              </Button>
+            </Link>
             <Button>Select Pricing</Button>
           </div>
         </div>
