@@ -33,9 +33,6 @@ const Hero = () => {
           to reinforce your brand presence and enhance user engagement.
         </div>
       </div>
-      <div className="hidden">
-        <Input placeholder="Testing placeholder" py={`15px`} />
-      </div>
       <div className="flex mt-8 mb-20">
         <div className="mx-auto flex items-center">
           <Link to="/sign-up">

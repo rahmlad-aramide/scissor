@@ -1,14 +1,28 @@
-import { useState } from 'react';
-import { NavLink, Link, Outlet } from 'react-router-dom';
+import { useState, useContext } from 'react';
+import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom';
 import { NavHashLink } from 'react-router-hash-link';
 import Button from '../Button/Button';
 import logo from '../../assets/images/scissors-logo.svg';
+import { UserContext } from '../../contexts/UserContext/UserContext';
+import { inform } from '../../App';
 
 const Navbar = () => {
+  const navigateTo = useNavigate();
   const [activeLink, setActiveLink] = useState(0);
   const handleActiveLink = (linkNum) => {
     setActiveLink(linkNum);
   };
+  const { user, setUser } = useContext(UserContext);
+
+  const handleLogout = () => {
+    inform('Logging you out...');
+    setTimeout(() => {
+      localStorage.removeItem('user');
+      setUser(null);
+      navigateTo('/');
+    }, 2500);
+  };
+
   return (
     <>
       <nav className="fixed flex w-full pt-4 bg-hero-pattern z-50 bg-top bg-cover">
@@ -91,20 +105,33 @@ const Navbar = () => {
             </li>
           </ul>
           <div className="flex items-center">
-            <div>
-              <Link
-                to="/login"
-                onClick={() => setActiveLink(5)}
-                className="text-[#0065FE] font-semibold"
-              >
-                Login
-              </Link>
-            </div>
-            <div className="ml-[36px]">
-              <Link to="/sign-up" onClick={() => setActiveLink(6)}>
-                <Button>Try for free</Button>
-              </Link>
-            </div>
+            {user ? (
+              <div>
+                <button
+                  onClick={handleLogout}
+                  className={`group rounded-full py-2 px-8 bg-primary border border-primary text-white font-medium transition duration-300 hover:text-primary hover:bg-transparent active:scale-90`}
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <>
+                <div>
+                  <Link
+                    to="/login"
+                    onClick={() => setActiveLink(5)}
+                    className="text-[#0065FE] font-semibold"
+                  >
+                    Login
+                  </Link>
+                </div>
+                <div className="ml-[36px]">
+                  <Link to="/sign-up" onClick={() => setActiveLink(6)}>
+                    <Button>Try for free</Button>
+                  </Link>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </nav>

@@ -4,10 +4,10 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './components';
 import { Error, Home, Login, SignUp, GetInTouch } from './pages';
-
+import SignInForm from './pages/SignInForm';
+import { UserProvider } from './contexts';
 import { toast, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { UserProvider } from './contexts';
 
 const toastParams: ToastOptions = {
   position: 'top-right',
@@ -37,6 +37,7 @@ function App() {
           </Route>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/test" element={<SignInForm />} />
         </Routes>
       </UserProvider>
     </>

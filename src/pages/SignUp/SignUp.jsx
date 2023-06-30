@@ -11,7 +11,6 @@ import googleLogo from '../../assets/icons/google-logo.svg';
 import appleLogo from '../../assets/icons/apple-logo.svg';
 
 import { ToastContainer } from 'react-toastify';
-// eslint-disable-next-line no-unused-vars
 import { inform, notify, warn } from '../../App';
 import { Button, Input, Footer, Loader } from '../../components';
 
@@ -60,34 +59,32 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const formData = {
-      name: formFields.name,
-      email: formFields.email,
-      passowrd: formFields.password,
-    };
     if (password !== confirmPassword) {
       inform('Password do not match');
       setLoading(false);
       return;
     }
     try {
-      // const res = await signUp(formData);
-      const res = await signUp({
-        name: 'Abdrahman Oladimeji',
-        email: 'abdrahmanoladimeji05@gmail.com',
-        hashed_password: 'password',
-        address: 'Oyo, Oyo State',
-        phone_number: '09023600083',
+      const response = await fetch('https://cutly.onrender.com/api/v1/users/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, hashed_password: password, address: "Error 404 Location", phone_number: "+234 hello scissor" }),
       });
-      console.log(res);
-      console.log(formData);
-      notify('Success, redirecting you to login page');
+      if (response.ok) {
+        notify('Success, redirecting you to login page');
+        redirectToLogin();
+      } else {
+        warn('Request failed with status ' + response.status);
+        setLoading(false);
+        throw new Error('Request failed with status ' + response.status);
+      }
       resetFormFields();
-      redirectToLogin();
       setLoading(false);
     } catch (err) {
-      console.log(err);
-      warn(err);
+      console.error('Error signing in:', err);
+      warn('Error signing up:', err);
       setLoading(false);
     }
   };

@@ -6,7 +6,7 @@ export const BUTTON_WIDTH_CLASSES = {
 const Button = ({
   children,
   buttonWidth,
-  disabled = 'false',
+  disabled,
   ...otherProps
 }) => {
   return (
