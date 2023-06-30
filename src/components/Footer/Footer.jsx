@@ -14,8 +14,8 @@ const Footer = () => {
     <section>
       <div className="grid grid-cols-12 gap-4 md:gap-[4.5rem] w-[90%] mx-auto mb-5 mt-[5.6875rem]">
         <div className="col-span-12 md:col-span-3 flex justify-center md:justify-end">
-          <div className="flex flex-col">
-            <div className="mb-10">
+          <div className="flex flex-col mb-5 md:mb-0">
+            <div className="mb-4 md:mb-10">
               <img src={logo} alt="Scissors" />
             </div>
             <div>
