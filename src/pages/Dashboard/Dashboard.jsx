@@ -62,7 +62,7 @@ const Dashboard = () => {
             <div className="flex mt-20">
               <div className="text-black">
                 <div>
-                  Test
+                  Nothing to see here yet
                 </div>
               </div>
             </div>

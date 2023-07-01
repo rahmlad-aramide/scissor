@@ -25,6 +25,11 @@ const UserProvider = ({ children }) => {
   //   return unsubscribe;
   // }, []);
 
+  let authUser = localStorage.getItem('user');
+  useEffect(() => {
+      if(!user) setUser(JSON.parse(authUser));
+  }, []);
+
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 
