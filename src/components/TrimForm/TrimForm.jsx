@@ -11,7 +11,7 @@ const defaultFormFields = {
 
 const TrimForm = () => {
   // const pathname = window.location.pathname;
-  const { setUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [copyMe, setCopyMe] = useState(false);
   const [textToCopy, setTextToCopy] = useState('');
@@ -33,21 +33,15 @@ const TrimForm = () => {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
-  const user = localStorage.getItem('user');
-  useEffect(() => {
-    setUser(JSON.parse(user));
-  }, [user]);
+  
   const handleCopy = () => {
     copy(textToCopy);
     notify('Copied trimmed url to clipboard!');
-    setCopyMe(false);
+    setTimeout(()=>{
+      setCopyMe(false);
+    }, 2500)
   };
 
-//   const headers = new Headers();
-// headers.set('Authorization', `Bearer ${user.token}`);
-// headers.set('client_secret', user.token)
-// headers.set('username', user.username);
-// headers.set('password', user.password);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -68,16 +62,18 @@ const TrimForm = () => {
       console.log(response);
       if (response.ok) {
         notify('Success, your link has been trimmed!');
+        const data = await response.json();
+        console.log(data);
         setLoading(false);
         setCopyMe(true);
-        setShortUrl(response.short_url)
-        setTextToCopy(`cutly.onrender.com/${shortUrl}`);
+        setShortUrl(data.short_url);
+        setTextToCopy(`cutly.onrender.com/${data.short_url}`);
       } else if (response.status === 403) {
         warn('Long URL has already been trimmed');
         setLoading(false);
         return;
       } else {
-        warn('Request failed check the values and try again');
+        warn('Failed to trim the link, pls try again');
         setLoading(false);
         return;
       }
@@ -97,7 +93,7 @@ const TrimForm = () => {
     >
       <LoginModal isOpen={modalOpen} onClose={handleCloseModal} />
       <div className="flex">
-        <form className="bg-white p-10 rounded-xl w-[90%] max-w-[476px] mx-auto my-auto">
+        <form onSubmit={handleSubmit} className="bg-white p-10 rounded-xl w-[90%] max-w-[476px] mx-auto my-auto">
           <div className="mb-4">
             <Input onChange={handleChange} name="long_url" py="18px" placeholder="Paste long Url here..." value={long_url} required />
           </div>
@@ -106,8 +102,8 @@ const TrimForm = () => {
               required
               className="col-span-12 md:col-span-7 border border-[#3284FF] outline-none text-[#3284ff] bg-transparent placeholder:text-[#3284ff]/70 rounded-lg px-6 text-xs font-medium w-full h-[55.5px] md:h-auto"
             >
-              <option className="disabled">Choose Domain</option>
-              <option className="" value="cutly">
+              <option className="disabled" disabled>Choose Domain</option>
+              <option className="" value="cutly" selected>
                 cutly.onrender.com
               </option>
             </select>
@@ -123,7 +119,7 @@ const TrimForm = () => {
           {!copyMe ? (
             <Button
               disabled={loading}
-              onClick={user ? handleSubmit: handleOpenModal}
+              onClick={user===null && handleOpenModal}
               type={user ? `submit` : `button`}
               buttonWidth="full"
             >
