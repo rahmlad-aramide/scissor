@@ -91,12 +91,12 @@ const SignUp = () => {
 
   return (
     <>
-      <section className="h-full md:h-screen bg-white">
+      <section className="h-full bg-white">
         <ToastContainer />
-        <div className="flex h-full md:min-h-screen w-full flex-col items-center justify-start md:flex-row md:justify-center">
-          <div className="order-1 flex h-fit w-full items-center justify-center pt-0 md:pt-16 md:order-2 md:h-full md:w-[45%]">
-            <div className="my-auto h-full w-[90%] overflow-y-auto rounded-xl py-10">
-              <div className="h-full w-full overflow-y-auto">
+        <div className="flex h-full md:min-h-full w-full flex-col items-center justify-start md:flex-row md:justify-center">
+          <div className="order-1 flex h-fit w-full items-center justify-center md:order-2 md:h-full md:w-[45%]">
+            <div className="my-auto h-full w-[90%] rounded-xl py-10">
+              <div className="">
                 <form
                   onSubmit={handleSubmit}
                   className="mx-auto w-[90%] max-w-[600px]"
