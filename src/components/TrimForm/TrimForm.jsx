@@ -19,7 +19,7 @@ const TrimForm = () => {
   const [loading, setLoading] = useState(false);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { long_url, custom_url } = formFields;
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
@@ -33,15 +33,14 @@ const TrimForm = () => {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
-  
+
   const handleCopy = () => {
     copy(textToCopy);
     notify('Copied trimmed url to clipboard!');
-    setTimeout(()=>{
+    setTimeout(() => {
       setCopyMe(false);
-    }, 2500)
+    }, 2500);
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,8 +52,7 @@ const TrimForm = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user.token}`,
-
+            Authorization: `Bearer ${user.token}`,
           },
           body: JSON.stringify({ long_url, custom_url }),
         }
@@ -93,33 +91,71 @@ const TrimForm = () => {
     >
       <LoginModal isOpen={modalOpen} onClose={handleCloseModal} />
       <div className="flex">
-        <form onSubmit={handleSubmit} className="bg-white p-10 rounded-xl w-[90%] max-w-[476px] mx-auto my-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white p-10 rounded-xl w-[90%] max-w-[476px] mx-auto my-auto"
+        >
           <div className="mb-4">
-            <Input onChange={handleChange} name="long_url" py="18px" placeholder="Paste long Url here..." value={long_url} required />
+            <Input
+              onChange={handleChange}
+              name="long_url"
+              py="18px"
+              placeholder="Paste long Url here..."
+              value={long_url}
+              required
+            />
           </div>
           <div className="grid grid-cols-12 gap-4 mb-4">
             <select
               required
               className="col-span-12 md:col-span-7 border border-[#3284FF] outline-none text-[#3284ff] bg-transparent placeholder:text-[#3284ff]/70 rounded-lg px-6 text-xs font-medium w-full h-[55.5px] md:h-auto"
             >
-              <option className="disabled" disabled>Choose Domain</option>
-              <option className="" value="cutly" selected>
+              <option disabled>Choose Domain</option>
+              <option value="cutly" defaultValue={`cutly.onrender.com`}>
                 cutly.onrender.com
               </option>
             </select>
             <div className="col-span-12 md:col-span-5">
-              <Input onChange={handleChange} name="custom_url" py="18px" placeholder="Type Alias here..." value={custom_url} required />
+              <Input
+                onChange={handleChange}
+                name="custom_url"
+                py="18px"
+                placeholder="Type Alias here..."
+                value={custom_url}
+                required
+              />
             </div>
           </div>
           {copyMe && (
-            <div className="font-medium text-lg">
-              Trimmed url: cutly.onrender.com/{shortUrl}
-            </div>
+            <>
+              <div className="font-medium text-lg">
+                Trimmed url:{' '}
+                <a
+                  href={`https://cutly.onrender.com/${shortUrl}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary"
+                >
+                  https://cutly.onrender.com/{shortUrl}
+                </a>
+              </div>
+              <div className="font-medium text-lg mb-2">
+                Custom url:{' '}
+                <a
+                  href={`https://cutly.onrender.com/${custom_url}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary"
+                >
+                  https://cutly.onrender.com/{custom_url}
+                </a>
+              </div>
+            </>
           )}
           {!copyMe ? (
             <Button
               disabled={loading}
-              onClick={user===null && handleOpenModal}
+              onClick={user ? null : handleOpenModal}
               type={user ? `submit` : `button`}
               buttonWidth="full"
             >
