@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { signInWithGooglePopup } from '../../utils/firebase/firebase.utils';
 import crossedEye from '../../assets/icons/crossed-eye.svg';
@@ -9,12 +9,14 @@ import appleLogo from '../../assets/icons/apple-logo.svg';
 import { ToastContainer } from 'react-toastify';
 import { warn, notify } from '../../App';
 import { Button, Input, Footer, Loader } from '../../components';
+import { UserContext } from '../../contexts/UserContext/UserContext';
 
 const defaultFormFields = {
   username: '',
   password: '',
 };
 const Login = () => {
+  const { setUser } = useContext(UserContext);
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingGoogle, setLoadingGoogle] = useState(false);
@@ -130,6 +132,7 @@ const Login = () => {
         token: token,
       }
       localStorage.setItem('user', JSON.stringify(user));
+      setUser(user)
       notify("Login success, you're being redirected");
       resetFormFields();
       navigateToDashboard();

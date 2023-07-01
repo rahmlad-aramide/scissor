@@ -10,6 +10,7 @@ A url shortening application
   - [Features](#features)
   - [Getting Started](#getting-started)
   - [Usage](#usage)
+  - [Backend API](#backend-api)
   - [Dependencies](#dependencies)
 
 ## About
@@ -84,6 +85,9 @@ npm run build
 
 This will generate an optimized build in the `dist` directory, ready for deployment.
 
+## Backend API 
+
+The backend api used: `http://cutly.onrender.com` and its documentation can be accessed on `http://cutly.onrender.com/docs`
 
 ## Dependencies
 

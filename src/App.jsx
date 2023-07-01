@@ -33,21 +33,22 @@ export const notify = (val) => toast.success(`${val}`, toastParams);
 export const warn = (val) => toast.error(`${val}`, toastParams);
 export const inform = (val) => toast.info(`${val}`, toastParams);
 
+
+const user = localStorage.getItem('user');
 const AuthenticatedRoute = ({ Component, ...rest }) => {
-  const { setUser } = useContext(UserContext);
-  const user = localStorage.getItem('user');
   if (!user) {
     window.location.href = '/login';
     return;
   }
-  useEffect(() => {
-    setUser(JSON.parse(user));
-  }, []);
 
   return <Component {...rest} />;
 };
 
 function App() {
+  const { setUser } = useContext(UserContext);
+  useEffect(() => {
+    setUser(JSON.parse(user));
+  }, []);
   return (
     <>
       <UserProvider>
