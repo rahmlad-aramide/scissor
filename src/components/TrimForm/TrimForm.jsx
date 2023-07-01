@@ -1,14 +1,27 @@
-import { Button, Input } from '../../components';
+import { useContext, useState } from 'react';
+import { Button, Input, LoginModal } from '../../components';
+import { UserContext } from '../../contexts/UserContext/UserContext';
 const TrimForm = () => {
+  const {user} = useContext(UserContext);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    if(!user) setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
   return (
     <section
       id="analytics"
       className="bg-trim-texture min-h-[32.6875rem] flex justify-center"
     >
+      <LoginModal isOpen={modalOpen} onClose={handleCloseModal} />
       <div className="flex">
         <form className="bg-white p-10 rounded-xl w-[90%] max-w-[476px] mx-auto my-auto">
           <div className="mb-4">
-            <Input py="18px" placeholder="Paste URL here..." />
+            <Input py="18px" placeholder="Paste URL here..." required />
           </div>
           <div className="grid grid-cols-12 gap-4 mb-4">
             <select className="col-span-12 md:col-span-7 border border-[#3284FF] outline-none text-[#3284ff] bg-transparent placeholder:text-[#3284ff]/70 rounded-lg px-6 text-xs font-medium w-full h-[55.5px] md:h-auto">
@@ -16,10 +29,10 @@ const TrimForm = () => {
               <option className="" value="cutly">cutly</option>
             </select>
             <div className="col-span-12 md:col-span-5">
-              <Input py="18px" placeholder="Type Alias here..." />
+              <Input py="18px" placeholder="Type Alias here..." required />
             </div>
           </div>
-          <Button type="submit" buttonWidth="full">
+          <Button onClick={handleOpenModal} type={user ?`submit`: `button`} buttonWidth="full">
             <div className="flex justify-center items-center">
               <span className="text-sm pt-0.5">Trim URL</span>
               <svg
