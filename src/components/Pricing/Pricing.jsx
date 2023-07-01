@@ -16,31 +16,31 @@ const Pricing = () => {
     <section id="pricing">
       <div className="text-dark">
         <div className="flex flex-col w-full mx-auto mb-16">
-          <div className="flex mx-auto">
-            <div className="mt-2 mr-4">
+          <div className="flex mx-auto w-[90%] mb-4 md:mb-0">
+            <div className="mt-0 md:mt-0 mr-4">
               <img src={line} alt="Vertical line" />
             </div>
-            <div className="text-[40px] font-bold">
-              A <span className="text-primary">perfect price</span> for your
+            <div className="text-4xl md:text-[40px] font-bold">
+              A <span className="text-primary">price perfect</span> for your
               needs.
             </div>
           </div>
           <div className="flex flex-col w-full">
-            <div className="w-[90%] font-medium max-w-[55ch] mx-auto text-center">
+            <div className="w-[90%] font-medium max-w-[55ch] md:mx-auto pr-4 md:pr-0 ml-4 md:ml-auto text-justify md:text-center">
               From catering for your personal, business, event, social needs,
               you can be rest assured we have you in mind in our pricing.
             </div>
           </div>
         </div>
         <div className="flex">
-          <div className="flex mx-auto">
+          <div className="flex mx-auto flex-col md:flex-row">
             {pricingData.map((data) => (
               <div
                 key={data.id}
                 className={
                   hoveredElement === data.id
-                    ? `group pt-24 pb-36 px-16 h-fit my-auto bg-[#1E3448] z-10 rounded-xl transition duration-300`
-                    : `group pt-6 pb-11 px-20 -ml-4 -mr-4 h-fit my-auto border-[0.4px] border-primary bg-white rounded-xl transition duration-300`
+                    ? `group pt-10 md:pt-24 pb-12 md:pb-36 mb-8 md:mb-0 px-6 md:px-16 w-[95%] mx-auto h-fit my-auto bg-[#1E3448] z-10 rounded-xl transition duration-300`
+                    : `group pt-6 pb-6 md:pb-11 px-8 md:px-20 mb-8 md:mb-0 w-[90%] mx-auto md:-ml-4 md:-mr-4 h-fit my-auto border-[0.4px] border-primary bg-white rounded-xl transition duration-300`
                 }
                 onMouseEnter={() => handleMouseEnter(data.id)}
                 onMouseLeave={handleMouseLeave}
@@ -119,8 +119,8 @@ const Pricing = () => {
           </div>
         </div>
         <div className="flex mt-16 mb-28">
-          <div className="mx-auto">
-            <Link to="/get-quote">
+          <div className="w-[95%] mx-auto flex flex-col sm:flex-row justify-center items-center">
+            <Link to="/get-quote" className='order-2 md:order-1'>
               <Button
                 style={{
                   backgroundColor: 'white',
@@ -131,7 +131,9 @@ const Pricing = () => {
                 Get Custom Pricing
               </Button>
             </Link>
-            <Button>Select Pricing</Button>
+            <div className='order-1 md:order-2 mb-4 md:mb-0'>
+              <Button>Select Pricing</Button>
+            </div>
           </div>
         </div>
       </div>

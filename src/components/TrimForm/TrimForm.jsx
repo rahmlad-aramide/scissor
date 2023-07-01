@@ -11,10 +11,11 @@ const TrimForm = () => {
             <Input py="18px" placeholder="Paste URL here..." />
           </div>
           <div className="grid grid-cols-12 gap-4 mb-4">
-            <select className="col-span-7 border border-[#3284FF] outline-none text-[#3284ff] placeholder:text-[#3284ff]/70 rounded-lg px-6 text-xs font-medium w-full">
+            <select className="col-span-12 md:col-span-7 border border-[#3284FF] outline-none text-[#3284ff] bg-transparent placeholder:text-[#3284ff]/70 rounded-lg px-6 text-xs font-medium w-full h-[55.5px] md:h-auto">
               <option className="disabled">Choose Domain</option>
+              <option className="" value="cutly">cutly</option>
             </select>
-            <div className="col-span-5">
+            <div className="col-span-12 md:col-span-5">
               <Input py="18px" placeholder="Type Alias here..." />
             </div>
           </div>
