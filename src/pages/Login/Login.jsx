@@ -115,10 +115,10 @@ const Login = () => {
         },
         body: urlSearchParams.toString(),
       });
+      // console.log(response);
       if (!response.ok) {
-        // warn('Request failed with status ' + response.status)
         setLoading(false);
-        console.log('Request failed' + response);
+        console.log('Request failed', response);
         if(response.status === 403) {warn('Incorrect username and/or password, pls try again!')}
         return;
       }
