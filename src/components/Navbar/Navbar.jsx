@@ -42,7 +42,7 @@ const Navbar = () => {
           <ul className="hidden md:flex">
             <li>
               <NavHashLink
-                to="/#"
+                to="/dashboard"
                 smooth
                 className={
                   activeLink === 0

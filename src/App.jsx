@@ -3,7 +3,15 @@ import { useContext, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './components';
-import { Error, Home, Login, SignUp, GetInTouch, Dashboard } from './pages';
+import {
+  Error,
+  Home,
+  Login,
+  SignUp,
+  GetInTouch,
+  Dashboard,
+  NewLink,
+} from './pages';
 
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -26,16 +34,16 @@ export const warn = (val) => toast.error(`${val}`, toastParams);
 export const inform = (val) => toast.info(`${val}`, toastParams);
 
 const AuthenticatedRoute = ({ Component, ...rest }) => {
-  const {setUser} = useContext(UserContext)
+  const { setUser } = useContext(UserContext);
   const user = localStorage.getItem('user');
   if (!user) {
     window.location.href = '/login';
     return;
   }
   useEffect(() => {
-    setUser(JSON.parse(user))
-  }, [])
-  
+    setUser(JSON.parse(user));
+  }, []);
+
   return <Component {...rest} />;
 };
 
@@ -52,6 +60,7 @@ function App() {
               path="/dashboard"
               element={<AuthenticatedRoute Component={Dashboard} />}
             />
+            <Route path="/new" element={<NewLink />} />
           </Route>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />

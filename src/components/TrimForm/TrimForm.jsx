@@ -1,10 +1,18 @@
 import { useContext, useState } from 'react';
-import { Button, Input, LoginModal } from '../../components';
+import { Button, Input, LoginModal, Navbar } from '../../components';
 import { UserContext } from '../../contexts/UserContext/UserContext';
+
+const defaultFormFields = {
+  long_url: '',
+  custom_url: '',
+}
 const TrimForm = () => {
+  const pathname = window.location.pathname;
   const {user} = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [loading, setLoading] = useState(false);
+  const [formFields, setFormFields] = useState(defaultFormFields);
+  const { long_url, custom_url } = formFields;
   const handleOpenModal = () => {
     if(!user) setModalOpen(true);
   };
@@ -12,6 +20,35 @@ const TrimForm = () => {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await fetch('https://cutly.onrender.com/api/v1/url/shorten', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ long_url, custom_url }),
+      });
+      if (response.ok) {
+        notify('Success, your link has been trimmed!');
+        redirectToLogin();
+      } else {
+        warn('Request failed with status ' + response.status);
+        setLoading(false);
+        throw new Error('Request failed with status ' + response.status);
+      }
+      resetFormFields();
+      setLoading(false);
+    } catch (err) {
+      console.error('Error signing in:', err);
+      warn('Error signing up:', err);
+      setLoading(false);
+    }
+  };
+
   return (
     <section
       id="analytics"
