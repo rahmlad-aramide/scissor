@@ -29,7 +29,6 @@ const Navbar = () => {
     navRef.current.classList.toggle('translate-x-[100%]');
   };
 
-  const pathname = window.location.pathname;
   return (
     <>
       <nav className="fixed flex w-full pt-2 md:pt-4 bg-hero-pattern z-50 bg-top bg-cover">
