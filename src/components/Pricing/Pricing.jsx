@@ -9,16 +9,19 @@ const Pricing = () => {
   const handleMouseEnter = (id) => {
     setHoveredElement(id);
   };
-  const handleMouseLeave = () => {
-    setHoveredElement(null);
+  // const handleMouseLeave = () => {
+  //   setHoveredElement(null);
+  // };
+  const handleClick = (id) => {
+    setHoveredElement(id);
   };
   return (
     <section id="pricing">
       <div className="text-dark">
         <div className="flex flex-col w-full mx-auto mb-16">
-          <div className="flex mx-auto w-[90%] mb-4 md:mb-0">
-            <div className="mt-0 md:mt-0 mr-4">
-              <img src={line} alt="Vertical line" />
+          <div className="flex justify-center mx-auto w-[90%] mb-4 md:mb-0">
+            <div className="mr-4 ml-0 md:-ml-5">
+              <img src={line} alt="vertical line" className="mt-0 md:mt-0" />
             </div>
             <div className="text-4xl md:text-[40px] font-bold">
               A <span className="text-primary">price perfect</span> for your
@@ -39,11 +42,12 @@ const Pricing = () => {
                 key={data.id}
                 className={
                   hoveredElement === data.id
-                    ? `group pt-10 md:pt-24 pb-12 md:pb-36 mb-8 md:mb-0 px-6 md:px-16 w-[95%] mx-auto h-fit my-auto bg-[#1E3448] z-10 rounded-xl transition duration-300`
-                    : `group pt-6 pb-6 md:pb-11 px-8 md:px-20 mb-8 md:mb-0 w-[90%] mx-auto md:-ml-4 md:-mr-4 h-fit my-auto border-[0.4px] border-primary bg-white rounded-xl transition duration-300`
+                    ? `group pt-10 md:pt-24 pb-12 md:pb-36 mb-8 md:mb-auto md:mt-auto px-6 md:px-16 w-[95%] mx-auto h-fit my-auto bg-[#1E3448] z-10 rounded-xl transition duration-300`
+                    : `group pt-6 pb-6 md:pb-11 px-8 md:px-20 mb-8 md:mb-auto w-[90%] mx-auto md:-ml-4 md:-mr-4 h-fit min-h-[30rem] my-auto border-[0.4px] border-primary bg-white rounded-xl transition duration-300`
                 }
                 onMouseEnter={() => handleMouseEnter(data.id)}
-                onMouseLeave={handleMouseLeave}
+                // onMouseLeave={handleMouseLeave}
+                onClick={() => handleClick(data.id)}
               >
                 <div
                   className={
@@ -81,17 +85,25 @@ const Pricing = () => {
                       fill="none"
                       xmlns="http://www.w3.org/2000/svg"
                     >
-                      <g clipPath="url(#clip0_124_872)">
+                      <g clipPath="url(#ututoo)">
                         <path
                           d="M14.6667 7.38674V8.00007C14.6658 9.43769 14.2003 10.8365 13.3395 11.988C12.4788 13.1394 11.2688 13.9817 9.89022 14.3893C8.5116 14.797 7.03815 14.748 5.68963 14.2498C4.3411 13.7516 3.18975 12.8308 2.40729 11.6248C1.62482 10.4188 1.25317 8.99212 1.34776 7.55762C1.44235 6.12312 1.99812 4.75762 2.93217 3.66479C3.86621 2.57195 5.1285 1.81033 6.53077 1.4935C7.93304 1.17668 9.40016 1.32163 10.7133 1.90674"
-                          className="stroke-[#005AE2] group-hover:stroke-white transition duration-300"
+                          className={
+                            hoveredElement === data.id
+                              ? `stroke-white transition duration-300`
+                              : `stroke-[#005AE2] transition duration-300`
+                          }
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                         />
                         <path
                           d="M14.6667 2.66675L8 9.34008L6 7.34008"
-                          className="stroke-[#005AE2] group-hover:stroke-white transition duration-300"
+                          className={
+                            hoveredElement === data.id
+                              ? `stroke-white group-hover:stroke-white transition duration-300`
+                              : `stroke-[#005AE2] group-hover:stroke-white transition duration-300`
+                          }
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -120,7 +132,7 @@ const Pricing = () => {
         </div>
         <div className="flex mt-16 mb-28">
           <div className="w-[95%] mx-auto flex flex-col sm:flex-row justify-center items-center">
-            <Link to="/get-quote" className='order-2 md:order-1'>
+            <Link to="/get-quote" className="order-2 md:order-1">
               <Button
                 style={{
                   backgroundColor: 'white',
@@ -131,7 +143,7 @@ const Pricing = () => {
                 Get Custom Pricing
               </Button>
             </Link>
-            <div className='order-1 md:order-2 mb-4 md:mb-0'>
+            <div className="order-1 md:order-2 mb-4 md:mb-0">
               <Button>Select Pricing</Button>
             </div>
           </div>

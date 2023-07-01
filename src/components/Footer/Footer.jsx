@@ -122,7 +122,7 @@ const Footer = () => {
         </div>
       </div>
       <div>
-        <div className="flex justify-end mr-4 mb-10 md:mr-[8.6875rem]">
+        <div className="flex justify-center md:justify-end mr-4 mb-10 md:mr-[8.6875rem]">
           <ul className="flex text-neutral-800">
             <li className="text-neutral-800 text-sm font-medium">
               Terms of Service
