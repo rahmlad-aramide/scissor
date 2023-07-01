@@ -1,13 +1,15 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom';
-import { NavHashLink } from 'react-router-hash-link';
-import Button from '../Button/Button';
-import logo from '../../assets/images/scissors-logo.svg';
+import { NavHashLink, HashLink } from 'react-router-hash-link';
 import { UserContext } from '../../contexts/UserContext/UserContext';
 import { inform } from '../../App';
+import logo from '../../assets/images/scissors-logo.svg';
+import Button from '../Button/Button';
+import open from '../../assets/icons/hamburger.svg';
 
 const Navbar = () => {
   const navigateTo = useNavigate();
+  const navRef = useRef();
   const [activeLink, setActiveLink] = useState(0);
   const handleActiveLink = (linkNum) => {
     setActiveLink(linkNum);
@@ -23,10 +25,15 @@ const Navbar = () => {
     }, 2500);
   };
 
+  const showMenu = () => {
+    navRef.current.classList.toggle('translate-x-[100%]');
+  };
+
+  const pathname = window.location.pathname;
   return (
     <>
-      <nav className="fixed flex w-full pt-4 bg-hero-pattern z-50 bg-top bg-cover">
-        <div className="flex w-[90%] max-w-[78.375rem] justify-between items-center h-11 mx-auto">
+      <nav className="fixed flex w-full pt-2 md:pt-4 bg-hero-pattern z-50 bg-top bg-cover">
+        <div className="flex w-[90%] max-w-[78.375rem] pb-2 md:pb-2.5 justify-between items-center h-11 mx-auto">
           <div>
             <NavLink to="/">
               <img src={logo} alt="Scissor" />
@@ -104,7 +111,7 @@ const Navbar = () => {
               </NavHashLink>
             </li>
           </ul>
-          <div className="flex items-center">
+          <div className="hidden md:flex items-center">
             {user ? (
               <div>
                 <button
@@ -132,6 +139,103 @@ const Navbar = () => {
                 </div>
               </>
             )}
+          </div>
+          {/* Mobile nav & toggler */}
+          <div className="z-20 flex md:hidden">
+            <button
+              onClick={showMenu}
+              className="absolute top-0 right-2 flex h-12 items-center justify-center p-3 text-secondary transition active:scale-90 md:hidden"
+            >
+              <img src={open} alt="Open Nav" />
+            </button>
+            <div
+              ref={navRef}
+              className={`fixed top-0 right-0 my-auto flex h-screen w-[70%] translate-x-[100%] flex-col items-center bg-white text-primary transition md:hidden`}
+            >
+              <div
+                className="mb-4 mt-[50%] flex justify-center"
+                onClick={showMenu}
+              >
+                <HashLink
+                  to="/#"
+                  smooth
+                  className="px-4 decoration-2 underline-offset-4 hover:underline"
+                >
+                  My Urls
+                </HashLink>
+              </div>
+              <div className="my-4 flex justify-center" onClick={showMenu}>
+                <HashLink
+                  to="/#features"
+                  smooth
+                  className="px-4 decoration-2 underline-offset-4 hover:underline"
+                >
+                  Features
+                </HashLink>
+              </div>
+              <div className="my-4 flex justify-center" onClick={showMenu}>
+                <HashLink
+                  to="/#pricing"
+                  smooth
+                  className="px-4 decoration-2 underline-offset-4 hover:underline"
+                >
+                  Pricing
+                </HashLink>
+              </div>
+              <div className="my-4 flex justify-center" onClick={showMenu}>
+                <HashLink
+                  to="/#analytics"
+                  smooth
+                  className="px-4 decoration-2 underline-offset-4 hover:underline"
+                >
+                  Analytics
+                </HashLink>
+              </div>
+              <div className="my-4 flex justify-center" onClick={showMenu}>
+                <HashLink
+                  to="/#faqs"
+                  smooth
+                  className="px-4 decoration-2 underline-offset-4 hover:underline"
+                >
+                  FAQs
+                </HashLink>
+              </div>
+              <div className="flex flex-col items-center mt-2">
+                {user ? (
+                  <div>
+                    <button
+                      onClick={handleLogout}
+                      className={`group rounded-full py-2 px-8 bg-primary border border-primary text-white font-medium transition duration-300 hover:text-primary hover:bg-transparent active:scale-90`}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    <div className='my-4'>
+                      <Link
+                        to="/login"
+                        onClick={() => setActiveLink(5)}
+                        className="text-[#0065FE] font-semibold"
+                      >
+                        Login
+                      </Link>
+                    </div>
+                    <div className="mx-auto mt-2">
+                      <Link to="/sign-up" onClick={() => setActiveLink(6)}>
+                        <Button>Try for free</Button>
+                      </Link>
+                    </div>
+                  </>
+                )}
+              </div>
+              <button
+                onClick={showMenu}
+                className="absolute top-1 right-3 flex scale-110 cursor-pointer p-2 text-4xl font-bold text-primary transition duration-500 ease-in active:scale-110 md:hidden"
+              >
+                &times;
+              </button>
+            </div>
           </div>
         </div>
       </nav>
