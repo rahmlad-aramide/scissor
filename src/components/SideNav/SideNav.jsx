@@ -31,8 +31,8 @@ const SideNav = () => {
             ref={togglerRef}
             className={
               active
-                ? `bg-white rounded-full absolute shadow-lg border-gray-400 top-16 z-50 -translate-x-[90%] -right-20 flex h-12 w-12 items-center justify-center text-secondary transition active:scale-90 md:hidden`
-                : `bg-white rounded-full absolute shadow-lg border-gray-400 top-16 z-50 -translate-x-[90%] -right-[5.5rem] flex h-12 items-center justify-center p-3 text-secondary transition active:scale-90 md:hidden rotate-180`
+                ? `bg-white rounded-full absolute shadow-lg border border-gray-200 top-16 z-50 -translate-x-[90%] -right-20 flex h-12 w-12 items-center justify-center text-secondary transition active:scale-90 md:hidden`
+                : `bg-white rounded-full absolute shadow-lg border border-gray-200 top-16 z-50 -translate-x-[90%] -right-[5.5rem] flex h-12 items-center justify-center p-3 text-secondary transition active:scale-90 md:hidden rotate-180`
             }
           >
             <svg
