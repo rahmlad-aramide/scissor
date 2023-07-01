@@ -11,6 +11,9 @@ import {
   GetInTouch,
   Dashboard,
   NewLink,
+  Analytics,
+  MyLinks,
+  QRCodes,
 } from './pages';
 
 import { toast } from 'react-toastify';
@@ -32,7 +35,6 @@ const toastParams = {
 export const notify = (val) => toast.success(`${val}`, toastParams);
 export const warn = (val) => toast.error(`${val}`, toastParams);
 export const inform = (val) => toast.info(`${val}`, toastParams);
-
 
 const user = localStorage.getItem('user');
 const AuthenticatedRoute = ({ Component, ...rest }) => {
@@ -61,7 +63,10 @@ function App() {
               path="/dashboard"
               element={<AuthenticatedRoute Component={Dashboard} />}
             />
-            <Route path="/new" element={<NewLink />} />
+            <Route path="/dashboard/new" element={<NewLink />} />
+            <Route path="/dashboard/my-links" element={<Analytics />} />
+            <Route path="/dashboard/qr-codes" element={<MyLinks />} />
+            <Route path="/dashboard/analytics" element={<QRCodes />} />
           </Route>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />

@@ -1,6 +1,6 @@
 # Project Scissor
 
-A url shortening application
+A url shortening application, still in progress...
 
 ## Table of Contents
 
@@ -98,5 +98,5 @@ These are the main dependencies and their versions used in the project.
 - [React Router Hashlink](https://github.com/rafgraph/react-router-hash-link) (version 2.4.3)
 - [Firebase](https://firebase.google.com) (version 9.22.1)
 - [React Toastify](https://fkhadra.github.io/react-toastify/introduction) (version 9.1.3)
-
+- [Clipboard Copy](https://www.npmjs.com/package/clipboard-copy) (version 4.0.1)
 
