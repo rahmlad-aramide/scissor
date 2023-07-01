@@ -16,8 +16,8 @@ const defaultFormFields = {
 
 const GetInTouch = () => {
   const [loading, setLoading] = useState(false);
-  const firstImageUrl = 'src/assets/images/get-in-touch.png';
-  const secondImageUrl = 'src/assets/images/get-in-touch2.png';
+  const firstImageUrl = '/images/get-in-touch.png';
+  const secondImageUrl = '/images/get-in-touch2.png';
 
   const containerStyles = {
     backgroundBlendMode: 'multiply',

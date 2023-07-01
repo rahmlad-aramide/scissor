@@ -21,12 +21,12 @@ export default {
         },
       },
       backgroundImage: {
-        'hero-texture': "url('./src/assets/images/aurora.png')",
-        'hero-pattern': "url('./src/assets/images/hero-pattern.jpg')",
-        'trim-texture': "url('./src/assets/images/bg-trim.jpg')",
-        'revolutionize-texture': "url('./src/assets/images/bg-revolutionizing.jpg')",
-        'get1': "url('./src/assets/images/get-in-touch.png')",
-        'get2': "url('./src/assets/images/get-in-touch2.png')",
+        'hero-texture': "url('/images/aurora.png')",
+        'hero-pattern': "url('/images/hero-pattern.jpg')",
+        'trim-texture': "url('/images/bg-trim.jpg')",
+        'revolutionize-texture': "url('/images/bg-revolutionizing.jpg')",
+        'get1': "url('/images/get-in-touch.png')",
+        'get2': "url('/images/get-in-touch2.png')",
       },
       fontFamily: {
         'kanit': ['Kanit', 'sans-serif'],
