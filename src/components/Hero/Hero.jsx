@@ -75,7 +75,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
-      <div className="h-6 md:h-24 w-full bg-hero-pattern bg-bottom bg-cover"></div>
+      <div className="h-12 md:h-24 w-full bg-hero-pattern bg-bottom bg-cover"></div>
     </section>
   );
 };

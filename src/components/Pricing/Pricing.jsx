@@ -132,7 +132,7 @@ const Pricing = () => {
         </div>
         <div className="flex mt-16 mb-28">
           <div className="w-[95%] mx-auto flex flex-col sm:flex-row justify-center items-center">
-            <Link to="/get-quote" className="order-2 md:order-1">
+            <Link to="/get-quote" className="order-2 sm:order-1">
               <Button
                 style={{
                   backgroundColor: 'white',
@@ -143,7 +143,7 @@ const Pricing = () => {
                 Get Custom Pricing
               </Button>
             </Link>
-            <div className="order-1 md:order-2 mb-4 md:mb-0">
+            <div className="order-1 sm:order-2 mb-4 sm:mb-0">
               <Button>Select Pricing</Button>
             </div>
           </div>
