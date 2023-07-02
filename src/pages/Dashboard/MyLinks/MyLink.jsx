@@ -2,23 +2,24 @@ import copy from 'clipboard-copy';
 import { notify } from '../../../App';
 
 const MyLink = ({
-  customUrl = 'bit.ly/me',
-  shortUrl = 'shorty',
-  longUrl = 'longy',
+  customUrl,
+  shortUrl,
+  longUrl,
 }) => {
 
   const handleCopy = (textToCopy) => {
     copy(textToCopy)
     notify("Copied url to clipboard!")
   }
-//   const handleEdit = () => {
-//   }
+  const handleEdit = () => {
+    notify("This is a work in progress...")
+  }
 
   return (
     <div className="bg-white rounded-lg p-4 mx-auto my-4 w-[90%] flex flex-col md:flex-row justify-between">
-      <div className="">
+      <div className="break-words">
         <div>
-          <div className="word-break">
+          <div>
             Custom link:{' '}
             <a
               className="text-primary"
@@ -41,7 +42,7 @@ const MyLink = ({
             </a>
           </div>
         </div>
-        <div className="flex">
+        <div className="flex break-words">
           <div>
             <svg
               stroke="currentColor"
@@ -58,7 +59,7 @@ const MyLink = ({
               <path d="M19 15l-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z"></path>
             </svg>
           </div>
-          <div className="flex w-full">
+          <div className="flex overflow-x-auto">
             <a href={longUrl} target="_blank" rel="noopener noreferrer">
               {longUrl}
             </a>
@@ -85,7 +86,7 @@ const MyLink = ({
           </div>
           <div className="mx-2">Copy</div>
         </div>
-        <div className="ml-0 md:ml-4 flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit">
+        <div onClick={handleEdit} className="ml-0 md:ml-4 flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit">
           <div className="flex">
             <svg
               stroke="currentColor"

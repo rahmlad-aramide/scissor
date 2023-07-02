@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../../components';
-import Layout from '../../../components/Layout/Layout';
 import { UserContext } from '../../../contexts/UserContext/UserContext';
+import Layout from '../../../components/Layout/Layout';
 import MyLink from './MyLink';
 
 // const data = [
@@ -135,8 +135,8 @@ const MyLinks = () => {
     <Layout>
       <div className="bg-gray-200 h-full md:h-[calc(100vh_-_60px)] overflow-y-auto">
         <div className="pt-4">
-          <div className="text-[40px] md:text-4xl text-center mb-4 md:mb-4 md:text-[40px] font-bold">
-            {allLinks === null
+          <div className="text-[40px] mx-4 md:text-4xl text-center mb-4 md:mb-4 md:text-[40px] font-bold">
+            {allLinks === null || allLinks.length === 0
               ? 'No Link(s) found'
               : 'These are your created links'}
           </div>
