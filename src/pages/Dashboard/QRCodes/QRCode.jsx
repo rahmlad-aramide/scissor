@@ -15,7 +15,7 @@ const QRCode = ({
   return (
     <div className="bg-white rounded-lg p-4 mx-auto my-4 w-[90%] flex flex-col md:flex-row justify-between">
       <div className="grid grid-cols-12">
-        <div className='col-span-12 md:col-span-3 p-4'>
+        <div className='col-span-12 md:col-span-3 p-4 border-2 border-gray-200 rounded-lg shadow'>
           <img src={`https://api.qrserver.com/v1/create-qr-code/?data=cutly.onrender.com/${customUrl}&amp;size=100x100`} alt={`cutly.onrender.com/${customUrl}`} className="mx-auto" />
         </div>
         <div className="col-span-12 md:col-span-9">
@@ -73,7 +73,7 @@ const QRCode = ({
           <div className='flex items-center'>
             <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" role="graphics-document" height="20" width="20" xmlns="http://www.w3.org/2000/svg"><title>Icon</title><path fill="none" d="M0 0h24v24H0z"></path><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path></svg>
           </div>
-          <div className="mx-2">QRCode Link</div>
+          <div className="mx-2">Link</div>
         </div>
       </div>
     </div>

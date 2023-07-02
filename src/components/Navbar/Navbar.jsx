@@ -83,7 +83,7 @@ const Navbar = () => {
             </li>
             <li>
               <NavHashLink
-                to="/#analytics"
+                to="/dashboard/analytics"
                 smooth
                 className={
                   activeLink === 3
@@ -182,13 +182,13 @@ const Navbar = () => {
                 </HashLink>
               </div>
               <div className="my-4 flex justify-center" onClick={showMenu}>
-                <HashLink
-                  to="/#analytics"
+                <Link
+                  to="/dashboard/analytics"
                   smooth
                   className="px-4 decoration-2 underline-offset-4 hover:underline font-semibold"
                 >
                   Analytics
-                </HashLink>
+                </Link>
               </div>
               <div className="my-4 flex justify-center" onClick={showMenu}>
                 <HashLink
