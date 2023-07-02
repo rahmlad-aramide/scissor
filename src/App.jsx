@@ -64,9 +64,9 @@ function App() {
               element={<AuthenticatedRoute Component={Dashboard} />}
             />
             <Route path="/dashboard/new" element={<NewLink />} />
-            <Route path="/dashboard/my-links" element={<Analytics />} />
-            <Route path="/dashboard/qr-codes" element={<MyLinks />} />
-            <Route path="/dashboard/analytics" element={<QRCodes />} />
+            <Route path="/dashboard/analytics" element={<Analytics />} />
+            <Route path="/dashboard/my-links" element={<MyLinks />} />
+            <Route path="/dashboard/qr-codes" element={<QRCodes />} />
           </Route>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />

@@ -1,4 +1,4 @@
-import { Button, Input } from '../../components';
+import { Button } from '../../components';
 import { Link } from 'react-router-dom';
 import { HashLink } from 'react-router-hash-link';
 import underline from '../../assets/images/underline.png';
@@ -6,8 +6,11 @@ import chainLink from '../../assets/images/linked-chain.png';
 import singleLink from '../../assets/images/link-single.png';
 import blueArror from '../../assets/images/blue-arrow.svg';
 import cone from '../../assets/images/curved-cone.png';
+import { useContext } from 'react';
+import { UserContext } from '../../contexts/UserContext/UserContext';
 
 const Hero = () => {
+  const {user} = useContext(UserContext);
   return (
     <section id="url" className="bg-hero-texture bg-cover bg-bottom pt-16">
       <div className="flex text-3xl md:text-5xl text-center font-bold leading-[50px] md:leading-[96px] max-w-[31ch] mx-auto mt-16">
@@ -34,7 +37,11 @@ const Hero = () => {
         </div>
       </div>
       <div className="flex mt-8 mb-20">
-        <div className="mx-auto flex items-center">
+        {user 
+        ? <Link to="/dashboard" className='mx-auto'>
+            <Button buttonWidth={'fit'}>Go to dashboard</Button>
+          </Link> 
+          : <div className="mx-auto flex items-center">
           <Link to="/sign-up">
             <Button buttonWidth={'fit'}>Sign Up</Button>
           </Link>
@@ -42,10 +49,11 @@ const Hero = () => {
             to="/#features"
             smooth
             className="text-[#0065FE] font-semibold ml-4 md:ml-14"
-          >
+            >
             Learn More
           </HashLink>
         </div>
+          }
       </div>
       <div className="flex mb-10 md:mb-16 mt-10">
         <div className="relative mx-auto w-fit backdrop-blur-[106px] rounded-3xl">

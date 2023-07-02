@@ -2,11 +2,17 @@ import { useContext, useRef, useState } from 'react';
 import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom';
 import { NavHashLink, HashLink } from 'react-router-hash-link';
 import { UserContext } from '../../contexts/UserContext/UserContext';
+import myLinks from '../../assets/icons/why-icon1.svg';
+import newLink from '../../assets/icons/why-icon2.svg';
+import qrCodes from '../../assets/icons/why-icon3.svg';
+import analytics from '../../assets/icons/why-icon4.svg';
+import Button from '../Button/Button';
 
 const SideNav = () => {
+  const pathname = window.location.pathname;
+  console.log(pathname)
   const { user } = useContext(UserContext);
   const [active, setActive] = useState(false);
-  console.log(user);
   const navRef = useRef();
   const togglerRef = useRef();
   const showMenu = () => {
@@ -14,10 +20,202 @@ const SideNav = () => {
     navRef.current.classList.toggle('-translate-x-[100%]');
   };
   return (
-    <nav>
+    <nav className="border border-r-gray-200">
       {/* Desktop Nav */}
-      <div className='hidden md:flex bg-gray-200 h-[calc(100vh_-_60px)] w-full'>
-
+      <div className="hidden md:flex bg-white h-[calc(100vh_-_60px)] w-full">
+        <div className="flex flex-col w-full items-center pt-6 mx-auto">
+          <div className="flex w-full">
+            <div className="w-[80%] mx-auto mb-6 rounded-full shadow-lg">
+              <NavLink to="/dashboard/new" className="rounded-full">
+                <Button buttonWidth="full" style={{ fontWeight: '600' }}>
+                  <div className="flex justify-center">
+                    <svg
+                      width="22"
+                      height="21"
+                      viewBox="0 0 25 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M11.1 4H4.09998C3.56954 4 3.06083 4.21071 2.68576 4.58579C2.31069 4.96086 2.09998 5.46957 2.09998 6V20C2.09998 20.5304 2.31069 21.0391 2.68576 21.4142C3.06083 21.7893 3.56954 22 4.09998 22H18.1C18.6304 22 19.1391 21.7893 19.5142 21.4142C19.8893 21.0391 20.1 20.5304 20.1 20V13"
+                        className="stroke-white group-hover:stroke-primary transition duration-300"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M18.6 2.49998C18.9978 2.10216 19.5374 1.87866 20.1 1.87866C20.6626 1.87866 21.2022 2.10216 21.6 2.49998C21.9978 2.89781 22.2213 3.43737 22.2213 3.99998C22.2213 4.56259 21.9978 5.10216 21.6 5.49998L12.1 15L8.09998 16L9.09998 12L18.6 2.49998Z"
+                        className="stroke-white group-hover:stroke-primary transition duration-300"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <div className="ml-2">Trim new</div>
+                  </div>
+                </Button>
+              </NavLink>
+            </div>
+          </div>
+          <div className="h-[1px] w-full bg-gray-200"></div>
+          <div className='flex w-full ml-12 flex-col items-start'>
+            <div className="mb-4 mt-8">
+              <NavLink to="/dashboard" className="w-full">
+                <div className="flex">
+                  <div>
+                    <svg
+                      width="25"
+                      height="25"
+                      viewBox="0 0 25 25"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M10.8859 3.06763H3.88586V10.0676H10.8859V3.06763Z"
+                        stroke="black"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M21.8859 3.06763H14.8859V10.0676H21.8859V3.06763Z"
+                        stroke="#005AE2"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M21.8859 14.0676H14.8859V21.0676H21.8859V14.0676Z"
+                        stroke="black"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M10.8859 14.0676H3.88586V21.0676H10.8859V14.0676Z"
+                        stroke="#005AE2"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  <div className='ml-3'>Dashboard</div>
+                </div>
+              </NavLink>
+            </div>
+            <div className="my-4">
+              <NavLink to="/dashboard/my-links" className="w-fit bg-red-50">
+                <div className="flex">
+                  <div>
+                    <svg
+                      width="25"
+                      height="24"
+                      viewBox="0 0 25 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clip-path="url(#clip0_124_800)">
+                        <path
+                          d="M15.1 7H18.1C18.7566 7 19.4068 7.12933 20.0134 7.3806C20.62 7.63188 21.1712 8.00017 21.6355 8.46447C22.0998 8.92876 22.4681 9.47996 22.7194 10.0866C22.9706 10.6932 23.1 11.3434 23.1 12C23.1 12.6566 22.9706 13.3068 22.7194 13.9134C22.4681 14.52 22.0998 15.0712 21.6355 15.5355C21.1712 15.9998 20.62 16.3681 20.0134 16.6194C19.4068 16.8707 18.7566 17 18.1 17H15.1M9.09998 17H6.09998C5.44337 17 4.79319 16.8707 4.18656 16.6194C3.57993 16.3681 3.02873 15.9998 2.56444 15.5355C1.62676 14.5979 1.09998 13.3261 1.09998 12C1.09998 10.6739 1.62676 9.40215 2.56444 8.46447C3.50212 7.52678 4.77389 7 6.09998 7H9.09998"
+                          stroke="#141414"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M8.09998 12H16.1"
+                          stroke="#005AE2"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_124_800">
+                          <rect
+                            width="24"
+                            height="24"
+                            fill="white"
+                            transform="translate(0.0999756)"
+                          />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div className='ml-3'>My Links</div>
+                </div>
+              </NavLink>
+            </div>
+            <div className="my-4">
+              <NavLink to="/dashboard/qr-codes" className="w-full bg-primary">
+                <div className="flex">
+                  <div>
+                    <svg
+                      stroke="currentColor"
+                      fill="currentColor"
+                      stroke-width="0"
+                      viewBox="0 0 16 16"
+                      class="text-2xl text-primary"
+                      height="1em"
+                      width="1em"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M0 .5A.5.5 0 0 1 .5 0h3a.5.5 0 0 1 0 1H1v2.5a.5.5 0 0 1-1 0v-3Zm12 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0V1h-2.5a.5.5 0 0 1-.5-.5ZM.5 12a.5.5 0 0 1 .5.5V15h2.5a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5v-3a.5.5 0 0 1 .5-.5Zm15 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H15v-2.5a.5.5 0 0 1 .5-.5ZM4 4h1v1H4V4Z"
+                        className="fill-dark"
+                      ></path>
+                      <path d="M7 2H2v5h5V2ZM3 3h3v3H3V3Zm2 8H4v1h1v-1Z"></path>
+                      <path
+                        d="M7 9H2v5h5V9Zm-4 1h3v3H3v-3Zm8-6h1v1h-1V4Z"
+                        className="fill-dark"
+                      ></path>
+                      <path d="M9 2h5v5H9V2Zm1 1v3h3V3h-3ZM8 8v2h1v1H8v1h2v-2h1v2h1v-1h2v-1h-3V8H8Zm2 2H9V9h1v1Zm4 2h-1v1h-2v1h3v-2Zm-4 2v-1H8v1h2Z"></path>
+                      <path d="M12 9h2V8h-2v1Z"></path>
+                    </svg>
+                  </div>
+                  <div className='ml-3'>QR Codes</div>
+                </div>
+              </NavLink>
+            </div>
+            <div className="my-4">
+              <NavLink to="/dashboard/analytics" className="w-full">
+                <div className="flex">
+                  <div>
+                    <svg
+                      width="25"
+                      height="24"
+                      viewBox="0 0 25 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g clip-path="url(#clip0_159_363)">
+                        <path
+                          d="M21.1 12H17.1L14.1 21L8.09998 3L5.09998 12H1.09998"
+                          stroke="#0065FE"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_159_363">
+                          <rect
+                            width="24"
+                            height="24"
+                            fill="white"
+                            transform="translate(0.0999756)"
+                          />
+                        </clipPath>
+                      </defs>
+                    </svg>
+                  </div>
+                  <div className='ml-3'>Analytics</div>
+                </div>
+              </NavLink>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Mobile Nav */}
