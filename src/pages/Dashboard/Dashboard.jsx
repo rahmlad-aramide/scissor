@@ -61,7 +61,7 @@ const Dashboard = () => {
   console.log(currentUser);
   return (
     <Layout>
-      <div className="pt-0 flex flex-col justify-center items-center">
+      <div className="flex flex-col justify-center items-center">
         {/* <div>Hello {currentUser?.name}</div> */}
         <div>
           <img src={dashboardImage} alt="" className="mx-auto" />
@@ -71,7 +71,7 @@ const Dashboard = () => {
         </div>
         <div>
           <div className="w-[90%] text-center font-medium max-w-[55ch] md:mx-auto pr-4 md:pr-0 ml-4 md:ml-auto md:text-center">
-            Interested to tell? <Link to="/dashboard/new" className='text-primary'> Create your own </Link> or You&apos;ll love to see? <Link to="/dashboard/my-links" className='text-primary'>Check them out</Link>
+            Interested to tell yours? <Link to="/dashboard/new" className='text-primary'> Create one </Link> or You&apos;ll love to see? <Link to="/dashboard/my-links" className='text-primary'>Check them out</Link>
           </div>
         </div>
       </div>
