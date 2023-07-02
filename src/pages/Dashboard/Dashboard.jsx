@@ -62,7 +62,7 @@ const Dashboard = () => {
   return (
     <Layout>
       <div className="flex flex-col justify-center items-center">
-        {/* <div>Hello {currentUser?.name}</div> */}
+        {currentUser !== null && <div>Hello {currentUser?.name}</div>}
         <div>
           <img src={dashboardImage} alt="" className="mx-auto" />
         </div>

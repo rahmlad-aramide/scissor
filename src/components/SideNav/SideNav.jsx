@@ -317,12 +317,12 @@ const SideNav = () => {
           </div>
           <div className="h-[1px] w-full bg-gray-200"></div>
           <div className="flex w-full ml-6 mr-6 flex-col items-start">
-            <NavLink to="/dashboard" className={`w-[calc(100%)]`}>
+            <NavLink to="/dashboard" className={`w-[calc(100%)] mt-6 mb-2`}>
               <div
                 className={
                   pathname === '/dashboard'
-                    ? 'px-4 mb-2 py-2 mt-6 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
-                    : 'font-medium hover:bg-primary/10 px-4 mb-2 py-2 mt-6 border-l-4 hover:border-transparent border-white transition duration-300'
+                    ? 'px-4 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                    : 'font-medium hover:bg-primary/10 px-4 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
                 }
               >
                 <div className="flex items-center">
@@ -370,13 +370,13 @@ const SideNav = () => {
             </NavLink>
             <NavLink
               to="/dashboard/my-links"
-              className={`w-[calc(100%)]`}
+              className={`w-[calc(100%)] my-2`}
             >
               <div
                 className={
                   pathname === '/dashboard/my-links'
-                    ? 'px-4 my-2 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
-                    : 'font-medium hover:bg-primary/10 px-4 my-2 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
+                    ? 'px-4 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                    : 'font-medium hover:bg-primary/10 px-4 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
                 }
               >
                 <div className="flex">
@@ -422,13 +422,13 @@ const SideNav = () => {
             </NavLink>
             <NavLink
               to="/dashboard/qr-codes"
-              className={`w-[calc(100%)]`}
+              className={`w-[calc(100%)] my-2`}
             >
               <div
                 className={
                   pathname === '/dashboard/qr-codes'
-                    ? 'px-4 my-2 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
-                    : 'font-medium hover:bg-primary/10 px-4 my-2 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
+                    ? 'px-4 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                    : 'font-medium hover:bg-primary/10 px-4 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
                 }
               >
                 <div className="flex">
@@ -462,13 +462,13 @@ const SideNav = () => {
             </NavLink>
             <NavLink
               to="/dashboard/analytics"
-              className="w-[calc(100%)]"
+              className="w-[calc(100%)] my-2"
             >
               <div
                 className={
                   pathname === '/dashboard/analytics'
-                    ? 'px-4 my-2 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
-                    : 'font-medium hover:bg-primary/10 px-4 my-2 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
+                    ? 'px-4 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                    : 'font-medium hover:bg-primary/10 px-4 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
                 }
               >
                 <span className="flex">
