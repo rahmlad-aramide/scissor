@@ -11,9 +11,12 @@ export const UserContext = createContext({
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [authenticatedUser, setAuthenticatedUser] = useState(null);
   const value = {
     user,
     setUser,
+    authenticatedUser, 
+    setAuthenticatedUser
   };
   // useEffect(() => {
   //   const unsubscribe = onAuthStateChangedListener((user) => {

@@ -14,6 +14,7 @@ import {
   Analytics,
   MyLinks,
   QRCodes,
+  Settings
 } from './pages';
 
 import { toast } from 'react-toastify';
@@ -67,6 +68,7 @@ function App() {
             <Route path="/dashboard/analytics" element={<Analytics />} />
             <Route path="/dashboard/my-links" element={<MyLinks />} />
             <Route path="/dashboard/qr-codes" element={<QRCodes />} />
+            <Route path="/dashboard/settings" element={<Settings />} />
           </Route>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />

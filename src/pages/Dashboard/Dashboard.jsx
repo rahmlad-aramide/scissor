@@ -7,32 +7,19 @@ import dashboardImage from '../../assets/images/dashboard.jpg';
 import { notify } from '../../App';
 
 const Dashboard = () => {
-  const pathname = window.location.pathname;
-  console.log(pathname)
-  const { user } = useContext(UserContext);
-  console.log(user);
+  const { user, authenticatedUser, setAuthenticatedUser } = useContext(UserContext);
   const [userToken, setUserToken] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
-  const [active, setActive] = useState(false);
-  const navRef = useRef();
-  const togglerRef = useRef();
-  const showMenu = () => {
-    setActive(!active);
-    navRef.current.classList.toggle('-translate-x-[100%]');
-  };
 
   React.useEffect(() => {
-    getUserToken();
     getCurrentUser();
   }, []);
 
   React.useEffect(() => {
-    console.log(currentUser);
+    setAuthenticatedUser(currentUser);
   }, [currentUser]);
+  // setAuthenticatedUser(currentUser)
 
-  const getUserToken = () => {
-    setUserToken(user?.token);
-  };
   const getCurrentUser = async () => {
     try {
       const response = await fetch(
@@ -58,11 +45,13 @@ const Dashboard = () => {
       console.log('Failed to fetch currently logged-in user:', error);
     }
   };
-  console.log(currentUser);
+  React.useEffect(() => {
+    console.log(authenticatedUser);
+  }, [currentUser]);
   return (
     <Layout>
       <div className="flex flex-col justify-center items-center">
-        {currentUser !== null && <div>Hello {currentUser?.name}</div>}
+        {currentUser !== null && <div className='mt-4 font-semibold text-2xl text-center mx-8'>Hello {currentUser?.name}, what would you like to do today?</div>}
         <div>
           <img src={dashboardImage} alt="" className="mx-auto" />
         </div>
