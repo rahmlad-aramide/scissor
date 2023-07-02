@@ -158,7 +158,7 @@ const Navbar = () => {
                 <HashLink
                   to="/#"
                   smooth
-                  className="px-4 decoration-2 underline-offset-4 hover:underline"
+                  className="px-4 decoration-2 underline-offset-4 hover:underline font-semibold"
                 >
                   My Urls
                 </HashLink>
@@ -167,7 +167,7 @@ const Navbar = () => {
                 <HashLink
                   to="/#features"
                   smooth
-                  className="px-4 decoration-2 underline-offset-4 hover:underline"
+                  className="px-4 decoration-2 underline-offset-4 hover:underline font-semibold"
                 >
                   Features
                 </HashLink>
@@ -176,7 +176,7 @@ const Navbar = () => {
                 <HashLink
                   to="/#pricing"
                   smooth
-                  className="px-4 decoration-2 underline-offset-4 hover:underline"
+                  className="px-4 decoration-2 underline-offset-4 hover:underline font-semibold"
                 >
                   Pricing
                 </HashLink>
@@ -185,7 +185,7 @@ const Navbar = () => {
                 <HashLink
                   to="/#analytics"
                   smooth
-                  className="px-4 decoration-2 underline-offset-4 hover:underline"
+                  className="px-4 decoration-2 underline-offset-4 hover:underline font-semibold"
                 >
                   Analytics
                 </HashLink>
@@ -194,7 +194,7 @@ const Navbar = () => {
                 <HashLink
                   to="/#faqs"
                   smooth
-                  className="px-4 decoration-2 underline-offset-4 hover:underline"
+                  className="px-4 decoration-2 underline-offset-4 hover:underline font-semibold"
                 >
                   FAQs
                 </HashLink>

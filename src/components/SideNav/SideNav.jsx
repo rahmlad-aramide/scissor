@@ -41,7 +41,7 @@ const SideNav = () => {
           <div className="flex w-full">
             <div className="w-[80%] mx-auto mb-6 rounded-full shadow-lg">
               <NavLink to="/dashboard/new" className="rounded-full">
-                <Button buttonWidth="full" style={{ fontWeight: '600' }}>
+                <Button buttonWidth="full" style={{ fontWeight: '600', paddingLeft: "8px", paddingRight: "8px" }}>
                   <div className="flex justify-center">
                     <svg
                       width="22"
@@ -212,7 +212,7 @@ const SideNav = () => {
                       <path d="M12 9h2V8h-2v1Z"></path>
                     </svg>
                   </div>
-                  <div className="ml-3">QR Codes</div>
+                  <div className="ml-3 whitespace-pre">QR Codes</div>
                 </div>
               </div>
             </NavLink>

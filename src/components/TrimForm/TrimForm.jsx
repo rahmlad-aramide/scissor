@@ -16,10 +16,10 @@ const TrimForm = () => {
   const [copyMe, setCopyMe] = useState(false);
   const [textToCopy, setTextToCopy] = useState('');
   const [shortUrl, setShortUrl] = useState('');
+  const [customUrl, setCustomUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { long_url, custom_url } = formFields;
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
@@ -65,6 +65,7 @@ const TrimForm = () => {
         setLoading(false);
         setCopyMe(true);
         setShortUrl(data.short_url);
+        setCustomUrl(data.custom_url);
         setTextToCopy(`cutly.onrender.com/${data.short_url}`);
       } else if (response.status === 403) {
         warn('Long URL has already been trimmed');
@@ -87,7 +88,7 @@ const TrimForm = () => {
   return (
     <section
       id="analytics"
-      className="bg-trim-texture min-h-[32.6875rem] flex justify-center"
+      className="bg-trim-texture min-h-[40rem] md:min-h-[32.6875rem] flex justify-center"
     >
       <LoginModal isOpen={modalOpen} onClose={handleCloseModal} />
       <div className="flex">
@@ -129,7 +130,7 @@ const TrimForm = () => {
           {copyMe && (
             <>
               <div className="font-medium text-lg">
-                Trimmed url:{' '}
+                Your trimmed link is:{' '}
                 <a
                   href={`https://cutly.onrender.com/${shortUrl}`}
                   target="_blank"
@@ -140,14 +141,14 @@ const TrimForm = () => {
                 </a>
               </div>
               <div className="font-medium text-lg mb-2">
-                Custom url:{' '}
+                Your customized link is:{' '}
                 <a
-                  href={`https://cutly.onrender.com/${custom_url}`}
+                  href={`https://cutly.onrender.com/${customUrl}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary"
                 >
-                  https://cutly.onrender.com/{custom_url}
+                  https://cutly.onrender.com/{customUrl}
                 </a>
               </div>
             </>

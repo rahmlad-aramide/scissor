@@ -57,9 +57,9 @@ const Dashboard = () => {
         <div className="text-4xl text-center mb-4 md:mb-4 md:text-[40px] font-bold">
           Every link has a story behind it
         </div>
-        <div>
+        <div className='mb-8'>
           <div className="w-[90%] text-center font-medium max-w-[55ch] md:mx-auto pr-4 md:pr-0 ml-4 md:ml-auto md:text-center">
-            Interested to tell yours? <Link to="/dashboard/new" className='text-primary'> Create one </Link> or You&apos;ll love to see? <Link to="/dashboard/my-links" className='text-primary'>Check them out</Link>
+            Interested in telling? <Link to="/dashboard/new" className='text-primary'> Create one</Link>. Or you&apos;ll love to see? <Link to="/dashboard/my-links" className='text-primary'>Check them out</Link>.
           </div>
         </div>
       </div>
