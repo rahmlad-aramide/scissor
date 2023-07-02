@@ -289,7 +289,7 @@ const SideNav = () => {
               >
                 <span className="flex">
                   <div className='bg-primary w-8 aspect-square flex items-center justify-center text-white font-bold my-auto rounded-full'>
-                    {initialState}
+                    {authenticatedUser && authenticatedUser.profile_photo !== null ? "": initialState}
                   </div>
                   <div className="ml-3 my-auto">{firstNameState}</div>
                 </span>

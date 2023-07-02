@@ -8,8 +8,8 @@ import { notify } from '../../App';
 
 const Dashboard = () => {
   const { user, authenticatedUser, setAuthenticatedUser } = useContext(UserContext);
-  const [userToken, setUserToken] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
+  const [, setMe] = useState(null);
 
   React.useEffect(() => {
     getCurrentUser();
@@ -18,7 +18,6 @@ const Dashboard = () => {
   React.useEffect(() => {
     setAuthenticatedUser(currentUser);
   }, [currentUser]);
-  // setAuthenticatedUser(currentUser)
 
   const getCurrentUser = async () => {
     try {
@@ -46,12 +45,12 @@ const Dashboard = () => {
     }
   };
   React.useEffect(() => {
-    console.log(authenticatedUser);
+    setMe(authenticatedUser);
   }, [currentUser]);
   return (
     <Layout>
       <div className="flex flex-col justify-center items-center">
-        {currentUser !== null && <div className='mt-4 font-semibold text-2xl text-center mx-8'>Hello {currentUser?.name}, what would you like to do today?</div>}
+        <div className='mt-4 font-semibold text-2xl text-center mx-8'>Hello {currentUser !== null ? currentUser?.name: "dear user"}, what would you like to do today?</div>
         <div>
           <img src={dashboardImage} alt="" className="mx-auto" />
         </div>
