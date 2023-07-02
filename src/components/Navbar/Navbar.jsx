@@ -5,7 +5,6 @@ import { UserContext } from '../../contexts/UserContext/UserContext';
 import { inform } from '../../App';
 import logo from '../../assets/images/scissors-logo.svg';
 import Button from '../Button/Button';
-import open from '../../assets/icons/hamburger.svg';
 
 const Navbar = () => {
   const navigateTo = useNavigate();
@@ -143,9 +142,9 @@ const Navbar = () => {
           <div className="z-20 flex md:hidden">
             <button
               onClick={showMenu}
-              className="absolute top-0 right-2 flex h-12 items-center justify-center p-3 text-secondary transition active:scale-90 md:hidden"
+              className="absolute text-primary top-0 right-2 flex h-12 items-center justify-center p-3 text-secondary transition active:scale-90 md:hidden"
             >
-              <img src={open} alt="Open Nav" />
+              <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" role="graphics-document" height="28" width="28" xmlns="http://www.w3.org/2000/svg"><title>Icon</title><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
             </button>
             <div
               ref={navRef}
