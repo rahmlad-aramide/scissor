@@ -5,6 +5,7 @@ export { default as Features } from './Features/Features';
 export { default as Footer } from './Footer/Footer';
 export { default as Hero } from './Hero/Hero';
 export { default as Loader } from './Loader/Loader';
+export { default as CircleLoader } from './CircleLoader/CircleLoader';
 export { default as LoginModal } from './LoginModal/LoginModal';
 export { default as Input } from './Input/Input';
 export { default as Navbar } from './Navbar/Navbar';
