@@ -144,7 +144,20 @@ const Navbar = () => {
               onClick={showMenu}
               className="absolute text-primary top-0 right-2 flex h-12 items-center justify-center p-3 text-secondary transition active:scale-90 md:hidden"
             >
-              <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" role="graphics-document" height="28" width="28" xmlns="http://www.w3.org/2000/svg"><title>Icon</title><path fill="none" d="M0 0h24v24H0z"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
+              <svg
+                stroke="currentColor"
+                fill="currentColor"
+                stroke-width="0"
+                viewBox="0 0 24 24"
+                role="graphics-document"
+                height="28"
+                width="28"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <title>Icon</title>
+                <path fill="none" d="M0 0h24v24H0z"></path>
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path>
+              </svg>
             </button>
             <div
               ref={navRef}
@@ -210,7 +223,7 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <>
-                    <div className='my-4'>
+                    <div className="my-4">
                       <Link
                         to="/login"
                         onClick={() => setActiveLink(5)}

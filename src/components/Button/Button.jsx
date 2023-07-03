@@ -3,12 +3,7 @@ export const BUTTON_WIDTH_CLASSES = {
   full: 'w-full',
   fit: 'w-fit',
 };
-const Button = ({
-  children,
-  buttonWidth,
-  disabled,
-  ...otherProps
-}) => {
+const Button = ({ children, buttonWidth, disabled, ...otherProps }) => {
   return (
     <button
       disabled={disabled}

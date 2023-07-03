@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios';
-// export const BASE_URL = 'https://laumga-membapp-api.onrender.com';
 // export const BASE_URL = 'http://localhost:8080/http://cutly.onrender.com';
 export const BASE_URL = 'http://cutly.onrender.com';
 
@@ -60,7 +59,7 @@ export const signIn = async () => {
   const url = 'https://cutly.onrender.com/api/v1/users/login';
   const headers = {
     // eslint-disable-next-line prettier/prettier
-    'Accept': 'application/json',
+    Accept: 'application/json',
     'Content-Type': 'application/x-www-form-urlencoded',
   };
   const data = new URLSearchParams();

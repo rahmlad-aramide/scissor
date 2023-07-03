@@ -107,21 +107,32 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
-    const urlSearchParams = new URLSearchParams({grant_type: '', ...formFields, scope: '', client_id: '', client_secret: ''});
+
+    const urlSearchParams = new URLSearchParams({
+      grant_type: '',
+      ...formFields,
+      scope: '',
+      client_id: '',
+      client_secret: '',
+    });
     try {
-      const response = await fetch('https://cutly.onrender.com/api/v1/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: urlSearchParams.toString(),
-      });
+      const response = await fetch(
+        'https://cutly.onrender.com/api/v1/users/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: urlSearchParams.toString(),
+        }
+      );
       // console.log(response);
       if (!response.ok) {
         setLoading(false);
         console.log('Request failed', response);
-        if(response.status === 403) {warn('Incorrect username and/or password, pls try again!')}
+        if (response.status === 403) {
+          warn('Incorrect username and/or password, pls try again!');
+        }
         return;
       }
       const data = await response.json();
@@ -130,15 +141,15 @@ const Login = () => {
         username: formFields.username,
         password: formFields.password,
         token: token,
-      }
+      };
       localStorage.setItem('user', JSON.stringify(user));
-      setUser(user)
+      setUser(user);
       notify("Login success, you're being redirected");
       resetFormFields();
       navigateToDashboard();
       setLoading(false);
     } catch (error) {
-      warn('Error:', error.message)
+      warn('Error:', error.message);
       setLoading(false);
       console.error('Error:', error.message);
     }

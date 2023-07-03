@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 const SignInForm = () => {
-  const [name, setName] = useState('')
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [hashed_password, setHashPassword] = useState('');
   const [address, setAddress] = useState('');
@@ -11,13 +11,22 @@ const SignInForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch('https://cutly.onrender.com/api/v1/users/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, hashed_password, address, phone_number }),
-      });
+      const response = await fetch(
+        'https://cutly.onrender.com/api/v1/users/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            hashed_password,
+            address,
+            phone_number,
+          }),
+        }
+      );
       console.log(response);
       if (response.ok) {
         // Sign-in successful

@@ -8,7 +8,9 @@ const LoginModal = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 flex items-center justify-center z-40">
       <div className="fixed inset-0 bg-gray-800 opacity-50"></div>
       <div className="bg-white rounded-lg p-8 z-50 w-[90%] max-w-[30rem]">
-        <h2 className="text-3xl mb-4 text-center text-primary font-bold">Login Required</h2>
+        <h2 className="text-3xl mb-4 text-center text-primary font-bold">
+          Login Required
+        </h2>
         <p className="text-gray-700 text-center text-lg">
           You need to be logged in before you can perform that operation.
         </p>

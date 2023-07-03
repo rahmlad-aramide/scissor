@@ -15,8 +15,8 @@ const UserProvider = ({ children }) => {
   const value = {
     user,
     setUser,
-    authenticatedUser, 
-    setAuthenticatedUser
+    authenticatedUser,
+    setAuthenticatedUser,
   };
   // useEffect(() => {
   //   const unsubscribe = onAuthStateChangedListener((user) => {
@@ -30,7 +30,7 @@ const UserProvider = ({ children }) => {
 
   let authUser = localStorage.getItem('user');
   useEffect(() => {
-      if(!user) setUser(JSON.parse(authUser));
+    if (!user) setUser(JSON.parse(authUser));
   }, []);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

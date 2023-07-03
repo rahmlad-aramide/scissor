@@ -186,10 +186,8 @@ const GetInTouch = () => {
                 practices, and our dedication to safeguarding your privacy,
                 please refer to our Privacy Policy.
               </div>
-              <div className='mt-6'>
-                <Button buttonWidth="full">
-                  Submit
-                </Button>
+              <div className="mt-6">
+                <Button buttonWidth="full">Submit</Button>
               </div>
             </div>
           </form>

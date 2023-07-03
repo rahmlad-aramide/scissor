@@ -24,14 +24,19 @@ const WhyScissor = () => {
         <div className="flex w-full md:w-[60%]">
           <div className="grid gap-x-7 gap-y-16 grid-cols-1 md:grid-cols-2 mt-12 md:mt-2">
             {whyData.map((data, index) => (
-              <div key={index} className="flex flex-col justify-center items-center">
+              <div
+                key={index}
+                className="flex flex-col justify-center items-center"
+              >
                 <div className="bg-[#3284FF]/10 w-14 h-14 flex mb-10 rounded-full justify-center">
                   <img src={data.icon} alt="" className="m-auto p-auto" />
                 </div>
                 <div className="font-semibold text-[32px] leading-7 mb-4">
                   {data.heading}
                 </div>
-                <div className="font-medium text-justify md:text-left">{data.body}</div>
+                <div className="font-medium text-justify md:text-left">
+                  {data.body}
+                </div>
               </div>
             ))}
           </div>

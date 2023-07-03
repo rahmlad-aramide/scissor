@@ -1,19 +1,14 @@
 import copy from 'clipboard-copy';
 import { notify } from '../../../App';
 
-const MyLink = ({
-  customUrl,
-  shortUrl,
-  longUrl,
-}) => {
-
+const MyLink = ({ customUrl, shortUrl, longUrl }) => {
   const handleCopy = (textToCopy) => {
-    copy(textToCopy)
-    notify("Copied url to clipboard!")
-  }
+    copy(textToCopy);
+    notify('Copied url to clipboard!');
+  };
   const handleEdit = () => {
-    notify("This is a work in progress...")
-  }
+    notify('This is a work in progress...');
+  };
 
   return (
     <div className="bg-white rounded-lg p-4 mx-auto my-4 w-[90%] flex flex-col md:flex-row justify-between">
@@ -67,7 +62,10 @@ const MyLink = ({
         </div>
       </div>
       <div className="mt-4 md:mt-0 flex justify-evenly">
-        <div onClick={()=>handleCopy(`https://cutly.onrender.com/${shortUrl}`)} className="flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit">
+        <div
+          onClick={() => handleCopy(`https://cutly.onrender.com/${shortUrl}`)}
+          className="flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit"
+        >
           <div>
             <svg
               stroke="currentColor"
@@ -86,7 +84,10 @@ const MyLink = ({
           </div>
           <div className="mx-2">Copy</div>
         </div>
-        <div onClick={handleEdit} className="ml-0 md:ml-4 flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit">
+        <div
+          onClick={handleEdit}
+          className="ml-0 md:ml-4 flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit"
+        >
           <div className="flex">
             <svg
               stroke="currentColor"

@@ -65,13 +65,22 @@ const SignUp = () => {
       return;
     }
     try {
-      const response = await fetch('https://cutly.onrender.com/api/v1/users/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, hashed_password: password, address: "Error 404 Location", phone_number: "+234 hello scissor" }),
-      });
+      const response = await fetch(
+        'https://cutly.onrender.com/api/v1/users/register',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            hashed_password: password,
+            address: 'Error 404 Location',
+            phone_number: '+234 hello scissor',
+          }),
+        }
+      );
       if (response.ok) {
         notify('Success, redirecting you to login page');
         redirectToLogin();

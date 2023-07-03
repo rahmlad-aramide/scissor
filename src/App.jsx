@@ -14,7 +14,7 @@ import {
   Analytics,
   MyLinks,
   QRCodes,
-  Settings
+  Settings,
 } from './pages';
 
 import { toast } from 'react-toastify';
@@ -51,6 +51,7 @@ function App() {
   const { setUser } = useContext(UserContext);
   useEffect(() => {
     setUser(JSON.parse(user));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <>
