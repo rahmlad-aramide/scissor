@@ -4,7 +4,6 @@ import {
   signInWithGooglePopup,
   // createUserDocumentFromAuth,
 } from '../../utils/firebase/firebase.utils';
-import { signUp } from '../../api';
 import crossedEye from '../../assets/icons/crossed-eye.svg';
 import eye from '../../assets/icons/eye.svg';
 import googleLogo from '../../assets/icons/google-logo.svg';
@@ -92,8 +91,8 @@ const SignUp = () => {
       resetFormFields();
       setLoading(false);
     } catch (err) {
-      console.error('Error signing in:', err);
-      warn('Error signing up:', err);
+      console.error('Error signing in', err);
+      warn('Error signing up', err);
       setLoading(false);
     }
   };

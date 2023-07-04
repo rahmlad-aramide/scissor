@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useState } from 'react';
 // import {
 //   createUserDocumentFromAuth,
 //   onAuthStateChangedListener,
@@ -28,10 +28,10 @@ const UserProvider = ({ children }) => {
   //   return unsubscribe;
   // }, []);
 
-  let authUser = localStorage.getItem('user');
-  useEffect(() => {
-    if (!user) setUser(JSON.parse(authUser));
-  }, []);
+  // useEffect(() => {
+  //   let authUser = localStorage.getItem('user');
+  //   if (authUser) setUser(JSON.parse(authUser));
+  // }, []);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

@@ -50,7 +50,8 @@ const AuthenticatedRoute = ({ Component, ...rest }) => {
 function App() {
   const { setUser } = useContext(UserContext);
   useEffect(() => {
-    setUser(JSON.parse(user));
+    let authUser = localStorage.getItem('user');
+    if (authUser) setUser(JSON.parse(authUser));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (

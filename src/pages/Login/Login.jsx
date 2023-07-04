@@ -142,8 +142,8 @@ const Login = () => {
         password: formFields.password,
         token: token,
       };
-      localStorage.setItem('user', JSON.stringify(user));
       setUser(user);
+      localStorage.setItem('user', JSON.stringify(user));
       notify("Login success, you're being redirected");
       resetFormFields();
       navigateToDashboard();
@@ -154,6 +154,7 @@ const Login = () => {
       console.error('Error:', error.message);
     }
   };
+
   return (
     <>
       <section className="h-full bg-white">
