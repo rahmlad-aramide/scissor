@@ -10,7 +10,7 @@ const Settings = () => {
           <div>
             <img src={settingsImage} alt="" className="w-[80%] mx-auto" />
           </div>
-          <div className="text-4xl max-w-[28ch] text-center mx-4 mb-4 md:mb-4 md:text-[40px] font-bold">
+          <div className="text-2xl md:text-4xl max-w-[28ch] text-center mx-4 mb-4 md:mb-4 md:text-[40px] font-bold">
             Fine-tune Your Profile: Customize Settings and Optimize Your
             Experience.
           </div>

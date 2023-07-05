@@ -1,5 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
-import { useContext, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './components';
@@ -20,7 +18,7 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserProvider } from './contexts';
-import { UserContext } from './contexts/UserContext/UserContext';
+import ProtectedRoute from './utils/ProtectedRoute/ProtectedRoute';
 
 const toastParams = {
   position: 'top-right',
@@ -33,27 +31,14 @@ const toastParams = {
   theme: 'light',
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const notify = (val) => toast.success(`${val}`, toastParams);
+// eslint-disable-next-line react-refresh/only-export-components
 export const warn = (val) => toast.error(`${val}`, toastParams);
+// eslint-disable-next-line react-refresh/only-export-components
 export const inform = (val) => toast.info(`${val}`, toastParams);
 
-const user = localStorage.getItem('user');
-const AuthenticatedRoute = ({ Component, ...rest }) => {
-  if (!user) {
-    window.location.href = '/login';
-    return;
-  }
-
-  return <Component {...rest} />;
-};
-
 function App() {
-  const { setUser } = useContext(UserContext);
-  useEffect(() => {
-    let authUser = localStorage.getItem('user');
-    if (authUser) setUser(JSON.parse(authUser));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   return (
     <>
       <UserProvider>
@@ -62,15 +47,14 @@ function App() {
             <Route index element={<Home />} />
             <Route path="*" element={<Error />} />
             <Route path="/get-quote" element={<GetInTouch />} />
-            <Route
-              path="/dashboard"
-              element={<AuthenticatedRoute Component={Dashboard} />}
-            />
-            <Route path="/dashboard/new" element={<NewLink />} />
-            <Route path="/dashboard/analytics" element={<Analytics />} />
-            <Route path="/dashboard/my-links" element={<MyLinks />} />
-            <Route path="/dashboard/qr-codes" element={<QRCodes />} />
-            <Route path="/dashboard/settings" element={<Settings />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/new" element={<NewLink />} />
+              <Route path="/dashboard/analytics" element={<Analytics />} />
+              <Route path="/dashboard/my-links" element={<MyLinks />} />
+              <Route path="/dashboard/qr-codes" element={<QRCodes />} />
+              <Route path="/dashboard/settings" element={<Settings />} />
+            </Route>
           </Route>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />

@@ -1,29 +1,17 @@
-import React, { useContext, useRef, useState } from 'react';
-import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom';
-import { NavHashLink, HashLink } from 'react-router-hash-link';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Layout from '../../components/Layout/Layout';
-import { UserContext } from '../../contexts/UserContext/UserContext';
 import dashboardImage from '../../assets/images/dashboard.jpg';
 import { notify } from '../../App';
 import { CircleLoader } from '../../components';
+import { useAuth } from '../../contexts/UserContext/UserContext';
 
 const Dashboard = () => {
-  const { user, authenticatedUser, setAuthenticatedUser } =
-    useContext(UserContext);
+  const { user } = useAuth();
   const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [, setMe] = useState(null);
-
-  React.useEffect(() => {
-    getCurrentUser();
-  }, []);
-
-  React.useEffect(() => {
-    setAuthenticatedUser(currentUser);
-  }, [currentUser]);
+  const [loading, setLoading] = useState(true);
 
   const getCurrentUser = async () => {
-    setLoading(true);
     try {
       const response = await fetch(
         'https://cutly.onrender.com/api/v1/users/me',
@@ -51,9 +39,11 @@ const Dashboard = () => {
       console.log('Failed to fetch currently logged-in user:', error);
     }
   };
+
   React.useEffect(() => {
-    setMe(authenticatedUser);
-  }, [currentUser]);
+    getCurrentUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <Layout>
       {loading ? (
@@ -64,7 +54,7 @@ const Dashboard = () => {
         </div>
       ) : (
         <div className="flex flex-col justify-center items-center">
-          <div className="mt-4 font-semibold text-2xl text-center mx-8">
+          <div className="mt-8 mb-4 font-semibold text-2xl text-center mx-8">
             Hello {currentUser !== null ? currentUser?.name : 'dear user'}, what
             would you like to do today?
           </div>

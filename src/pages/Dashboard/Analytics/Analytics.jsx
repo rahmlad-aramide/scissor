@@ -11,7 +11,7 @@ const Analytics = () => {
           <div>
             <img src={analyticsImage} alt="" className="w-[80%] mx-auto" />
           </div>
-          <div className="text-4xl max-w-[28ch] text-center mx-4 mb-4 md:mb-4 md:text-[40px] font-bold">
+          <div className="text-2xl md:text-4xl max-w-[28ch] text-center mx-4 mb-4 md:mb-4 md:text-[40px] font-bold">
             Track and Analyze Your Shortened Links with Our Advanced Analytics.
           </div>
           <div className="mb-8">
