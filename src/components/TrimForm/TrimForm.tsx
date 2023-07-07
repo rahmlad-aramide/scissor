@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Input, Loader, LoginModal } from '../../components';
 import { UserContext } from '../../contexts/UserContext/UserContext';
 import copy from 'clipboard-copy';
@@ -9,8 +9,12 @@ const defaultFormFields = {
   custom_url: '',
 };
 
-const TrimForm = () => {
-  // const pathname = window.location.pathname;
+interface User {
+  token?: string;
+  user?: object;
+}
+const TrimForm: React.FC = () => {
+
   const { user } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [copyMe, setCopyMe] = useState(false);
@@ -20,31 +24,36 @@ const TrimForm = () => {
   const [loading, setLoading] = useState(false);
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { long_url, custom_url } = formFields;
-  const handleChange = (e) => {
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
   };
+
   const resetFormFields = () => {
     setFormFields(defaultFormFields);
   };
+
   const handleOpenModal = () => {
     if (!user) setModalOpen(true);
   };
+
   const handleCloseModal = () => {
     setModalOpen(false);
   };
 
   const handleCopy = () => {
     copy(textToCopy);
-    notify('Copied trimmed url to clipboard!');
+    notify('Copied trimmed URL to clipboard!');
     setTimeout(() => {
       setCopyMe(false);
     }, 2500);
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
+
     try {
       const response = await fetch(
         'https://cutly.onrender.com/api/v1/url/shorten',
@@ -52,16 +61,15 @@ const TrimForm = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`,
+            Authorization: `Bearer ${user?.token}`,
           },
           body: JSON.stringify({ long_url, custom_url }),
         }
       );
-      console.log(response);
+
       if (response.ok) {
         notify('Success, your link has been trimmed!');
         const data = await response.json();
-        console.log(data);
         setLoading(false);
         setCopyMe(true);
         setShortUrl(data.short_url);
@@ -72,15 +80,16 @@ const TrimForm = () => {
         setLoading(false);
         return;
       } else {
-        warn('Failed to trim the link, pls try again');
+        warn('Failed to trim the link, please try again');
         setLoading(false);
         return;
       }
+
       resetFormFields();
       setLoading(false);
     } catch (err) {
-      console.error('An error occured:', err);
-      warn('An error occured:', err);
+      console.error(`An error occurred: ${err}`);
+      warn(`An error occurred: ${err}`);
       setLoading(false);
     }
   };
@@ -156,7 +165,7 @@ const TrimForm = () => {
           {!copyMe ? (
             <Button
               disabled={loading}
-              onClick={user ? null : handleOpenModal}
+              onClick={user ? undefined : handleOpenModal}
               type={user ? `submit` : `button`}
               buttonWidth="full"
             >

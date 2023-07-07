@@ -1,18 +1,18 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '../../components';
+import { Button } from '..';
 import { pricingData } from '../../utils/pricingData/pricingData';
-import line from './../../assets/images/vertical-line.svg';
-const Pricing = () => {
-  const [hoveredElement, setHoveredElement] = useState(null);
+// import line from './../../assets/images/vertical-line.svg';
+import Line from './../Line/Line'
+const Pricing: React.FC = () => {
+  const [hoveredElement, setHoveredElement] = useState<number | null>(null);
   if (hoveredElement === null) setHoveredElement(2);
-  const handleMouseEnter = (id) => {
+
+  const handleMouseEnter = (id: number) => {
     setHoveredElement(id);
   };
-  // const handleMouseLeave = () => {
-  //   setHoveredElement(null);
-  // };
-  const handleClick = (id) => {
+
+  const handleClick = (id: number) => {
     setHoveredElement(id);
   };
   return (
@@ -21,7 +21,8 @@ const Pricing = () => {
         <div className="flex flex-col w-full mx-auto mb-16">
           <div className="flex justify-center mx-auto w-[90%] mb-4 md:mb-0">
             <div className="mr-4 ml-0 md:-ml-5">
-              <img src={line} alt="vertical line" className="mt-0 md:mt-0" />
+              {/* <img src={line} alt="vertical line" className="mt-0 md:mt-0" /> */}
+              <Line />
             </div>
             <div className="text-4xl md:text-[40px] font-bold">
               A <span className="text-primary">price perfect</span> for your
@@ -46,7 +47,6 @@ const Pricing = () => {
                     : `group pt-6 pb-6 md:pb-11 px-8 md:px-20 mb-8 md:mb-auto w-[90%] mx-auto md:-ml-4 md:-mr-4 h-fit min-h-[30rem] my-auto border-[0.4px] border-primary bg-white rounded-xl transition duration-300`
                 }
                 onMouseEnter={() => handleMouseEnter(data.id)}
-                // onMouseLeave={handleMouseLeave}
                 onClick={() => handleClick(data.id)}
               >
                 <div
@@ -143,7 +143,7 @@ const Pricing = () => {
                 Get Custom Pricing
               </Button>
             </Link>
-            <div className="order-1 sm:order-2 mb-4 sm:mb-0">
+            <div className="order-1 sm:order-2 mb-4 sm:mb-0 ml-0 sm:ml-2">
               <Button>Select Pricing</Button>
             </div>
           </div>

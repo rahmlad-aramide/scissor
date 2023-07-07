@@ -8,29 +8,40 @@ import qrCodes from '../../assets/icons/why-icon3.svg';
 import analytics from '../../assets/icons/why-icon4.svg';
 import Button from '../Button/Button';
 
-const SideNav = () => {
+interface AuthenticatedUser {
+  name: string;
+  // Add other properties if needed
+}
+
+const SideNav: React.FC = () => {
   const pathname = window.location.pathname;
   const { authenticatedUser } = useContext(UserContext);
-  const [active, setActive] = useState(false);
-  const [initialState, setInitialState] = useState('S');
-  const [firstNameState, setFirstNameState] = useState('Scissor');
-  const navRef = useRef();
-  const togglerRef = useRef();
-  const showMenu = () => {
+  const [active, setActive] = useState<boolean>(false);
+  const [initialState, setInitialState] = useState<string | undefined>('S');
+  const [firstNameState, setFirstNameState] = useState<string |undefined>('Scissor');
+  const navRef = useRef<HTMLDivElement>(null);
+  const togglerRef = useRef<HTMLButtonElement>(null);
+
+  const showMenu = (): void => {
     setActive(!active);
-    navRef.current.classList.toggle('-translate-x-[100%]');
+    if (navRef.current) {
+      navRef.current.classList.toggle('-translate-x-[100%]');
+    }
   };
-  let initial;
-  let firstName;
+
+  let initial: string | undefined;
+  let firstName: string | undefined;
+
   useEffect(() => {
     if (authenticatedUser) {
       const names = authenticatedUser.name.split(' ');
       firstName = names[0];
-      initial = firstName.charAt(0);
+      initial = firstName?.charAt(0);
       setFirstNameState(firstName);
       setInitialState(initial);
     }
   }, [authenticatedUser]);
+
 
   return (
     <nav className="border border-r-gray-200">
@@ -200,7 +211,7 @@ const SideNav = () => {
                       fill="currentColor"
                       stroke-width="0"
                       viewBox="0 0 16 16"
-                      class="text-2xl text-primary"
+                      className="text-2xl text-primary"
                       height="1em"
                       width="1em"
                       xmlns="http://www.w3.org/2000/svg"
@@ -499,7 +510,7 @@ const SideNav = () => {
                           fill="currentColor"
                           stroke-width="0"
                           viewBox="0 0 16 16"
-                          class="text-2xl text-primary"
+                          className="text-2xl text-primary"
                           height="1em"
                           width="1em"
                           xmlns="http://www.w3.org/2000/svg"

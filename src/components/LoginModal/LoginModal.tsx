@@ -1,5 +1,12 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
-const LoginModal = ({ isOpen, onClose }) => {
+
+interface LoginModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
   if (!isOpen) {
     return null;
   }
@@ -31,4 +38,5 @@ const LoginModal = ({ isOpen, onClose }) => {
     </div>
   );
 };
+
 export default LoginModal;

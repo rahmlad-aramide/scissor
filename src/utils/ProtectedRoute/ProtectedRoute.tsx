@@ -3,7 +3,7 @@ import { useAuth } from '../../contexts/UserContext/UserContext';
 import { useEffect, useState } from 'react';
 import { CircleLoader } from '../../components';
 
-const ProtectedRoute = () => {
+const ProtectedRoute: React.FC = () => {
   const { user, setUser } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
 
@@ -30,4 +30,5 @@ const ProtectedRoute = () => {
   }
   return user ? <Outlet /> : <Navigate to="/login" />;
 };
+
 export default ProtectedRoute;

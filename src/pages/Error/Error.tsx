@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button } from '../../components';
 
-const Error = () => {
+const Error: React.FC = () => {
   return (
     <div className="flex h-screen items-center justify-center bg-gray-100">
       <div className="max-w-lg text-center">
