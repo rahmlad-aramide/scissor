@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
+import { ToastContainer } from 'react-toastify'
 import { Button, Footer } from '../../components';
 import { useNavigate } from 'react-router-dom';
 import { inform, notify, warn } from '../../App';
@@ -10,7 +11,7 @@ interface FormFields {
   company: string;
   email: string;
   phone: string;
-  title: string;
+  job: string;
   size: string;
   useCase: string;
   country: string;
@@ -22,7 +23,7 @@ const defaultFormFields: FormFields = {
   company: '',
   email: '',
   phone: '',
-  title: '',
+  job: '',
   size: '',
   useCase: '',
   country: '',
@@ -32,7 +33,7 @@ const GetInTouch: React.FC = () => {
   const navigateTo = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
-  const { fname, lname, company, email, phone, title, size, useCase, country } =
+  const { fname, lname, company, email, phone, job, size, useCase, country } =
     formFields;
   const firstImageUrl = '/images/get-in-touch.png';
   const secondImageUrl = '/images/get-in-touch2.png';
@@ -56,10 +57,10 @@ const GetInTouch: React.FC = () => {
   const navigateToDashboard = () => {
     setTimeout(() => {
       inform("Redirecting you to your dashboard")
-    }, 500);
+    }, 1000);
     setTimeout(() => {
       navigateTo('/dashboard');
-    }, 2500);
+    }, 3000);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -87,6 +88,7 @@ const GetInTouch: React.FC = () => {
   };
   return (
     <section className="min-h-screen">
+      <ToastContainer />
       <div style={containerStyles} className="min-h-screen">
         <div className="flex flex-col justify-center items-center pt-40 pb-32">
           <div className="text-[40px] text-neutral-900 font-bold mb-6">
@@ -203,7 +205,7 @@ const GetInTouch: React.FC = () => {
                     id="job"
                     type="text"
                     className="rounded-xl h-[46px] w-full px-4"
-                    value={title}
+                    value={job}
                     onChange={handleChange}
                     required
                   />
