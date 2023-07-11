@@ -14,5 +14,4 @@ const Input: React.FC<InputProps> = ({ py, ...otherProps }) => {
     />
   );
 };
-
 export default Input;

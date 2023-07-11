@@ -1,21 +1,16 @@
 import { useContext, useEffect, useRef, useState } from 'react';
-import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom';
-import { NavHashLink, HashLink } from 'react-router-hash-link';
+import { NavLink } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext/UserContext';
-import myLinks from '../../assets/icons/why-icon1.svg';
-import newLink from '../../assets/icons/why-icon2.svg';
-import qrCodes from '../../assets/icons/why-icon3.svg';
-import analytics from '../../assets/icons/why-icon4.svg';
 import Button from '../Button/Button';
 
 interface AuthenticatedUser {
   name: string;
-  // Add other properties if needed
+  profile_photo: string;
 }
 
 const SideNav: React.FC = () => {
   const pathname = window.location.pathname;
-  const { authenticatedUser } = useContext(UserContext);
+  const { authenticatedUser, setAuthenticatedUser } = useContext(UserContext);
   const [active, setActive] = useState<boolean>(false);
   const [initialState, setInitialState] = useState<string | undefined>('S');
   const [firstNameState, setFirstNameState] = useState<string | undefined>(
@@ -42,8 +37,8 @@ const SideNav: React.FC = () => {
       setFirstNameState(firstName);
       setInitialState(initial);
     }
-  }, [authenticatedUser]);
-
+  }, [setAuthenticatedUser]);
+console.log(authenticatedUser?.profile_photo)
   return (
     <nav className="border border-r-gray-200">
       {/* Desktop Nav */}
@@ -313,7 +308,7 @@ const SideNav: React.FC = () => {
                   <div className="bg-primary w-8 aspect-square flex items-center justify-center text-white font-bold my-auto rounded-full">
                     {authenticatedUser &&
                     authenticatedUser.profile_photo !== null
-                      ? ''
+                      ? <img src={authenticatedUser.profile_photo} alt={initialState} />
                       : initialState}
                   </div>
                   <div className="ml-3 my-auto">{firstNameState}</div>
@@ -611,7 +606,10 @@ const SideNav: React.FC = () => {
                 <div className="px-4 py-2 bg-primary/10 font-semibold">
                   <span className="flex">
                     <div className="bg-primary w-8 aspect-square flex items-center justify-center text-white font-bold my-auto rounded-full">
-                      {initialState}
+                      {authenticatedUser &&
+                      authenticatedUser.profile_photo !== null
+                        ?<img src={authenticatedUser.profile_photo} alt={initialState} /> 
+                        : initialState}
                     </div>
                     <div className="ml-3 my-auto">{firstNameState}</div>
                   </span>
