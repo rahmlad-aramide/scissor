@@ -11,10 +11,10 @@ const WhyScissor: React.FC = () => {
             <img src={line} alt="vertical line" className="mt-0 md:mt-0" />
           </div>
           <div>
-            <div className="text-4xl mb-4 md:mb-4 md:text-[40px] font-bold">
+            <div className="text-4xl mb-4 md:mb-4 md:text-[40px] font-bold" data-testid="why-heading">
               Why choose <span className="text-primary">Scissors</span>
             </div>
-            <div className="max-w-[37ch] ml-0 md:ml-2.5 font-medium">
+            <div className="max-w-[37ch] ml-0 md:ml-2.5 font-medium" data-testid="why-paragraph">
               Scissors is the hub of everything that has to do with your link
               management. We shorten your URLs, allow you creating custom ones
               for your personal, business, event usage. Our swift QR code
@@ -33,10 +33,10 @@ const WhyScissor: React.FC = () => {
                 <div className="bg-[#3284FF]/10 w-14 h-14 flex mb-10 rounded-full justify-center">
                   <img src={`${data.icon}`} alt="" className="m-auto p-auto" />
                 </div>
-                <div className="font-semibold text-[32px] leading-7 mb-4">
+                <div className="font-semibold text-[32px] leading-7 mb-4" data-testid={`reason-heading-${index}`}>
                   {data.heading}
                 </div>
-                <div className="font-medium text-justify md:text-left">
+                <div className="font-medium text-justify md:text-left" data-testid={`reason-body-${index}`}>
                   {data.body}
                 </div>
               </div>

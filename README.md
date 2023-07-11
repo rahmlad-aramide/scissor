@@ -12,6 +12,7 @@ A url shortening application, still in progress...
   - [Usage](#usage)
   - [Backend API](#backend-api)
   - [Dependencies](#dependencies)
+  - [Other Activities](#other-activities)
 
 ## About
 
@@ -100,3 +101,13 @@ These are the main dependencies and their versions used in the project.
 - [React Toastify](https://fkhadra.github.io/react-toastify/introduction) (version 9.1.3)
 - [Clipboard Copy](https://www.npmjs.com/package/clipboard-copy) (version 4.0.1)
 
+## Other Activities
+
+- Wrote component tests for: 
+  - `App Component`
+  - `Button Component`
+  - `Input Component`
+##
+- Wrote unit tests for: 
+  - `WhyScissor Component`
+  - `..`
