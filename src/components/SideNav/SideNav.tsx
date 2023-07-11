@@ -44,6 +44,7 @@ const SideNav: React.FC = () => {
     }
   }, [authenticatedUser]);
 
+
   return (
     <nav className="border border-r-gray-200">
       {/* Desktop Nav */}

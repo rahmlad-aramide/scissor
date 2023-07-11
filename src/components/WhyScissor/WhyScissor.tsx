@@ -8,7 +8,7 @@ const WhyScissor: React.FC = () => {
       <div className="flex flex-col md:flex-row pt-[136px] pb-[130px] justify-between w-[90%] mx-auto text-dark">
         <div className="flex w-full md:w-[40%]">
           <div className="mr-4 ml-0 md:-ml-5">
-            <img src={line} alt="vertical line" className="mt-0 md:mt-0" />
+            <img src={`${line}`} alt="vertical line" className="mt-0 md:mt-0" />
           </div>
           <div>
             <div className="text-4xl mb-4 md:mb-4 md:text-[40px] font-bold">

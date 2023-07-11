@@ -41,6 +41,7 @@ export const warn = (val: string): string | number =>
 export const inform = (val: string): string | number =>
   toast.info(`${val}`, toastParams);
 
+
 function App() {
   return (
     <>
