@@ -1,29 +1,45 @@
-/* eslint-disable react-refresh/only-export-components */
-import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import { Navbar } from './components';
-import { Error, Home, Login, SignUp, GetInTouch } from './pages';
-import SignInForm from './pages/SignInForm';
-import { UserProvider } from './contexts';
-import { toast, ToastOptions } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  Error,
+  Home,
+  Login,
+  SignUp,
+  GetInTouch,
+  Dashboard,
+  NewLink,
+  Analytics,
+  MyLinks,
+  QRCodes,
+  Settings,
+} from './pages';
 
-const toastParams: ToastOptions = {
-  position: 'top-right',
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { UserProvider } from './contexts';
+import ProtectedRoute from './utils/ProtectedRoute/ProtectedRoute';
+
+const toastParams = {
+  position: 'top-right' as const,
   autoClose: 2500,
   hideProgressBar: false,
   closeOnClick: true,
   pauseOnHover: false,
   draggable: true,
   progress: undefined,
-  theme: 'light',
+  theme: 'light' as const,
 };
 
-export const notify = (val: string) =>
+// eslint-disable-next-line react-refresh/only-export-components
+// eslint-disable-next-line react-refresh/only-export-components
+// eslint-disable-next-line react-refresh/only-export-components
+export const notify = (val: string): string | number =>
   toast.success(`${val}`, toastParams);
-export const warn = (val: string) => toast.error(`${val}`, toastParams);
-export const inform = (val: string) => toast.info(`${val}`, toastParams);
+export const warn = (val: string): string | number =>
+  toast.error(`${val}`, toastParams);
+export const inform = (val: string): string | number =>
+  toast.info(`${val}`, toastParams);
 
 function App() {
   return (
@@ -34,10 +50,17 @@ function App() {
             <Route index element={<Home />} />
             <Route path="*" element={<Error />} />
             <Route path="/get-quote" element={<GetInTouch />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/new" element={<NewLink />} />
+              <Route path="/dashboard/analytics" element={<Analytics />} />
+              <Route path="/dashboard/my-links" element={<MyLinks />} />
+              <Route path="/dashboard/qr-codes" element={<QRCodes />} />
+              <Route path="/dashboard/settings" element={<Settings />} />
+            </Route>
           </Route>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/test" element={<SignInForm />} />
         </Routes>
       </UserProvider>
     </>

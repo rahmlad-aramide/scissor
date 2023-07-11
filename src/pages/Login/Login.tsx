@@ -1,63 +1,107 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  signInWithGooglePopup,
-  // createUserDocumentFromAuth,
-} from '../../utils/firebase/firebase.utils';
+import { signInWithGooglePopup } from '../../utils/firebase/firebase.utils';
 import crossedEye from '../../assets/icons/crossed-eye.svg';
 import eye from '../../assets/icons/eye.svg';
 import googleLogo from '../../assets/icons/google-logo.svg';
 import appleLogo from '../../assets/icons/apple-logo.svg';
 
 import { ToastContainer } from 'react-toastify';
-import { inform, notify, warn } from '../../App';
+import { warn, notify } from '../../App';
 import { Button, Input, Footer, Loader } from '../../components';
+import { useAuth } from '../../contexts/UserContext/UserContext';
 
 interface FormFields {
-  name: string;
-  email: string;
+  username: string;
   password: string;
-  confirmPassword: string;
 }
 
 const defaultFormFields: FormFields = {
-  name: '',
-  email: '',
+  username: '',
   password: '',
-  confirmPassword: '',
 };
 
-const SignUp: React.FC = () => {
-  const navigateTo = useNavigate();
+const Login: React.FC = () => {
+  const { user, setUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingGoogle, setLoadingGoogle] = useState(false);
   const [loadingApple, setLoadingApple] = useState(false);
+  const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
+  const navigateTo = useNavigate();
+  const { username, password } = formFields;
 
-  const redirectToLogin = () => {
+  const navigateToDashboard = () => {
     setTimeout(() => {
-      navigateTo('/login');
+      navigateTo('/dashboard');
     }, 2500);
-  };
-
-  const signInWithGoogle = async () => {
-    setLoadingGoogle(true);
-    await signInWithGooglePopup();
-    notify('Redirecting you to login page');
-    redirectToLogin();
-    setLoadingGoogle(false);
   };
 
   const signInWithApple = async () => {
     setLoadingApple(true);
-    await signInWithGooglePopup();
-    notify('Redirecting you to login page');
-    redirectToLogin();
-    setLoadingApple(false);
+    try {
+      await signInWithGooglePopup();
+      notify("Successful, you're being redirected");
+      navigateToDashboard();
+      setLoadingApple(false);
+    } catch (error: any) {
+      switch (error.code) {
+        case 'auth/wrong-password':
+          warn('Incorrect password, try again!');
+          break;
+        case 'auth/user-not-found':
+          warn('User not found, check your email address!');
+          break;
+        case 'auth/network-request-failed':
+          warn('Connection problem, check your network and try again!');
+          break;
+        case 'auth/internal-error':
+          warn('An error has occurred, try again!');
+          break;
+        case 'auth/email-already-in-use':
+          warn('This email is already in use!');
+          break;
+        default:
+          warn(`An error has occurred, ${error}`);
+          setLoadingApple(false);
+      }
+      console.log(error);
+      setLoadingApple(false);
+    }
   };
 
-  const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
-  const { name, email, password, confirmPassword } = formFields;
+  const signInWithGoogle = async () => {
+    setLoadingGoogle(true);
+    try {
+      await signInWithGooglePopup();
+      notify("Successful, you're being redirected");
+      navigateToDashboard();
+      setLoadingGoogle(false);
+    } catch (error:any) {
+      switch (error.code) {
+        case 'auth/wrong-password':
+          warn('Incorrect password, try again!');
+          break;
+        case 'auth/user-not-found':
+          warn('User not found, check your email address!');
+          break;
+        case 'auth/network-request-failed':
+          warn('Connection problem, check your network and try again!');
+          break;
+        case 'auth/internal-error':
+          warn('An error has occurred, try again!');
+          break;
+        case 'auth/email-already-in-use':
+          warn('This email is already in use!');
+          break;
+        default:
+          warn(`An error has occurred, ${error}`);
+          setLoadingGoogle(false);
+      }
+      console.log(error);
+      setLoadingGoogle(false);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -72,47 +116,58 @@ const SignUp: React.FC = () => {
     e.preventDefault();
     setLoading(true);
 
-    if (password !== confirmPassword) {
-      inform('Passwords do not match');
-      setLoading(false);
-      return;
-    }
+    const urlSearchParams = new URLSearchParams({
+      grant_type: '',
+      ...formFields,
+      scope: '',
+      client_id: '',
+      client_secret: '',
+    });
 
     try {
       const response = await fetch(
-        'https://cutly.onrender.com/api/v1/users/register',
+        'https://cutly.onrender.com/api/v1/users/login',
         {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
           },
-          body: JSON.stringify({
-            name,
-            email,
-            hashed_password: password,
-            address: 'Error 404 Location',
-            phone_number: '+234 hello scissor',
-          }),
+          body: urlSearchParams.toString(),
         }
       );
 
-      if (response.ok) {
-        notify('Success, redirecting you to the login page');
-        redirectToLogin();
-      } else {
-        warn('Request failed with status ' + response.status);
+      if (!response.ok) {
         setLoading(false);
-        throw new Error('Request failed with status ' + response.status);
+        console.log('Request failed', response);
+        if (response.status === 403) {
+          warn('Incorrect username and/or password, please try again!');
+        }
+        return;
       }
 
+      const data = await response.json();
+      const token = data.access_token;
+      const user = {
+        username: formFields.username,
+        password: formFields.password,
+        token: token,
+      };
+      localStorage.setItem('user', JSON.stringify(user));
+      setUser(user);
+      notify("Login success, you're being redirected");
       resetFormFields();
+      navigateToDashboard();
       setLoading(false);
-    } catch (err) {
-      console.error('Error signing up', err);
-      warn(`Error signing up, ${err}`);
+    } catch (error: any) {
+      warn(`Error: ${error.message}`);
       setLoading(false);
+      console.error('Error:', error.message);
     }
   };
+
+  useEffect(() => {
+    if (user) navigateToDashboard();
+  }, []);
 
   return (
     <>
@@ -120,15 +175,12 @@ const SignUp: React.FC = () => {
         <ToastContainer />
         <div className="flex h-full md:min-h-full w-full flex-col items-center justify-start md:flex-row md:justify-center">
           <div className="order-1 flex h-fit w-full items-center justify-center md:order-2 md:h-full md:w-[45%]">
-            <div className="my-auto h-full w-[90%] rounded-xl py-10">
+            <div className="my-auto h-full w-[90%] overflow-y-auto rounded-xl py-10">
               <div className="">
-                <form
-                  onSubmit={handleSubmit}
-                  className="mx-auto w-[90%] max-w-[600px]"
-                >
+                <div className="mx-auto w-[90%] max-w-[600px]">
                   <div>
                     <h1 className="mb-4 text-sm text-neutral-500 text-center">
-                      Sign up with:
+                      Log in with:
                     </h1>
                   </div>
                   <div className="my-4 flex justify-center">
@@ -176,36 +228,22 @@ const SignUp: React.FC = () => {
                     </div>
                     <div className="h-[1px] w-full bg-neutral-400"></div>
                   </div>
-                  <div className="mb-6 flex flex-col">
-                    <div className="">
-                      <Input
-                        py="12px"
-                        type="text"
-                        name="name"
-                        id="name"
-                        placeholder="Enter your full name"
-                        value={name}
-                        onChange={handleChange}
-                        required
-                      />
+                  <form onSubmit={handleSubmit}>
+                    <div className="mb-4 flex flex-col">
+                      <div className="mb-4">
+                        <Input
+                          py="12px"
+                          type="text"
+                          name="username"
+                          id="username"
+                          placeholder="Email address or username"
+                          value={username}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div className="mb-6 flex flex-col">
-                    <div className="">
-                      <Input
-                        py="12px"
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="Enter your email address"
-                        value={email}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col justify-between">
-                    <div className="mb-6 flex w-full flex-col">
+                    <div className="mb-8 flex w-full flex-col">
                       <div className="flex rounded-lg bg-white border border-primary h-fit pr-2">
                         <Input
                           type={showPassword ? 'text' : 'password'}
@@ -214,7 +252,6 @@ const SignUp: React.FC = () => {
                           placeholder="Enter your password"
                           value={password}
                           onChange={handleChange}
-                          minLength={8}
                           required
                           style={{
                             border: 'none',
@@ -235,51 +272,32 @@ const SignUp: React.FC = () => {
                         </span>
                       </div>
                     </div>
-                    <div className="mb-8 flex w-full flex-col">
-                      <div className="flex rounded-lg bg-white border border-primary h-fit pr-2">
-                        <Input
-                          type={showPassword ? 'text' : 'password'}
-                          name="confirmPassword"
-                          id="confirmPassword"
-                          placeholder="Retype your password"
-                          value={confirmPassword}
-                          onChange={handleChange}
-                          minLength={8}
-                          required
-                          style={{
-                            border: 'none',
-                            outline: 'none',
-                            paddingTop: '12px',
-                            paddingBottom: '12px',
-                          }}
-                        />
-                        <span
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="flex cursor-pointer items-center justify-center"
-                        >
-                          <img
-                            className="h-6"
-                            src={showPassword ? `${crossedEye}` : `${eye}`}
-                            alt="Show Password"
-                          />
-                        </span>
-                      </div>
+                    <div>
+                      <Button
+                        disabled={loading}
+                        type="submit"
+                        buttonWidth={`full`}
+                      >
+                        {loading ? <Loader /> : 'Log in'}
+                      </Button>
                     </div>
-                  </div>
-                  <Button disabled={loading} type="submit" buttonWidth={`full`}>
-                    {loading ? <Loader /> : 'Sign up with Email'}
-                  </Button>
-                </form>
+                  </form>
+                </div>
                 <div className="mx-4 max-w-[600px] md:mx-8">
-                  <div className="flex justify-center text-neutral-500 my-4">
-                    Already have an account?{' '}
-                    <Link className="pl-1.5 underline text-primary" to="/login">
+                  <div className="flex justify-center text-neutral-500 text-sm my-4">
+                    Don&apos;t have an account?{' '}
+                    <Link
+                      className="pl-1.5 underline text-primary"
+                      to="/sign-up"
+                    >
                       {' '}
-                      Log in
+                      Sign Up
                     </Link>
                   </div>
                   <div className="text-neutral-400 text-center text-xs">
-                    By signing in with an account, you agree to Sciccor&apos;s{' '}
+                    By signing in with an account, you agree to
+                    <br />
+                    Sciccor&apos;s{' '}
                     <span className="text-neutral-500">
                       Terms of Service, Privacy Policy
                     </span>{' '}
@@ -299,4 +317,4 @@ const SignUp: React.FC = () => {
   );
 };
 
-export default SignUp;
+export default Login;
