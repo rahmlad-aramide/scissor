@@ -4,7 +4,7 @@ import { HashLink } from 'react-router-hash-link';
 import underline from '../../assets/images/underline.png';
 import chainLink from '../../assets/images/linked-chain.png';
 import singleLink from '../../assets/images/link-single.png';
-import blueArror from '../../assets/images/blue-arrow.svg';
+import blueArrow from '../../assets/images/blue-arrow.svg';
 import cone from '../../assets/images/curved-cone.png';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext/UserContext';
@@ -68,7 +68,7 @@ const Hero = () => {
                   <img src={chainLink} alt="chain link" />
                 </div>
                 <div className="mx-[23px]">
-                  <img src={blueArror} alt="arror" />
+                  <img src={blueArrow} alt="arror" />
                 </div>
                 <div>
                   <img src={singleLink} alt="single link" />

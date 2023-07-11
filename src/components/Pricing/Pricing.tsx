@@ -38,7 +38,7 @@ const Pricing: React.FC = () => {
         </div>
         <div className="flex">
           <div className="flex mx-auto flex-col md:flex-row">
-            {pricingData.map((data) => (
+            {pricingData.map((data:any) => (
               <div
                 key={data.id}
                 className={
@@ -76,7 +76,7 @@ const Pricing: React.FC = () => {
                 >
                   {data.desc}
                 </div>
-                {data.features.map((feature, index) => (
+                {data.features.map((feature:string, index:number) => (
                   <ul key={index} className="flex">
                     <svg
                       width="16"
