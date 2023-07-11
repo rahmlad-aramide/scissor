@@ -110,4 +110,4 @@ These are the main dependencies and their versions used in the project.
 ##
 - Wrote unit tests for: 
   - `WhyScissor Component`
-  - `..`
+  - `Revolutionize Component`
