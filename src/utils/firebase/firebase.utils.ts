@@ -18,18 +18,18 @@ import {
 // import { dynamicLinks } from 'firebase/dynamic-links';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDN-_CQvzmrp4Xu_FHUgIPmfqtxC6n2Xwo',
-  authDomain: 'rahmlad-scissor.firebaseapp.com',
-  projectId: 'rahmlad-scissor',
-  storageBucket: 'rahmlad-scissor.appspot.com',
-  messagingSenderId: '352167566427',
-  appId: '1:352167566427:web:4be6150a73f7cd2f0d337e',
-  measurementId: 'G-B9Y0YYCEVF',
+  apiKey: "AIzaSyDjDuDJu-MH_cbweQjeTNbHI50_xrnfK5o",
+  authDomain: "vincent-scissor-project.firebaseapp.com",
+  projectId: "vincent-scissor-project",
+  storageBucket: "vincent-scissor-project.appspot.com",
+  messagingSenderId: "1014194782234",
+  appId: "1:1014194782234:web:10fded5facf67370bb11a3",
+  measurementId: "G-CEC8S0TVCX"
 };
 
-const fireabaseApp = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 // eslint-disable-next-line no-unused-vars
-const analytics = getAnalytics(fireabaseApp);
+const analytics = getAnalytics(app);
 
 const provider = new GoogleAuthProvider();
 
