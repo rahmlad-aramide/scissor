@@ -13,6 +13,10 @@ import {
   MyLinks,
   QRCodes,
   Settings,
+  Teams,
+  Workspaces,
+  Integrations,
+  DeveloperPortal,
 } from './pages';
 
 import { toast } from 'react-toastify';
@@ -57,6 +61,10 @@ function App() {
               <Route path="/dashboard/my-links" element={<MyLinks />} />
               <Route path="/dashboard/qr-codes" element={<QRCodes />} />
               <Route path="/dashboard/settings" element={<Settings />} />
+              <Route path="/dashboard/teams" element={<Teams />} />
+              <Route path="/dashboard/workspaces" element={<Workspaces />} />
+              <Route path="/dashboard/integrations" element={<Integrations />} />
+              <Route path="/dashboard/developer" element={<DeveloperPortal />} />
             </Route>
           </Route>
           <Route path="/sign-up" element={<SignUp />} />

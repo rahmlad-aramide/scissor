@@ -7,6 +7,10 @@ import { notify, warn } from '../../App';
 const defaultFormFields = {
   long_url: '',
   custom_url: '',
+  expiry_date: '',
+  start_time: '',
+  end_time: '',
+  password: '',
 };
 
 interface User {
@@ -21,10 +25,14 @@ const TrimForm: React.FC = () => {
   const [shortUrl, setShortUrl] = useState('');
   const [customUrl, setCustomUrl] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { long_url, custom_url } = formFields;
+  const { long_url, custom_url, expiry_date, start_time, end_time, password } =
+    formFields;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormFields({ ...formFields, [name]: value });
   };
@@ -62,7 +70,14 @@ const TrimForm: React.FC = () => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${user?.token}`,
           },
-          body: JSON.stringify({ long_url, custom_url }),
+          body: JSON.stringify({
+            long_url,
+            custom_url,
+            expiry_date,
+            start_time,
+            end_time,
+            password,
+          }),
         }
       );
 
@@ -135,6 +150,87 @@ const TrimForm: React.FC = () => {
               />
             </div>
           </div>
+          <div className="mb-4">
+            <button
+              type="button"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="text-primary text-sm font-semibold flex items-center"
+            >
+              {showAdvanced ? 'Hide' : 'Show'} Advanced Options
+              <svg
+                className={`ml-1 transition-transform ${
+                  showAdvanced ? 'rotate-180' : ''
+                }`}
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+              >
+                <path
+                  d="M2 4L6 8L10 4"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+          {showAdvanced && (
+            <div className="mb-4 space-y-4">
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">
+                  Expiry Date
+                </label>
+                <Input
+                  onChange={handleChange}
+                  name="expiry_date"
+                  type="date"
+                  py="12px"
+                  value={expiry_date}
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-xs text-gray-500 mb-1 block">
+                    Active From
+                  </label>
+                  <Input
+                    onChange={handleChange}
+                    name="start_time"
+                    type="time"
+                    py="12px"
+                    value={start_time}
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-gray-500 mb-1 block">
+                    Active To
+                  </label>
+                  <Input
+                    onChange={handleChange}
+                    name="end_time"
+                    type="time"
+                    py="12px"
+                    value={end_time}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-xs text-gray-500 mb-1 block">
+                  Password Protection
+                </label>
+                <Input
+                  onChange={handleChange}
+                  name="password"
+                  type="password"
+                  py="12px"
+                  placeholder="Optional password"
+                  value={password}
+                />
+              </div>
+            </div>
+          )}
           {copyMe && (
             <>
               <div className="font-medium text-lg">
