@@ -2,7 +2,8 @@ import React, { useState, useContext, useRef, ReactElement } from 'react';
 import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom';
 import { NavHashLink, HashLink } from 'react-router-hash-link';
 import { UserContext } from '../../contexts/UserContext/UserContext';
-import { inform } from '../../App';
+import { inform, warn } from '../../App';
+import { api, ApiError } from '../../utils/api/apiClient';
 import Logo from './../Logo/Logo';
 import Button from '../Button/Button';
 
@@ -17,13 +18,16 @@ const Navbar: React.FC<NavbarProps> = (): ReactElement => {
   };
   const { user, setUser } = useContext(UserContext);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     inform('Logging you out...');
-    setTimeout(() => {
-      localStorage.removeItem('user');
+    try {
+      await api.post('/auth/logout');
+    } catch (error) {
+      warn(error instanceof ApiError ? error.message : 'Failed to log out cleanly, clearing session locally.');
+    } finally {
       setUser(null);
       navigateTo('/');
-    }, 2500);
+    }
   };
 
   const showMenu = () => {

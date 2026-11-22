@@ -1,65 +1,49 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, CircleLoader } from '../../../components';
-import { UserContext } from '../../../contexts/UserContext/UserContext';
 import Layout from '../../../components/Layout/Layout';
 import MyLink from './MyLink';
 import { notify } from '../../../App';
+import { api, ApiError } from '../../../utils/api/apiClient';
+
+interface LinkData {
+  id: string;
+  code: string;
+  shortUrl: string;
+  longUrl: string;
+  hasPassword: boolean;
+  clickCount?: number;
+}
 
 const MyLinks: React.FC = () => {
   const [allLinks, setAllLinks] = useState<LinkData[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const { user } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
 
-  interface LinkData {
-    custom_url: string;
-    short_url: string;
-    long_url: string;
-    user: string;
-  }
-  interface User {
-    username: string;
-    token: string;
-  }
+  const getAllLinks = async () => {
+    setLoading(true);
+    try {
+      const data = await api.get<{ links: LinkData[] }>('/links');
+      setAllLinks(data.links);
+    } catch (error) {
+      notify(error instanceof ApiError ? error.message : 'Unable to get your links, please try again!');
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  if(user){
-    const getAllLinks = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          'https://cutly.onrender.com/api/v1/url/list-all',
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${user?.token}`,
-            },
-          }
-        );
-  
-        if (response.ok) {
-          const linksData = await response.json();
-          if (linksData === null) {
-            notify('Unable to get your links, please login and try again!');
-            setLoading(false);
-          }
-          const myLinks = linksData.filter(
-            (link: LinkData) => link.user === user?.username
-          );
-          setAllLinks(myLinks);
-        } else {
-          console.log('Failed to fetch your links');
-        }
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
-        console.log('Failed to fetch currently logged-in user:', error);
-      }
-    };
-    useEffect(() => {
-      getAllLinks();
-    }, []);
-  }
+  useEffect(() => {
+    getAllLinks();
+  }, []);
 
+  const handleDelete = async (id: string) => {
+    try {
+      await api.delete(`/links/${id}`);
+      notify('Link deleted');
+      setAllLinks((prev) => prev?.filter((link) => link.id !== id) ?? null);
+    } catch (error) {
+      notify(error instanceof ApiError ? error.message : 'Failed to delete link');
+    }
+  };
 
   return (
     <Layout>
@@ -93,12 +77,14 @@ const MyLinks: React.FC = () => {
                 </div>
               ) : (
                 <>
-                  {allLinks?.map((link: LinkData, index: number) => (
+                  {allLinks?.map((link) => (
                     <MyLink
-                      key={index}
-                      customUrl={link.custom_url}
-                      shortUrl={link.short_url}
-                      longUrl={link.long_url}
+                      key={link.id}
+                      shortUrl={link.shortUrl}
+                      longUrl={link.longUrl}
+                      hasPassword={link.hasPassword}
+                      clickCount={link.clickCount}
+                      onDelete={() => handleDelete(link.id)}
                     />
                   ))}
                 </>

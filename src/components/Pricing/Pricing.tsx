@@ -6,7 +6,7 @@ import { pricingData } from '../../utils/pricingData/pricingData';
 import Line from './../Line/Line'
 const Pricing: React.FC = () => {
   const [hoveredElement, setHoveredElement] = useState<number | null>(null);
-  if (hoveredElement === null) setHoveredElement(2);
+  if (hoveredElement === null) setHoveredElement(1);
 
   const handleMouseEnter = (id: number) => {
     setHoveredElement(id);
@@ -52,11 +52,16 @@ const Pricing: React.FC = () => {
                 <div
                   className={
                     hoveredElement === data.id
-                      ? `text-2xl font-medium text-white group-hover:text-white transition duration-300`
-                      : `text-2xl font-medium text-dark transition duration-300`
+                      ? `flex items-center gap-2 text-2xl font-medium text-white group-hover:text-white transition duration-300`
+                      : `flex items-center gap-2 text-2xl font-medium text-dark transition duration-300`
                   }
                 >
                   {data.plan}
+                  {data.comingSoon && (
+                    <span className="text-xs font-bold uppercase px-2 py-1 rounded-full bg-primary/10 text-primary">
+                      Coming soon
+                    </span>
+                  )}
                 </div>
                 <div
                   className={
@@ -140,12 +145,12 @@ const Pricing: React.FC = () => {
                   marginRight: '12px',
                 }}
               >
-                Get Custom Pricing
+                Ask About Professional
               </Button>
             </Link>
-            <div className="order-1 sm:order-2 mb-4 sm:mb-0 ml-0 sm:ml-2">
-              <Button>Select Pricing</Button>
-            </div>
+            <Link to="/sign-up" className="order-1 sm:order-2 mb-4 sm:mb-0 ml-0 sm:ml-2">
+              <Button>Get Started Free</Button>
+            </Link>
           </div>
         </div>
       </div>

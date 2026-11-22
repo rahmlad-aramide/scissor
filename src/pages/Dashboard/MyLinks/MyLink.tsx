@@ -2,16 +2,14 @@ import copy from 'clipboard-copy';
 import { notify } from '../../../App';
 
 interface MyLinkProps {
-  customUrl: string;
   shortUrl: string;
   longUrl: string;
+  hasPassword?: boolean;
+  clickCount?: number;
+  onDelete?: () => void;
 }
 
-const MyLink: React.FC<MyLinkProps> = ({
-  customUrl,
-  shortUrl,
-  longUrl,
-}) => {
+const MyLink: React.FC<MyLinkProps> = ({ shortUrl, longUrl, hasPassword, clickCount, onDelete }) => {
   const handleCopy = (textToCopy: string) => {
     copy(textToCopy);
     notify('Copied URL to clipboard!');
@@ -26,29 +24,23 @@ const MyLink: React.FC<MyLinkProps> = ({
       <div className="break-words">
         <div>
           <div>
-            Custom link:{' '}
-            <a
-              className="text-primary"
-              href={`https://cutly.onrender.com/${customUrl}`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              https://cutly.onrender.com/{customUrl}
-            </a>
-          </div>
-          <div>
             Short link:{' '}
             <a
               className="text-primary"
-              href={`https://cutly.onrender.com/${shortUrl}`}
+              href={shortUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              https://cutly.onrender.com/{shortUrl}
+              {shortUrl}
             </a>
+            {hasPassword && (
+              <span className="ml-2 text-xs bg-blue-100 text-blue-700 rounded px-2 py-0.5">
+                Password protected
+              </span>
+            )}
           </div>
         </div>
-        <div className="flex break-words">
+        <div className="flex break-words items-center">
           <div>
             <svg
               stroke="currentColor"
@@ -70,11 +62,14 @@ const MyLink: React.FC<MyLinkProps> = ({
               {longUrl}
             </a>
           </div>
+          {clickCount !== undefined && (
+            <div className="ml-4 text-xs text-gray-500 whitespace-nowrap">{clickCount} clicks</div>
+          )}
         </div>
       </div>
       <div className="mt-4 md:mt-0 flex justify-evenly">
         <div
-          onClick={() => handleCopy(`https://cutly.onrender.com/${shortUrl}`)}
+          onClick={() => handleCopy(shortUrl)}
           className="flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit"
         >
           <div>
@@ -118,8 +113,8 @@ const MyLink: React.FC<MyLinkProps> = ({
           <div className="mx-2">Edit</div>
         </div>
         <div
-          onClick={() => notify('Sharing feature coming soon!')}
-          className="ml-0 md:ml-4 flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit"
+          onClick={onDelete}
+          className="ml-0 md:ml-4 flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-red-200 bg-red-50 text-red-600 h-fit"
         >
           <div className="flex">
             <svg
@@ -131,10 +126,10 @@ const MyLink: React.FC<MyLinkProps> = ({
               width="20"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92zM18 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM6 13c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm12 7.02c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"></path>
+              <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path>
             </svg>
           </div>
-          <div className="mx-2">Share</div>
+          <div className="mx-2">Delete</div>
         </div>
       </div>
     </div>

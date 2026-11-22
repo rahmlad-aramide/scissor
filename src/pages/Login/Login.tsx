@@ -1,106 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signInWithGooglePopup } from '../../utils/firebase/firebase.utils';
 import crossedEye from '../../assets/icons/crossed-eye.svg';
 import eye from '../../assets/icons/eye.svg';
 import googleLogo from '../../assets/icons/google-logo.svg';
-import appleLogo from '../../assets/icons/apple-logo.svg';
 
 import { ToastContainer } from 'react-toastify';
 import { warn, notify } from '../../App';
 import { Button, Input, Footer, Loader } from '../../components';
 import { useAuth } from '../../contexts/UserContext/UserContext';
+import { api, API_URL, ApiError } from '../../utils/api/apiClient';
 
 interface FormFields {
-  username: string;
+  email: string;
   password: string;
 }
 
 const defaultFormFields: FormFields = {
-  username: '',
+  email: '',
   password: '',
 };
 
 const Login: React.FC = () => {
-  const { user, setUser } = useAuth();
+  const { user, refreshUser } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loadingGoogle, setLoadingGoogle] = useState(false);
-  const [loadingApple, setLoadingApple] = useState(false);
   const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
+  const [challengeToken, setChallengeToken] = useState<string | null>(null);
+  const [totpCode, setTotpCode] = useState('');
   const navigateTo = useNavigate();
-  const { username, password } = formFields;
+  const { email, password } = formFields;
 
   const navigateToDashboard = () => {
     setTimeout(() => {
       navigateTo('/dashboard');
-    }, 2500);
+    }, 1000);
   };
 
-  const signInWithApple = async () => {
-    setLoadingApple(true);
-    try {
-      await signInWithGooglePopup();
-      notify("Successful, you're being redirected");
-      navigateToDashboard();
-      setLoadingApple(false);
-    } catch (error: any) {
-      switch (error.code) {
-        case 'auth/wrong-password':
-          warn('Incorrect password, try again!');
-          break;
-        case 'auth/user-not-found':
-          warn('User not found, check your email address!');
-          break;
-        case 'auth/network-request-failed':
-          warn('Connection problem, check your network and try again!');
-          break;
-        case 'auth/internal-error':
-          warn('An error has occurred, try again!');
-          break;
-        case 'auth/email-already-in-use':
-          warn('This email is already in use!');
-          break;
-        default:
-          warn(`An error has occurred, ${error}`);
-          setLoadingApple(false);
-      }
-      console.log(error);
-      setLoadingApple(false);
-    }
-  };
-
-  const signInWithGoogle = async () => {
-    setLoadingGoogle(true);
-    try {
-      await signInWithGooglePopup();
-      notify("Successful, you're being redirected");
-      navigateToDashboard();
-      setLoadingGoogle(false);
-    } catch (error:any) {
-      switch (error.code) {
-        case 'auth/wrong-password':
-          warn('Incorrect password, try again!');
-          break;
-        case 'auth/user-not-found':
-          warn('User not found, check your email address!');
-          break;
-        case 'auth/network-request-failed':
-          warn('Connection problem, check your network and try again!');
-          break;
-        case 'auth/internal-error':
-          warn('An error has occurred, try again!');
-          break;
-        case 'auth/email-already-in-use':
-          warn('This email is already in use!');
-          break;
-        default:
-          warn(`An error has occurred, ${error}`);
-          setLoadingGoogle(false);
-      }
-      console.log(error);
-      setLoadingGoogle(false);
-    }
+  const signInWithGoogle = () => {
+    window.location.href = `${API_URL}/auth/google`;
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,66 +45,83 @@ const Login: React.FC = () => {
     setFormFields({ ...formFields, [name]: value });
   };
 
-  const resetFormFields = () => {
-    setFormFields(defaultFormFields);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const urlSearchParams = new URLSearchParams({
-      grant_type: '',
-      ...formFields,
-      scope: '',
-      client_id: '',
-      client_secret: '',
-    });
-
     try {
-      const response = await fetch(
-        'https://cutly.onrender.com/api/v1/users/login',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: urlSearchParams.toString(),
-        }
+      const data = await api.post<{ requires2FA?: boolean; challengeToken?: string; user?: unknown }>(
+        '/auth/login',
+        { email, password }
       );
 
-      if (!response.ok) {
+      if (data.requires2FA && data.challengeToken) {
+        setChallengeToken(data.challengeToken);
         setLoading(false);
-        console.log('Request failed', response);
-        if (response.status === 403) {
-          warn('Incorrect username and/or password, please try again!');
-        }
         return;
       }
 
-      const data = await response.json();
-      const token = data.access_token;
-      const user = {
-        username: formFields.username,
-        password: formFields.password,
-        token: token,
-      };
-      localStorage.setItem('user', JSON.stringify(user));
-      setUser(user);
       notify("Login success, you're being redirected");
-      resetFormFields();
+      await refreshUser();
       navigateToDashboard();
+    } catch (error) {
+      warn(error instanceof ApiError ? error.message : 'Something went wrong, please try again!');
+    } finally {
       setLoading(false);
-    } catch (error: any) {
-      warn(`Error: ${error.message}`);
+    }
+  };
+
+  const handleVerify2FA = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await api.post('/auth/2fa/verify', { challengeToken, code: totpCode });
+      notify("Login success, you're being redirected");
+      await refreshUser();
+      navigateToDashboard();
+    } catch (error) {
+      warn(error instanceof ApiError ? error.message : 'Incorrect code, please try again!');
+    } finally {
       setLoading(false);
-      console.error('Error:', error.message);
     }
   };
 
   useEffect(() => {
     if (user) navigateToDashboard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (challengeToken) {
+    return (
+      <section className="h-full bg-white">
+        <ToastContainer />
+        <div className="flex h-full items-center justify-center">
+          <form onSubmit={handleVerify2FA} className="w-[90%] max-w-[420px]">
+            <h1 className="text-2xl font-bold mb-2 text-center">Two-factor authentication</h1>
+            <p className="text-neutral-500 text-sm text-center mb-6">
+              Enter the 6-digit code from your authenticator app.
+            </p>
+            <div className="mb-8">
+              <Input
+                py="12px"
+                type="text"
+                inputMode="numeric"
+                maxLength={6}
+                placeholder="123456"
+                value={totpCode}
+                onChange={(e) => setTotpCode(e.target.value)}
+                required
+              />
+            </div>
+            <Button disabled={loading} type="submit" buttonWidth="full">
+              {loading ? <Loader /> : 'Verify'}
+            </Button>
+          </form>
+        </div>
+        <Footer />
+      </section>
+    );
+  }
 
   return (
     <>
@@ -184,42 +138,14 @@ const Login: React.FC = () => {
                     </h1>
                   </div>
                   <div className="my-4 flex justify-center">
-                    <div className="mr-6">
-                      <button
-                        disabled={loadingGoogle}
-                        onClick={signInWithGoogle}
-                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 disabled:scale-100 disabled:cursor-not-allowed active:scale-100"
-                      >
-                        {loadingGoogle ? (
-                          <Loader />
-                        ) : (
-                          <>
-                            <img
-                              src={`${googleLogo}`}
-                              alt="google"
-                              className="mr-1"
-                            />
-                            Google
-                          </>
-                        )}
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        disabled={loadingApple}
-                        onClick={signInWithApple}
-                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 active:scale-100 disabled:scale-100 disabled:cursor-not-allowed"
-                      >
-                        {loadingApple ? (
-                          <Loader />
-                        ) : (
-                          <>
-                            <img src={`${appleLogo}`} alt="apple" className="mr-1" />{' '}
-                            Apple
-                          </>
-                        )}
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      onClick={signInWithGoogle}
+                      className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 disabled:scale-100 disabled:cursor-not-allowed active:scale-100"
+                    >
+                      <img src={`${googleLogo}`} alt="google" className="mr-1" />
+                      Google
+                    </button>
                   </div>
                   <div className="flex items-center justify-center mb-8">
                     <div className="h-[1px] w-full bg-neutral-400"></div>
@@ -233,17 +159,17 @@ const Login: React.FC = () => {
                       <div className="mb-4">
                         <Input
                           py="12px"
-                          type="text"
-                          name="username"
-                          id="username"
-                          placeholder="Email address or username"
-                          value={username}
+                          type="email"
+                          name="email"
+                          id="email"
+                          placeholder="Email address"
+                          value={email}
                           onChange={handleChange}
                           required
                         />
                       </div>
                     </div>
-                    <div className="mb-8 flex w-full flex-col">
+                    <div className="mb-4 flex w-full flex-col">
                       <div className="flex rounded-lg bg-white border border-primary h-fit pr-2">
                         <Input
                           type={showPassword ? 'text' : 'password'}
@@ -272,6 +198,11 @@ const Login: React.FC = () => {
                         </span>
                       </div>
                     </div>
+                    <div className="mb-8 text-right">
+                      <Link to="/forgot-password" className="text-primary text-xs underline">
+                        Forgot password?
+                      </Link>
+                    </div>
                     <div>
                       <Button
                         disabled={loading}
@@ -295,16 +226,15 @@ const Login: React.FC = () => {
                     </Link>
                   </div>
                   <div className="text-neutral-400 text-center text-xs">
-                    By signing in with an account, you agree to
-                    <br />
-                    Sciccor&apos;s{' '}
-                    <span className="text-neutral-500">
-                      Terms of Service, Privacy Policy
-                    </span>{' '}
+                    By signing in with an account, you agree to Scissor&apos;s{' '}
+                    <Link to="/terms-of-service" className="text-neutral-500 underline">
+                      Terms of Service
+                    </Link>{' '}
                     and{' '}
-                    <span className="text-neutral-500">
-                      Acceptable Use Policy.
-                    </span>
+                    <Link to="/privacy-policy" className="text-neutral-500 underline">
+                      Privacy Policy
+                    </Link>
+                    .
                   </div>
                 </div>
               </div>

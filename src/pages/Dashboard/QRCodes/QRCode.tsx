@@ -1,54 +1,56 @@
+import { useEffect, useState } from 'react';
+import QRCodeLib from 'qrcode';
 import copy from 'clipboard-copy';
 import { notify } from '../../../App';
 
 interface QRCodeProps {
-  customUrl?: string;
-  shortUrl?: string;
-  longUrl?: string;
+  shortUrl: string;
+  longUrl: string;
 }
 
-const QRCode: React.FC<QRCodeProps> = ({
-  customUrl = 'bit.ly/me',
-  shortUrl = 'shorty',
-  longUrl = 'longy',
-}) => {
+const QRCode: React.FC<QRCodeProps> = ({ shortUrl, longUrl }) => {
+  const [dataUrl, setDataUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    QRCodeLib.toDataURL(shortUrl, { width: 160, margin: 1 })
+      .then(setDataUrl)
+      .catch(() => setDataUrl(null));
+  }, [shortUrl]);
+
   const handleCopy = (textToCopy: string) => {
     copy(textToCopy);
-    notify('Copied QR Code image link!');
+    notify('Copied to clipboard!');
+  };
+
+  const handleDownload = () => {
+    if (!dataUrl) return;
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `${shortUrl.replace(/^https?:\/\//, '').replace(/[^a-z0-9]/gi, '-')}.png`;
+    a.click();
   };
 
   return (
     <div className="bg-white rounded-lg p-4 mx-auto my-4 w-[90%] flex flex-col md:flex-row justify-between">
       <div className="grid grid-cols-12">
-        <div className="col-span-12 md:col-span-3 p-4 border-2 border-gray-200 rounded-lg shadow">
-          <img
-            src={`https://api.qrserver.com/v1/create-qr-code/?data=cutly.onrender.com/${customUrl}&amp;size=100x100`}
-            alt={`cutly.onrender.com/${customUrl}`}
-            className="mx-auto"
-          />
+        <div className="col-span-12 md:col-span-3 p-4 border-2 border-gray-200 rounded-lg shadow flex items-center justify-center">
+          {dataUrl ? (
+            <img src={dataUrl} alt={shortUrl} className="mx-auto" />
+          ) : (
+            <div className="w-[160px] h-[160px] bg-gray-100 animate-pulse rounded" />
+          )}
         </div>
         <div className="col-span-12 md:col-span-9">
           <div className="p-4">
-            <div className="">
-              Custom link:{' '}
-              <a
-                className="text-primary text-lg md:text-xl font-semibold break-words"
-                href={`https://cutly.onrender.com/${customUrl}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                https://cutly.onrender.com/{customUrl}
-              </a>
-            </div>
             <div>
               Short link:{' '}
               <a
-                className="text-primary break-words"
-                href={`https://cutly.onrender.com/${shortUrl}`}
+                className="text-primary text-lg md:text-xl font-semibold break-words"
+                href={shortUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                https://cutly.onrender.com/{shortUrl}
+                {shortUrl}
               </a>
             </div>
             <div className="flex break-words">
@@ -79,30 +81,16 @@ const QRCode: React.FC<QRCodeProps> = ({
       </div>
       <div className="mt-4 md:mt-0 flex justify-evenly">
         <div
-          onClick={() =>
-            handleCopy(
-              `https://api.qrserver.com/v1/create-qr-code/?data=cutly.onrender.com/${customUrl}&amp;size=100x100`
-            )
-          }
+          onClick={() => handleCopy(shortUrl)}
           className="flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit"
         >
-          <div className="flex items-center">
-            <svg
-              stroke="currentColor"
-              fill="currentColor"
-              strokeWidth="0"
-              viewBox="0 0 24 24"
-              role="graphics-document"
-              height="20"
-              width="20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <title>Icon</title>
-              <path fill="none" d="M0 0h24v24H0z"></path>
-              <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"></path>
-            </svg>
-          </div>
-          <div className="mx-2">Link</div>
+          <div className="mx-2">Copy link</div>
+        </div>
+        <div
+          onClick={handleDownload}
+          className="ml-0 md:ml-4 flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit"
+        >
+          <div className="mx-2">Download QR</div>
         </div>
       </div>
     </div>

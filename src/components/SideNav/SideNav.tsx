@@ -3,14 +3,9 @@ import { NavLink } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext/UserContext';
 import Button from '../Button/Button';
 
-interface AuthenticatedUser {
-  name: string;
-  profile_photo: string;
-}
-
 const SideNav: React.FC = () => {
   const pathname = window.location.pathname;
-  const { authenticatedUser, setAuthenticatedUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [active, setActive] = useState<boolean>(false);
   const [initialState, setInitialState] = useState<string | undefined>('S');
   const [firstNameState, setFirstNameState] = useState<string | undefined>(
@@ -26,19 +21,14 @@ const SideNav: React.FC = () => {
     }
   };
 
-  let initial: string | undefined;
-  let firstName: string | undefined;
-
   useEffect(() => {
-    if (authenticatedUser) {
-      const names = authenticatedUser?.name?.split(' ');
-      firstName = names?.[0];
-      initial = firstName?.charAt(0);
+    if (user) {
+      const firstName = user.name?.split(' ')[0];
       setFirstNameState(firstName);
-      setInitialState(initial);
+      setInitialState(firstName?.charAt(0));
     }
-  }, [setAuthenticatedUser]);
-console.log(authenticatedUser?.profile_photo)
+  }, [user]);
+
   return (
     <nav className="border border-r-gray-200">
       {/* Desktop Nav */}
@@ -374,10 +364,7 @@ console.log(authenticatedUser?.profile_photo)
               <div className="px-4 my-2 py-2 bg-primary/10 font-semibold transition duration-300">
                 <span className="flex">
                   <div className="bg-primary w-8 aspect-square flex items-center justify-center text-white font-bold my-auto rounded-full">
-                    {authenticatedUser &&
-                    authenticatedUser.profile_photo !== null
-                      ? <img src={authenticatedUser.profile_photo} alt={initialState} />
-                      : initialState}
+                    {initialState}
                   </div>
                   <div className="ml-3 my-auto">{firstNameState}</div>
                 </span>
@@ -742,10 +729,7 @@ console.log(authenticatedUser?.profile_photo)
                 <div className="px-4 py-2 bg-primary/10 font-semibold">
                   <span className="flex">
                     <div className="bg-primary w-8 aspect-square flex items-center justify-center text-white font-bold my-auto rounded-full">
-                      {authenticatedUser &&
-                      authenticatedUser.profile_photo !== null
-                        ?<img src={authenticatedUser.profile_photo} alt={initialState} /> 
-                        : initialState}
+                      {initialState}
                     </div>
                     <div className="ml-3 my-auto">{firstNameState}</div>
                   </span>

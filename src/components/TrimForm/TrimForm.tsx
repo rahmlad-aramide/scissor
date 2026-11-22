@@ -1,33 +1,30 @@
 import React, { useContext, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Input, Loader, LoginModal } from '..';
 import { UserContext } from '../../contexts/UserContext/UserContext';
 import copy from 'clipboard-copy';
 import { notify, warn } from '../../App';
+import { api, ApiError, SHORT_BASE_URL } from '../../utils/api/apiClient';
 
 const defaultFormFields = {
   long_url: '',
   custom_url: '',
   expiry_date: '',
-  start_time: '',
-  end_time: '',
+  active_from: '',
+  active_until: '',
   password: '',
 };
 
-interface User {
-  token?: string;
-  user?: object;
-}
 const TrimForm: React.FC = () => {
   const { user } = useContext(UserContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [copyMe, setCopyMe] = useState(false);
   const [textToCopy, setTextToCopy] = useState('');
   const [shortUrl, setShortUrl] = useState('');
-  const [customUrl, setCustomUrl] = useState('');
   const [loading, setLoading] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { long_url, custom_url, expiry_date, start_time, end_time, password } =
+  const { long_url, custom_url, expiry_date, active_from, active_until, password } =
     formFields;
 
   const handleChange = (
@@ -62,48 +59,23 @@ const TrimForm: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        'https://cutly.onrender.com/api/v1/url/shorten',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user?.token}`,
-          },
-          body: JSON.stringify({
-            long_url,
-            custom_url,
-            expiry_date,
-            start_time,
-            end_time,
-            password,
-          }),
-        }
-      );
+      const data = await api.post<{ link: { shortUrl: string } }>('/links', {
+        longUrl: long_url,
+        alias: custom_url || undefined,
+        password: password || undefined,
+        expiresAt: expiry_date ? new Date(expiry_date).toISOString() : undefined,
+        activeFrom: active_from ? new Date(active_from).toISOString() : undefined,
+        activeUntil: active_until ? new Date(active_until).toISOString() : undefined,
+      });
 
-      if (response.ok) {
-        notify('Success, your link has been trimmed!');
-        const data = await response.json();
-        setLoading(false);
-        setCopyMe(true);
-        setShortUrl(data.short_url);
-        setCustomUrl(data.custom_url);
-        setTextToCopy(`cutly.onrender.com/${data.short_url}`);
-      } else if (response.status === 403) {
-        warn('Long URL has already been trimmed');
-        setLoading(false);
-        return;
-      } else {
-        warn('Failed to trim the link, please try again');
-        setLoading(false);
-        return;
-      }
-
+      notify('Success, your link has been trimmed!');
+      setCopyMe(true);
+      setShortUrl(data.link.shortUrl);
+      setTextToCopy(data.link.shortUrl);
       resetFormFields();
-      setLoading(false);
     } catch (err) {
-      console.error(`An error occurred: ${err}`);
-      warn(`An error occurred: ${err}`);
+      warn(err instanceof ApiError ? err.message : `An error occurred: ${err}`);
+    } finally {
       setLoading(false);
     }
   };
@@ -131,22 +103,18 @@ const TrimForm: React.FC = () => {
           </div>
           <div className="grid grid-cols-12 gap-4 mb-4">
             <select
-              required
+              disabled
               className="col-span-12 md:col-span-7 border border-[#3284FF] outline-none text-[#3284ff] bg-transparent placeholder:text-[#3284ff]/70 rounded-lg px-6 text-xs font-medium w-full h-[55.5px] md:h-auto"
             >
-              <option disabled>Choose Domain</option>
-              <option value="cutly" defaultValue={`cutly.onrender.com`}>
-                cutly.onrender.com
-              </option>
+              <option>{SHORT_BASE_URL.replace(/^https?:\/\//, '')}</option>
             </select>
             <div className="col-span-12 md:col-span-5">
               <Input
                 onChange={handleChange}
                 name="custom_url"
                 py="18px"
-                placeholder="Type Alias here..."
+                placeholder="Custom alias (optional)"
                 value={custom_url}
-                required
               />
             </div>
           </div>
@@ -197,22 +165,22 @@ const TrimForm: React.FC = () => {
                   </label>
                   <Input
                     onChange={handleChange}
-                    name="start_time"
-                    type="time"
+                    name="active_from"
+                    type="datetime-local"
                     py="12px"
-                    value={start_time}
+                    value={active_from}
                   />
                 </div>
                 <div>
                   <label className="text-xs text-gray-500 mb-1 block">
-                    Active To
+                    Active Until
                   </label>
                   <Input
                     onChange={handleChange}
-                    name="end_time"
-                    type="time"
+                    name="active_until"
+                    type="datetime-local"
                     py="12px"
-                    value={end_time}
+                    value={active_until}
                   />
                 </div>
               </div>
@@ -232,30 +200,17 @@ const TrimForm: React.FC = () => {
             </div>
           )}
           {copyMe && (
-            <>
-              <div className="font-medium text-lg">
-                Your trimmed link is:{' '}
-                <a
-                  href={`https://cutly.onrender.com/${shortUrl}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary"
-                >
-                  https://cutly.onrender.com/{shortUrl}
-                </a>
-              </div>
-              <div className="font-medium text-lg mb-2">
-                Your customized link is:{' '}
-                <a
-                  href={`https://cutly.onrender.com/${customUrl}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary"
-                >
-                  https://cutly.onrender.com/{customUrl}
-                </a>
-              </div>
-            </>
+            <div className="font-medium text-lg mb-2">
+              Your trimmed link is:{' '}
+              <a
+                href={shortUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary"
+              >
+                {shortUrl}
+              </a>
+            </div>
           )}
           {!copyMe ? (
             <Button
@@ -314,7 +269,7 @@ const TrimForm: React.FC = () => {
                 <svg
                   stroke="currentColor"
                   fill="currentColor"
-                  stroke-width="0"
+                  strokeWidth="0"
                   viewBox="0 0 24 24"
                   role="graphics-document"
                   height="20"
@@ -330,11 +285,14 @@ const TrimForm: React.FC = () => {
           )}
           <div className="text-[#4991FF] text-sm pt-6">
             By clicking TrimURL, I agree to the{' '}
-            <span className="font-medium text-[#3284FF]">
-              {' '}
-              Terms of Service, Privacy Policy
-            </span>{' '}
-            and Use of Cookies.
+            <Link to="/terms-of-service" className="font-medium text-[#3284FF] underline">
+              Terms of Service
+            </Link>{' '}
+            and{' '}
+            <Link to="/privacy-policy" className="font-medium text-[#3284FF] underline">
+              Privacy Policy
+            </Link>
+            .
           </div>
         </form>
       </div>
