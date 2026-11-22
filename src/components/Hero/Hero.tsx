@@ -31,9 +31,9 @@ const Hero = () => {
       </div>
       <div className="flex mt-4">
         <div className="text-lg font-medium text-center w-[90%] max-w-[63ch] mx-auto">
-          Personalize your shortened URLs to align with your brand identity.
-          Utilize custom slugs, branded links, and domain customization options
-          to reinforce your brand presence and enhance user engagement.
+          Personalize your shortened URLs with custom aliases, password
+          protection, and expiry dates, and track every click with built-in
+          analytics.
         </div>
       </div>
       <div className="flex mt-8 mb-20">

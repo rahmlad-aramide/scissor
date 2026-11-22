@@ -3,14 +3,9 @@ import { NavLink } from 'react-router-dom';
 import { UserContext } from '../../contexts/UserContext/UserContext';
 import Button from '../Button/Button';
 
-interface AuthenticatedUser {
-  name: string;
-  profile_photo: string;
-}
-
 const SideNav: React.FC = () => {
   const pathname = window.location.pathname;
-  const { authenticatedUser, setAuthenticatedUser } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [active, setActive] = useState<boolean>(false);
   const [initialState, setInitialState] = useState<string | undefined>('S');
   const [firstNameState, setFirstNameState] = useState<string | undefined>(
@@ -26,19 +21,14 @@ const SideNav: React.FC = () => {
     }
   };
 
-  let initial: string | undefined;
-  let firstName: string | undefined;
-
   useEffect(() => {
-    if (authenticatedUser) {
-      const names = authenticatedUser?.name?.split(' ');
-      firstName = names?.[0];
-      initial = firstName?.charAt(0);
+    if (user) {
+      const firstName = user.name?.split(' ')[0];
       setFirstNameState(firstName);
-      setInitialState(initial);
+      setInitialState(firstName?.charAt(0));
     }
-  }, [setAuthenticatedUser]);
-console.log(authenticatedUser?.profile_photo)
+  }, [user]);
+
   return (
     <nav className="border border-r-gray-200">
       {/* Desktop Nav */}
@@ -274,6 +264,74 @@ console.log(authenticatedUser?.profile_photo)
                 </span>
               </div>
             </NavLink>
+            <NavLink
+              to="/dashboard/workspaces"
+              className="w-[calc(100%_-_3rem)]"
+            >
+              <div
+                className={
+                  pathname === '/dashboard/workspaces'
+                    ? 'px-4 my-2 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                    : 'font-medium hover:bg-primary/10 px-4 my-2 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
+                }
+              >
+                <div className="flex">
+                  <div className="text-xl">📁</div>
+                  <div className="ml-3">Workspaces</div>
+                </div>
+              </div>
+            </NavLink>
+            <NavLink
+              to="/dashboard/teams"
+              className="w-[calc(100%_-_3rem)]"
+            >
+              <div
+                className={
+                  pathname === '/dashboard/teams'
+                    ? 'px-4 my-2 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                    : 'font-medium hover:bg-primary/10 px-4 my-2 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
+                }
+              >
+                <div className="flex">
+                  <div className="text-xl">👥</div>
+                  <div className="ml-3">Teams</div>
+                </div>
+              </div>
+            </NavLink>
+            <NavLink
+              to="/dashboard/integrations"
+              className="w-[calc(100%_-_3rem)]"
+            >
+              <div
+                className={
+                  pathname === '/dashboard/integrations'
+                    ? 'px-4 my-2 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                    : 'font-medium hover:bg-primary/10 px-4 my-2 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
+                }
+              >
+                <div className="flex">
+                  <div className="text-xl">🔌</div>
+                  <div className="ml-3">Integrations</div>
+                </div>
+              </div>
+            </NavLink>
+            <NavLink
+              to="/dashboard/developer"
+              className="w-[calc(100%_-_3rem)]"
+            >
+              <div
+                className={
+                  pathname === '/dashboard/developer'
+                    ? 'px-4 my-2 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                    : 'font-medium hover:bg-primary/10 px-4 my-2 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
+                }
+              >
+                <div className="flex">
+                  <div className="text-xl">💻</div>
+                  <div className="ml-3">Developer</div>
+                </div>
+              </div>
+            </NavLink>
             <div className="h-[1px] w-[calc(100%_-_3rem)] bg-gray-200 my-4"></div>
             <NavLink to="/dashboard/settings" className="w-[calc(100%_-_3rem)]">
               <div
@@ -306,10 +364,7 @@ console.log(authenticatedUser?.profile_photo)
               <div className="px-4 my-2 py-2 bg-primary/10 font-semibold transition duration-300">
                 <span className="flex">
                   <div className="bg-primary w-8 aspect-square flex items-center justify-center text-white font-bold my-auto rounded-full">
-                    {authenticatedUser &&
-                    authenticatedUser.profile_photo !== null
-                      ? <img src={authenticatedUser.profile_photo} alt={initialState} />
-                      : initialState}
+                    {initialState}
                   </div>
                   <div className="ml-3 my-auto">{firstNameState}</div>
                 </span>
@@ -573,6 +628,74 @@ console.log(authenticatedUser?.profile_photo)
                     </span>
                   </div>
                 </NavLink>
+                <NavLink
+                  to="/dashboard/workspaces"
+                  className="w-[calc(100%)] my-2"
+                >
+                  <div
+                    className={
+                      pathname === '/dashboard/workspaces'
+                        ? 'px-4 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                        : 'font-medium hover:bg-primary/10 px-4 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
+                    }
+                  >
+                    <div className="flex">
+                      <div className="text-xl">📁</div>
+                      <div className="ml-3">Workspaces</div>
+                    </div>
+                  </div>
+                </NavLink>
+                <NavLink
+                  to="/dashboard/teams"
+                  className="w-[calc(100%)] my-2"
+                >
+                  <div
+                    className={
+                      pathname === '/dashboard/teams'
+                        ? 'px-4 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                        : 'font-medium hover:bg-primary/10 px-4 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
+                    }
+                  >
+                    <div className="flex">
+                      <div className="text-xl">👥</div>
+                      <div className="ml-3">Teams</div>
+                    </div>
+                  </div>
+                </NavLink>
+                <NavLink
+                  to="/dashboard/integrations"
+                  className="w-[calc(100%)] my-2"
+                >
+                  <div
+                    className={
+                      pathname === '/dashboard/integrations'
+                        ? 'px-4 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                        : 'font-medium hover:bg-primary/10 px-4 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
+                    }
+                  >
+                    <div className="flex">
+                      <div className="text-xl">🔌</div>
+                      <div className="ml-3">Integrations</div>
+                    </div>
+                  </div>
+                </NavLink>
+                <NavLink
+                  to="/dashboard/developer"
+                  className="w-[calc(100%)] my-2"
+                >
+                  <div
+                    className={
+                      pathname === '/dashboard/developer'
+                        ? 'px-4 py-2 bg-primary/10 font-semibold border-l-4 border-primary transition duration-300'
+                        : 'font-medium hover:bg-primary/10 px-4 py-2 border-l-4 hover:border-transparent border-white transition duration-300'
+                    }
+                  >
+                    <div className="flex">
+                      <div className="text-xl">💻</div>
+                      <div className="ml-3">Developer</div>
+                    </div>
+                  </div>
+                </NavLink>
               </div>
               <div className="h-[1px] w-full bg-gray-200 my-4"></div>
               <NavLink to="/dashboard/settings" className="w-[calc(100%)] my-2">
@@ -606,10 +729,7 @@ console.log(authenticatedUser?.profile_photo)
                 <div className="px-4 py-2 bg-primary/10 font-semibold">
                   <span className="flex">
                     <div className="bg-primary w-8 aspect-square flex items-center justify-center text-white font-bold my-auto rounded-full">
-                      {authenticatedUser &&
-                      authenticatedUser.profile_photo !== null
-                        ?<img src={authenticatedUser.profile_photo} alt={initialState} /> 
-                        : initialState}
+                      {initialState}
                     </div>
                     <div className="ml-3 my-auto">{firstNameState}</div>
                   </span>

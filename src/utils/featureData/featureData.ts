@@ -1,19 +1,19 @@
 const featureData = [
   {
-    figure: '3M',
-    item: 'Active Users',
+    figure: 'Custom Aliases',
+    item: 'Pick your own short link',
   },
   {
-    figure: '60M',
-    item: 'Links & QR codes created',
+    figure: 'Password Protection',
+    item: 'Gate sensitive links',
   },
   {
-    figure: '1B',
-    item: 'Clicked & Scanned connections',
+    figure: 'QR Codes',
+    item: 'Generated instantly, no third party',
   },
   {
-    figure: '300K',
-    item: 'App Integrations',
+    figure: 'Real Analytics',
+    item: 'Clicks, with bots filtered out',
   },
 ];
 export default featureData;

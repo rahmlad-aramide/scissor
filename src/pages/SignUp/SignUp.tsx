@@ -1,17 +1,13 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import {
-  signInWithGooglePopup,
-  // createUserDocumentFromAuth,
-} from '../../utils/firebase/firebase.utils';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import crossedEye from '../../assets/icons/crossed-eye.svg';
 import eye from '../../assets/icons/eye.svg';
 import googleLogo from '../../assets/icons/google-logo.svg';
-import appleLogo from '../../assets/icons/apple-logo.svg';
 
 import { ToastContainer } from 'react-toastify';
 import { inform, notify, warn } from '../../App';
 import { Button, Input, Footer, Loader } from '../../components';
+import { api, API_URL, ApiError } from '../../utils/api/apiClient';
 
 interface FormFields {
   name: string;
@@ -20,19 +16,19 @@ interface FormFields {
   confirmPassword: string;
 }
 
-const defaultFormFields: FormFields = {
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-};
-
 const SignUp: React.FC = () => {
   const navigateTo = useNavigate();
+  const [searchParams] = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [loadingGoogle, setLoadingGoogle] = useState(false);
-  const [loadingApple, setLoadingApple] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const defaultFormFields: FormFields = {
+    name: '',
+    email: searchParams.get('email') ?? '',
+    password: '',
+    confirmPassword: '',
+  };
 
   const redirectToLogin = () => {
     setTimeout(() => {
@@ -40,20 +36,8 @@ const SignUp: React.FC = () => {
     }, 2500);
   };
 
-  const signInWithGoogle = async () => {
-    setLoadingGoogle(true);
-    await signInWithGooglePopup();
-    notify('Redirecting you to login page');
-    redirectToLogin();
-    setLoadingGoogle(false);
-  };
-
-  const signInWithApple = async () => {
-    setLoadingApple(true);
-    await signInWithGooglePopup();
-    notify('Redirecting you to login page');
-    redirectToLogin();
-    setLoadingApple(false);
+  const signInWithGoogle = () => {
+    window.location.href = `${API_URL}/auth/google`;
   };
 
   const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
@@ -64,52 +48,23 @@ const SignUp: React.FC = () => {
     setFormFields({ ...formFields, [name]: value });
   };
 
-  const resetFormFields = () => {
-    setFormFields(defaultFormFields);
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
     if (password !== confirmPassword) {
       inform('Passwords do not match');
-      setLoading(false);
       return;
     }
 
+    setLoading(true);
     try {
-      const response = await fetch(
-        'https://cutly.onrender.com/api/v1/users/register',
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            hashed_password: password,
-            address: 'Error 404 Location',
-            phone_number: '+234 hello scissor',
-          }),
-        }
-      );
-
-      if (response.ok) {
-        notify('Success, redirecting you to the login page');
-        redirectToLogin();
-      } else {
-        warn('Request failed with status ' + response.status);
-        setLoading(false);
-        throw new Error('Request failed with status ' + response.status);
-      }
-
-      resetFormFields();
-      setLoading(false);
-    } catch (err) {
-      console.error('Error signing up', err);
-      warn(`Error signing up, ${err}`);
+      await api.post('/auth/signup', { name, email, password });
+      notify('Success! Check your email to verify your account.');
+      setDone(true);
+      redirectToLogin();
+    } catch (error) {
+      warn(error instanceof ApiError ? error.message : 'Something went wrong, please try again!');
+    } finally {
       setLoading(false);
     }
   };
@@ -122,154 +77,135 @@ const SignUp: React.FC = () => {
           <div className="order-1 flex h-fit w-full items-center justify-center md:order-2 md:h-full md:w-[45%]">
             <div className="my-auto h-full w-[90%] rounded-xl py-10">
               <div className="">
-                <form
-                  onSubmit={handleSubmit}
-                  className="mx-auto w-[90%] max-w-[600px]"
-                >
-                  <div>
-                    <h1 className="mb-4 text-sm text-neutral-500 text-center">
-                      Sign up with:
-                    </h1>
+                {done ? (
+                  <div className="text-center px-6">
+                    <h1 className="text-2xl font-bold mb-4">Check your email</h1>
+                    <p className="text-neutral-600">
+                      We sent a verification link to <strong>{email}</strong>. Redirecting you to login…
+                    </p>
                   </div>
-                  <div className="my-4 flex justify-center">
-                    <div className="mr-6">
+                ) : (
+                  <form
+                    onSubmit={handleSubmit}
+                    className="mx-auto w-[90%] max-w-[600px]"
+                  >
+                    <div>
+                      <h1 className="mb-4 text-sm text-neutral-500 text-center">
+                        Sign up with:
+                      </h1>
+                    </div>
+                    <div className="my-4 flex justify-center">
                       <button
-                        disabled={loadingGoogle}
+                        type="button"
                         onClick={signInWithGoogle}
                         className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 disabled:scale-100 disabled:cursor-not-allowed active:scale-100"
                       >
-                        {loadingGoogle ? (
-                          <Loader />
-                        ) : (
-                          <>
+                        <img src={`${googleLogo}`} alt="google" className="mr-1" />
+                        Google
+                      </button>
+                    </div>
+                    <div className="flex items-center justify-center mb-8">
+                      <div className="h-[1px] w-full bg-neutral-400"></div>
+                      <div className="mx-5 mb-1 mt-0.5 flex justify-center text-neutral-500">
+                        Or
+                      </div>
+                      <div className="h-[1px] w-full bg-neutral-400"></div>
+                    </div>
+                    <div className="mb-6 flex flex-col">
+                      <div className="">
+                        <Input
+                          py="12px"
+                          type="text"
+                          name="name"
+                          id="name"
+                          placeholder="Enter your full name"
+                          value={name}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="mb-6 flex flex-col">
+                      <div className="">
+                        <Input
+                          py="12px"
+                          type="email"
+                          name="email"
+                          id="email"
+                          placeholder="Enter your email address"
+                          value={email}
+                          onChange={handleChange}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="flex flex-col justify-between">
+                      <div className="mb-6 flex w-full flex-col">
+                        <div className="flex rounded-lg bg-white border border-primary h-fit pr-2">
+                          <Input
+                            type={showPassword ? 'text' : 'password'}
+                            name="password"
+                            id="password"
+                            placeholder="Enter your password"
+                            value={password}
+                            onChange={handleChange}
+                            minLength={8}
+                            required
+                            style={{
+                              border: 'none',
+                              outline: 'none',
+                              paddingTop: '12px',
+                              paddingBottom: '12px',
+                            }}
+                          />
+                          <span
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="flex cursor-pointer items-center justify-center"
+                          >
                             <img
-                              src={`${googleLogo}`}
-                              alt="google"
-                              className="mr-1"
+                              className="h-6"
+                              src={showPassword ? `${crossedEye}` : `${eye}`}
+                              alt="Show Password"
                             />
-                            Google
-                          </>
-                        )}
-                      </button>
-                    </div>
-                    <div>
-                      <button
-                        disabled={loadingApple}
-                        onClick={signInWithApple}
-                        className="flex items-center w-fit min-w-[6.8125rem] justify-center rounded bg-primary py-1.5 text-white transition duration-200 hover:scale-90 active:scale-100 disabled:scale-100 disabled:cursor-not-allowed"
-                      >
-                        {loadingApple ? (
-                          <Loader />
-                        ) : (
-                          <>
-                            <img src={`${appleLogo}`} alt="apple" className="mr-1" />{' '}
-                            Apple
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center mb-8">
-                    <div className="h-[1px] w-full bg-neutral-400"></div>
-                    <div className="mx-5 mb-1 mt-0.5 flex justify-center text-neutral-500">
-                      Or
-                    </div>
-                    <div className="h-[1px] w-full bg-neutral-400"></div>
-                  </div>
-                  <div className="mb-6 flex flex-col">
-                    <div className="">
-                      <Input
-                        py="12px"
-                        type="text"
-                        name="name"
-                        id="name"
-                        placeholder="Enter your full name"
-                        value={name}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="mb-6 flex flex-col">
-                    <div className="">
-                      <Input
-                        py="12px"
-                        type="email"
-                        name="email"
-                        id="email"
-                        placeholder="Enter your email address"
-                        value={email}
-                        onChange={handleChange}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col justify-between">
-                    <div className="mb-6 flex w-full flex-col">
-                      <div className="flex rounded-lg bg-white border border-primary h-fit pr-2">
-                        <Input
-                          type={showPassword ? 'text' : 'password'}
-                          name="password"
-                          id="password"
-                          placeholder="Enter your password"
-                          value={password}
-                          onChange={handleChange}
-                          minLength={8}
-                          required
-                          style={{
-                            border: 'none',
-                            outline: 'none',
-                            paddingTop: '12px',
-                            paddingBottom: '12px',
-                          }}
-                        />
-                        <span
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="flex cursor-pointer items-center justify-center"
-                        >
-                          <img
-                            className="h-6"
-                            src={showPassword ? `${crossedEye}` : `${eye}`}
-                            alt="Show Password"
+                          </span>
+                        </div>
+                      </div>
+                      <div className="mb-8 flex w-full flex-col">
+                        <div className="flex rounded-lg bg-white border border-primary h-fit pr-2">
+                          <Input
+                            type={showPassword ? 'text' : 'password'}
+                            name="confirmPassword"
+                            id="confirmPassword"
+                            placeholder="Retype your password"
+                            value={confirmPassword}
+                            onChange={handleChange}
+                            minLength={8}
+                            required
+                            style={{
+                              border: 'none',
+                              outline: 'none',
+                              paddingTop: '12px',
+                              paddingBottom: '12px',
+                            }}
                           />
-                        </span>
+                          <span
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="flex cursor-pointer items-center justify-center"
+                          >
+                            <img
+                              className="h-6"
+                              src={showPassword ? `${crossedEye}` : `${eye}`}
+                              alt="Show Password"
+                            />
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="mb-8 flex w-full flex-col">
-                      <div className="flex rounded-lg bg-white border border-primary h-fit pr-2">
-                        <Input
-                          type={showPassword ? 'text' : 'password'}
-                          name="confirmPassword"
-                          id="confirmPassword"
-                          placeholder="Retype your password"
-                          value={confirmPassword}
-                          onChange={handleChange}
-                          minLength={8}
-                          required
-                          style={{
-                            border: 'none',
-                            outline: 'none',
-                            paddingTop: '12px',
-                            paddingBottom: '12px',
-                          }}
-                        />
-                        <span
-                          onClick={() => setShowPassword(!showPassword)}
-                          className="flex cursor-pointer items-center justify-center"
-                        >
-                          <img
-                            className="h-6"
-                            src={showPassword ? `${crossedEye}` : `${eye}`}
-                            alt="Show Password"
-                          />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <Button disabled={loading} type="submit" buttonWidth={`full`}>
-                    {loading ? <Loader /> : 'Sign up with Email'}
-                  </Button>
-                </form>
+                    <Button disabled={loading} type="submit" buttonWidth={`full`}>
+                      {loading ? <Loader /> : 'Sign up with Email'}
+                    </Button>
+                  </form>
+                )}
                 <div className="mx-4 max-w-[600px] md:mx-8">
                   <div className="flex justify-center text-neutral-500 my-4">
                     Already have an account?{' '}
@@ -279,14 +215,15 @@ const SignUp: React.FC = () => {
                     </Link>
                   </div>
                   <div className="text-neutral-400 text-center text-xs">
-                    By signing in with an account, you agree to Sciccor&apos;s{' '}
-                    <span className="text-neutral-500">
-                      Terms of Service, Privacy Policy
-                    </span>{' '}
+                    By signing in with an account, you agree to Scissor&apos;s{' '}
+                    <Link to="/terms-of-service" className="text-neutral-500 underline">
+                      Terms of Service
+                    </Link>{' '}
                     and{' '}
-                    <span className="text-neutral-500">
-                      Acceptable Use Policy.
-                    </span>
+                    <Link to="/privacy-policy" className="text-neutral-500 underline">
+                      Privacy Policy
+                    </Link>
+                    .
                   </div>
                 </div>
               </div>

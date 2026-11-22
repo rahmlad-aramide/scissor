@@ -13,6 +13,17 @@ import {
   MyLinks,
   QRCodes,
   Settings,
+  Teams,
+  Workspaces,
+  Integrations,
+  DeveloperPortal,
+  VerifyEmail,
+  ForgotPassword,
+  ResetPassword,
+  LinkGate,
+  LinkUnavailable,
+  PrivacyPolicy,
+  TermsOfService,
 } from './pages';
 
 import { toast } from 'react-toastify';
@@ -50,6 +61,8 @@ function App() {
             <Route index element={<Home />} />
             <Route path="*" element={<Error />} />
             <Route path="/get-quote" element={<GetInTouch />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/terms-of-service" element={<TermsOfService />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/new" element={<NewLink />} />
@@ -57,10 +70,19 @@ function App() {
               <Route path="/dashboard/my-links" element={<MyLinks />} />
               <Route path="/dashboard/qr-codes" element={<QRCodes />} />
               <Route path="/dashboard/settings" element={<Settings />} />
+              <Route path="/dashboard/teams" element={<Teams />} />
+              <Route path="/dashboard/workspaces" element={<Workspaces />} />
+              <Route path="/dashboard/integrations" element={<Integrations />} />
+              <Route path="/dashboard/developer" element={<DeveloperPortal />} />
             </Route>
           </Route>
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/p/:code" element={<LinkGate />} />
+          <Route path="/link-unavailable" element={<LinkUnavailable />} />
         </Routes>
       </UserProvider>
     </>

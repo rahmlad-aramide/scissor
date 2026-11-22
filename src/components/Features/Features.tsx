@@ -12,10 +12,10 @@ const Features = () => {
             {featureData.map((data, index) => (
               <div
                 key={index}
-                className="text-dark first:ml-0 ml-0 md:ml-[72px]"
+                className="text-dark first:ml-0 ml-0 md:ml-10 max-w-[14ch]"
               >
-                <div className="text-[32px] font-semibold">{data.figure}</div>
-                <div className="font-medium max-w-[14ch]">{data.item}</div>
+                <div className="text-lg font-bold text-primary">{data.figure}</div>
+                <div className="font-medium">{data.item}</div>
               </div>
             ))}
           </div>

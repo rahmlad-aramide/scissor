@@ -1,24 +1,26 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { api, ApiError } from '../../utils/api/apiClient';
 
-interface User {
-  name?: string;
-  username: string;
-  token: string;
-  profile_photo?: string | null;
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  emailVerified: boolean;
+  totpEnabled: boolean;
 }
 
 interface UserContextType {
   user: User | null;
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
-  authenticatedUser: User | null;
-  setAuthenticatedUser: React.Dispatch<React.SetStateAction<User | null>>;
+  isLoading: boolean;
+  refreshUser: () => Promise<void>;
 }
 
 export const UserContext = createContext<UserContextType>({
   user: null,
   setUser: () => null,
-  authenticatedUser: null,
-  setAuthenticatedUser: () => null,
+  isLoading: true,
+  refreshUser: async () => undefined,
 });
 
 interface UserProviderProps {
@@ -27,23 +29,28 @@ interface UserProviderProps {
 
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [authenticatedUser, setAuthenticatedUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const refreshUser = async () => {
+    try {
+      const data = await api.get<{ user: User }>('/auth/me');
+      setUser(data.user);
+    } catch (error) {
+      if (!(error instanceof ApiError && error.status === 401)) {
+        console.error('Failed to load current user:', error);
+      }
+      setUser(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    checkUserStatus();
+    refreshUser();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const checkUserStatus = () => {
-    let authUser = localStorage.getItem('user');
-    setUser(authUser ? JSON.parse(authUser) : null);
-  };
-
-  const value: UserContextType = {
-    user,
-    setUser,
-    authenticatedUser,
-    setAuthenticatedUser,
-  };
+  const value: UserContextType = { user, setUser, isLoading, refreshUser };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

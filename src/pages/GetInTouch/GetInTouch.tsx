@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify'
 import { Button, Footer } from '../../components';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { inform, notify, warn } from '../../App';
 
 interface FormFields {
@@ -267,11 +267,15 @@ const GetInTouch: React.FC = () => {
               </div>
               <div className="text-neutral-500 text-xs flex items-center justify-start">
                 Scissor requires the contact information you provide in order to
-                reach out to you regarding ourproducts and services. You have
+                reach out to you regarding our products and services. You have
                 the option to unsubscribe from these communications whenever you
                 wish. To learn more about how to unsubscribe, our privacy
                 practices, and our dedication to safeguarding your privacy,
-                please refer to our Privacy Policy.
+                please refer to our{' '}
+                <Link to="/privacy-policy" className="underline text-primary">
+                  Privacy Policy
+                </Link>
+                .
               </div>
               <div className="mt-6">
                 <Button buttonWidth="full" type="submit">

@@ -4,55 +4,32 @@ import { Button, CircleLoader } from '../../../components';
 import Layout from '../../../components/Layout/Layout';
 import QRCode from './QRCode';
 import { notify } from '../../../App';
-import { useAuth } from '../../../contexts/UserContext/UserContext';
+import { api, ApiError } from '../../../utils/api/apiClient';
+
+interface LinkData {
+  id: string;
+  shortUrl: string;
+  longUrl: string;
+}
 
 const QRCodes: React.FC = () => {
   const [allLinks, setAllLinks] = useState<LinkData[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const { user } = useAuth();
-
-  interface LinkData {
-    custom_url: string;
-    short_url: string;
-    long_url: string;
-    user: string;
-  }
+  const [loading, setLoading] = useState(true);
 
   const getAllLinks = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        'https://cutly.onrender.com/api/v1/url/list-all',
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${user?.token}`,
-          },
-        }
-      );
-
-      if (response.ok) {
-        const linksData = await response.json();
-        if (linksData === null) {
-          notify('Unable to get your links, please login and try again!');
-          setLoading(false);
-        }
-        const myLinks = linksData.filter((link: LinkData) => link.user === (user as { username: string; }).username);
-
-        setAllLinks(myLinks);
-      } else {
-        console.log('Failed to fetch your links');
-      }
-      setLoading(false);
+      const data = await api.get<{ links: LinkData[] }>('/links');
+      setAllLinks(data.links);
     } catch (error) {
+      notify(error instanceof ApiError ? error.message : 'Unable to get your links, please try again!');
+    } finally {
       setLoading(false);
-      console.log('Failed to fetch currently logged-in user:', error);
     }
   };
 
   useEffect(() => {
     getAllLinks();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -89,13 +66,8 @@ const QRCodes: React.FC = () => {
                   </div>
                 ) : (
                   <>
-                    {allLinks?.map((link: LinkData, index: number) => (
-                      <QRCode
-                        key={index}
-                        customUrl={link.custom_url}
-                        shortUrl={link.short_url}
-                        longUrl={link.long_url}
-                      />
+                    {allLinks?.map((link) => (
+                      <QRCode key={link.id} shortUrl={link.shortUrl} longUrl={link.longUrl} />
                     ))}
                   </>
                 )}
