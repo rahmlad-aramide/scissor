@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, CircleLoader } from '../../../components';
-import Layout from '../../../components/Layout/Layout';
 import QRCode from './QRCode';
 import { notify } from '../../../App';
 import { api, ApiError } from '../../../utils/api/apiClient';
@@ -33,25 +32,25 @@ const QRCodes: React.FC = () => {
   }, []);
 
   return (
-    <Layout>
-      <div className="bg-gray-200 h-full md:h-[calc(100vh_-_60px)] overflow-y-auto">
+    <>
+      <div>
         <div>
           {loading ? (
-            <div className="flex mt-8 h-[50vh] bg-white m-10 rounded-lg justify-center items-center">
+            <div className="flex h-[50vh] bg-white rounded-xl justify-center items-center">
               <CircleLoader color="#005AE2" />
             </div>
           ) : (
-            <div className="pt-4">
-              <div className="text-[40px] mx-4 md:text-4xl text-center mb-4 md:mb-4 md:text-[40px] font-bold">
+            <div>
+              <div className="text-2xl sm:text-3xl font-bold mb-6">
                 {allLinks === null || allLinks.length === 0
                   ? 'No QR Code(s) found'
                   : 'These are your links QR Codes'}
               </div>
-              <div className="flex flex-col w-full">
+              <div className="flex flex-col w-full gap-4">
                 {allLinks === null || allLinks.length === 0 ? (
-                  <div className="bg-white flex justify-center rounded-xl py-8 px-4 w-[90%] mx-auto">
+                  <div className="bg-white flex justify-center rounded-xl py-8 px-4 w-full mx-auto">
                     <div className="max-w-lg text-center">
-                      <h1 className="mb-8 text-8xl md:text-9xl font-extrabold text-primary">
+                      <h1 className="mb-8 text-6xl sm:text-8xl font-extrabold text-primary">
                         Oops!
                       </h1>
                       <p className="mb-8 px-4 text-lg font-medium">
@@ -76,7 +75,7 @@ const QRCodes: React.FC = () => {
           )}
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

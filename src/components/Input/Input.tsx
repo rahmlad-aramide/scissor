@@ -1,16 +1,27 @@
-import React, { ChangeEvent, InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   py?: string;
   otherProps?: any;
 }
 
-const Input: React.FC<InputProps> = ({ py, ...otherProps }) => {
+/**
+ * `min-w-0` + `max-w-full` let the field shrink inside flex/grid cells
+ * (an <input> otherwise has an intrinsic min-width and overflows its
+ * container when two sit side by side). Padding scales down on small screens.
+ */
+const Input: React.FC<InputProps> = ({
+  py,
+  className = '',
+  style,
+  otherProps: _otherProps,
+  ...rest
+}) => {
   return (
     <input
-      style={{ paddingTop: py, paddingBottom: py }}
-      className={`border border-[#3284FF] outline-none text-[#3284ff] placeholder:text-[#3284ff]/70 rounded-lg px-6 text-xs font-medium w-full`}
-      {...otherProps}
+      style={{ paddingTop: py, paddingBottom: py, ...style }}
+      className={`box-border w-full min-w-0 max-w-full appearance-none rounded-lg border border-[#3284FF] bg-white px-4 text-xs font-medium text-[#3284ff] outline-none transition placeholder:text-[#3284ff]/70 focus:ring-2 focus:ring-primary/20 sm:px-6 ${className}`}
+      {...rest}
     />
   );
 };

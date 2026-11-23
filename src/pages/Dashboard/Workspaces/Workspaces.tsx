@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../../components/Layout/Layout';
 import { CircleLoader, Input } from '../../../components';
 import { api, ApiError } from '../../../utils/api/apiClient';
 import { notify, warn } from '../../../App';
@@ -42,10 +41,10 @@ const Workspaces: React.FC = () => {
   };
 
   return (
-    <Layout>
-      <div className="p-8">
-        <h1 className="text-3xl font-bold mb-6">Workspaces & Projects</h1>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <>
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6">Workspaces & Projects</h1>
+        <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
           <p className="text-gray-600 mb-8">
             Organize your links into workspaces and projects to keep everything structured.
           </p>
@@ -54,7 +53,7 @@ const Workspaces: React.FC = () => {
               <CircleLoader color="#005AE2" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 min-[1200px]:grid-cols-3 gap-6">
               {creating ? (
                 <form
                   onSubmit={handleCreate}
@@ -109,7 +108,7 @@ const Workspaces: React.FC = () => {
           )}
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

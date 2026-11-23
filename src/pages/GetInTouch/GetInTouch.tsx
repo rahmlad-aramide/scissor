@@ -91,14 +91,14 @@ const GetInTouch: React.FC = () => {
       <ToastContainer />
       <div style={containerStyles} className="min-h-screen">
         <div className="flex flex-col justify-center items-center pt-40 pb-32">
-          <div className="text-[40px] text-neutral-900 font-bold mb-6">
+          <div className="text-3xl sm:text-[40px] text-center px-4 text-neutral-900 font-bold mb-6">
             Let&apos;s get in touch
           </div>
           <form
             name="contact"
             method="POST"
             data-netlify="true"
-            className="bg-neutral-300 rounded-lg w-[90%] max-w-[35.625rem] pt-28 pb-14 px-10"
+            className="bg-neutral-300 rounded-lg w-[92%] max-w-[35.625rem] pt-10 sm:pt-28 pb-10 sm:pb-14 px-5 sm:px-10"
             onSubmit={handleSubmit}
           >
             <div>
@@ -265,7 +265,7 @@ const GetInTouch: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className="text-neutral-500 text-xs flex items-center justify-start">
+              <div className="text-neutral-500 text-xs">
                 Scissor requires the contact information you provide in order to
                 reach out to you regarding our products and services. You have
                 the option to unsubscribe from these communications whenever you

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../../components/Layout/Layout';
 import { Input, CircleLoader } from '../../../components';
 import { api, ApiError } from '../../../utils/api/apiClient';
 import { notify, warn } from '../../../App';
@@ -71,19 +70,19 @@ const DeveloperPortal: React.FC = () => {
 
   if (loading) {
     return (
-      <Layout>
-        <div className="flex mt-8 h-[50vh] bg-white m-10 rounded-lg justify-center items-center">
+      <>
+        <div className="flex h-[50vh] bg-white rounded-xl justify-center items-center">
           <CircleLoader color="#005AE2" />
         </div>
-      </Layout>
+      </>
     );
   }
 
   return (
-    <Layout>
-      <div className="p-8">
-        <h1 className="text-3xl font-bold mb-6">Developer Portal</h1>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <>
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6">Developer Portal</h1>
+        <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
           <p className="text-gray-600 mb-8">
             Create API keys to integrate link-shortening into your own application via{' '}
             <code className="bg-gray-100 px-1 rounded">POST /v1/links</code>.
@@ -96,7 +95,7 @@ const DeveloperPortal: React.FC = () => {
               </p>
               <div className="flex bg-white border border-gray-200 rounded-lg overflow-hidden">
                 <input
-                  className="flex-1 px-4 py-2 text-sm font-mono text-gray-700 bg-transparent"
+                  className="min-w-0 flex-1 px-4 py-2 text-sm font-mono text-gray-700 bg-transparent"
                   value={newRawKey}
                   readOnly
                 />
@@ -113,7 +112,7 @@ const DeveloperPortal: React.FC = () => {
             </div>
           )}
 
-          <form onSubmit={handleCreate} className="flex gap-4 mb-8">
+          <form onSubmit={handleCreate} className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-8">
             <Input
               py="8px"
               placeholder="Key name (e.g. production server)"
@@ -132,8 +131,8 @@ const DeveloperPortal: React.FC = () => {
               {keys.length === 0 ? (
                 <p className="text-gray-400 text-sm">No API keys yet.</p>
               ) : (
-                <div className="border rounded-lg overflow-hidden">
-                  <table className="w-full text-left text-sm">
+                <div className="border rounded-lg overflow-x-auto">
+                  <table className="w-full min-w-[28rem] text-left text-sm">
                     <thead className="bg-gray-50 border-b">
                       <tr>
                         <th className="px-4 py-3 font-semibold">Name</th>
@@ -197,7 +196,7 @@ const DeveloperPortal: React.FC = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

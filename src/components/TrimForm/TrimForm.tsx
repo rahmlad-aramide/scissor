@@ -86,10 +86,10 @@ const TrimForm: React.FC = () => {
       className="bg-trim-texture min-h-[40rem] md:min-h-[32.6875rem] flex justify-center"
     >
       <LoginModal isOpen={modalOpen} onClose={handleCloseModal} />
-      <div className="flex">
+      <div className="flex w-full">
         <form
           onSubmit={handleSubmit}
-          className="bg-white p-10 rounded-xl w-[90%] max-w-[476px] mx-auto my-auto"
+          className="bg-white p-5 sm:p-10 rounded-xl w-[92%] max-w-[476px] mx-auto my-auto"
         >
           <div className="mb-4">
             <Input
@@ -104,11 +104,11 @@ const TrimForm: React.FC = () => {
           <div className="grid grid-cols-12 gap-4 mb-4">
             <select
               disabled
-              className="col-span-12 md:col-span-7 border border-[#3284FF] outline-none text-[#3284ff] bg-transparent placeholder:text-[#3284ff]/70 rounded-lg px-6 text-xs font-medium w-full h-[55.5px] md:h-auto"
+              className="col-span-12 md:col-span-7 min-w-0 border border-[#3284FF] outline-none text-[#3284ff] bg-transparent placeholder:text-[#3284ff]/70 rounded-lg px-4 sm:px-6 text-xs font-medium w-full h-[55.5px] md:h-auto"
             >
               <option>{SHORT_BASE_URL.replace(/^https?:\/\//, '')}</option>
             </select>
-            <div className="col-span-12 md:col-span-5">
+            <div className="col-span-12 min-w-0 md:col-span-5">
               <Input
                 onChange={handleChange}
                 name="custom_url"
@@ -158,7 +158,7 @@ const TrimForm: React.FC = () => {
                   value={expiry_date}
                 />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                   <label className="text-xs text-gray-500 mb-1 block">
                     Active From

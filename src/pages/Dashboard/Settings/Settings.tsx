@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../../components/Layout/Layout';
 import { Button, Input, CircleLoader } from '../../../components';
 import { api, ApiError } from '../../../utils/api/apiClient';
 import { notify, warn } from '../../../App';
@@ -106,21 +105,21 @@ const Settings: React.FC = () => {
 
   if (loading || !profile) {
     return (
-      <Layout>
-        <div className="flex mt-8 h-[50vh] bg-white m-10 rounded-lg justify-center items-center">
+      <>
+        <div className="flex h-[50vh] bg-white rounded-xl justify-center items-center">
           <CircleLoader color="#005AE2" />
         </div>
-      </Layout>
+      </>
     );
   }
 
   return (
-    <Layout>
-      <div className="p-8 bg-gray-50 min-h-screen">
-        <h1 className="text-3xl font-bold mb-8">Settings</h1>
+    <>
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6">Settings</h1>
 
         <div className="space-y-8">
-          <form onSubmit={handleSaveProfile} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <form onSubmit={handleSaveProfile} className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
             <h2 className="text-xl font-bold mb-6">Profile Information</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -142,7 +141,7 @@ const Settings: React.FC = () => {
             </div>
           </form>
 
-          <form onSubmit={handleChangePassword} className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <form onSubmit={handleChangePassword} className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
             <h2 className="text-xl font-bold mb-6">Change Password</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
@@ -174,7 +173,7 @@ const Settings: React.FC = () => {
             </div>
           </form>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold">White Labeling & Branding</h2>
               <span className="bg-gray-200 text-gray-600 px-3 py-1 rounded-full text-xs font-bold uppercase">
@@ -186,10 +185,10 @@ const Settings: React.FC = () => {
             </p>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
             <h2 className="text-xl font-bold mb-6">Security</h2>
             {twoFAStep === 'idle' && (
-              <div className="flex items-center justify-between p-4 bg-orange-50 border border-orange-100 rounded-lg">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-orange-50 border border-orange-100 rounded-lg gap-4">
                 <div>
                   <p className="font-semibold text-orange-800 text-sm">Two-Factor Authentication</p>
                   <p className="text-xs text-orange-700">Add an extra layer of security to your account.</p>
@@ -206,7 +205,7 @@ const Settings: React.FC = () => {
                 </p>
                 <div className="flex flex-col md:flex-row gap-6 items-center">
                   {qrDataUrl && <img src={qrDataUrl} alt="2FA QR code" className="w-40 h-40" />}
-                  <div className="flex-1">
+                  <div className="min-w-0 flex-1">
                     <p className="text-xs text-gray-500 mb-2">Or enter this key manually:</p>
                     <code className="text-xs break-all bg-white px-2 py-1 rounded border">{secret}</code>
                     <div className="mt-4">
@@ -227,7 +226,7 @@ const Settings: React.FC = () => {
               </form>
             )}
             {twoFAStep === 'enabled' && (
-              <form onSubmit={handleDisable2FA} className="flex items-center justify-between p-4 bg-green-50 border border-green-100 rounded-lg gap-4">
+              <form onSubmit={handleDisable2FA} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-green-50 border border-green-100 rounded-lg gap-3 sm:gap-4">
                 <div>
                   <p className="font-semibold text-green-800 text-sm">Two-Factor Authentication is enabled</p>
                   <p className="text-xs text-green-700">Enter a code to disable it.</p>
@@ -248,7 +247,7 @@ const Settings: React.FC = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

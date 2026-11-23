@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import Layout from '../../../components/Layout/Layout';
-import { CircleLoader } from '../../../components';
+import { CircleLoader, ClicksChart } from '../../../components';
 import { api, ApiError } from '../../../utils/api/apiClient';
 import { notify } from '../../../App';
 
@@ -28,11 +27,11 @@ const Analytics: React.FC = () => {
 
   if (loading) {
     return (
-      <Layout>
-        <div className="flex mt-8 h-[50vh] bg-white m-10 rounded-lg justify-center items-center">
+      <>
+        <div className="flex h-[50vh] bg-white rounded-xl justify-center items-center">
           <CircleLoader color="#005AE2" />
         </div>
-      </Layout>
+      </>
     );
   }
 
@@ -48,48 +47,41 @@ const Analytics: React.FC = () => {
   const botShare = stats.totalClicks > 0 ? Math.round((stats.botClicks / stats.totalClicks) * 100) : 0;
 
   return (
-    <Layout>
-      <div className="p-8 bg-gray-50 min-h-screen">
-        <h1 className="text-3xl font-bold mb-8">Link Analytics</h1>
+    <>
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6">Link Analytics</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 mb-6">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
             <p className="text-sm text-gray-500 font-medium">Total Links</p>
             <p className="text-3xl font-bold text-primary">{stats.totalLinks}</p>
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
             <p className="text-sm text-gray-500 font-medium">Total Clicks</p>
             <p className="text-3xl font-bold text-gray-800">{stats.totalClicks}</p>
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
             <p className="text-sm text-gray-500 font-medium">Human Clicks</p>
             <p className="text-3xl font-bold text-gray-800">{stats.humanClicks}</p>
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
             <p className="text-sm text-gray-500 font-medium">Bot Clicks (Filtered)</p>
             <p className="text-3xl font-bold text-gray-800">{stats.botClicks}</p>
             <p className="text-xs text-gray-400 font-medium mt-2">{botShare}% of total traffic</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="min-w-0 md:col-span-2 bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
             <h2 className="text-xl font-bold mb-6">Clicks per day (last 30 days)</h2>
             {stats.byDay.length === 0 ? (
               <p className="text-gray-400 text-sm">No clicks recorded yet.</p>
             ) : (
-              <div className="space-y-2">
-                {stats.byDay.map((row) => (
-                  <div key={row.day} className="flex justify-between items-center text-sm">
-                    <span>{new Date(row.day).toLocaleDateString()}</span>
-                    <span className="font-bold">{row.clicks} clicks</span>
-                  </div>
-                ))}
-              </div>
+              <ClicksChart rows={stats.byDay} days={30} />
             )}
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
             <h2 className="text-xl font-bold mb-6">Clicks by country</h2>
             {!stats.geoAvailable ? (
               <p className="text-gray-400 text-sm italic">
@@ -100,9 +92,17 @@ const Analytics: React.FC = () => {
             ) : (
               <div className="space-y-3">
                 {stats.byCountry.map((row) => (
-                  <div key={row.country} className="flex justify-between items-center text-sm">
-                    <span>{row.country}</span>
-                    <span className="font-bold">{row.clicks} clicks</span>
+                  <div key={row.country} className="text-sm">
+                    <div className="flex justify-between">
+                      <span>{row.country}</span>
+                      <span className="font-bold">{row.clicks}</span>
+                    </div>
+                    <div className="mt-1 h-1.5 rounded-full bg-neutral-100">
+                      <div
+                        className="h-full rounded-full bg-primary"
+                        style={{ width: `${(row.clicks / Math.max(...stats.byCountry.map((c) => c.clicks))) * 100}%` }}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
@@ -113,7 +113,7 @@ const Analytics: React.FC = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 
