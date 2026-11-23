@@ -1,20 +1,19 @@
 import { TrimForm } from '../../../components';
-import Layout from '../../../components/Layout/Layout';
 
 const NewLink: React.FC = () => {
   return (
-    <Layout>
-      <div className="flex flex-col w-full justify-center items-center">
+    <>
+      <div className="flex flex-col w-full items-center">
         <div>
-          <div className="text-[40px] text-neutral-900 font-bold mt-4 mb-6">
+          <div className="text-2xl sm:text-4xl text-neutral-900 font-bold mb-6 text-center">
             Trim a new link
           </div>
         </div>
-        <div className="w-full">
+        <div className="w-full overflow-hidden rounded-2xl">
           <TrimForm />
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

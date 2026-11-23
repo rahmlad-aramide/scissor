@@ -30,6 +30,8 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { UserProvider } from './contexts';
 import ProtectedRoute from './utils/ProtectedRoute/ProtectedRoute';
+import Layout from './components/Layout/Layout';
+import AuthShell from './components/AuthShell/AuthShell';
 
 const toastParams = {
   position: 'top-right' as const,
@@ -63,7 +65,9 @@ function App() {
             <Route path="/get-quote" element={<GetInTouch />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/terms-of-service" element={<TermsOfService />} />
-            <Route element={<ProtectedRoute />}>
+          </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route element={<Layout />}>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/new" element={<NewLink />} />
               <Route path="/dashboard/analytics" element={<Analytics />} />
@@ -76,13 +80,15 @@ function App() {
               <Route path="/dashboard/developer" element={<DeveloperPortal />} />
             </Route>
           </Route>
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/verify-email" element={<VerifyEmail />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route path="/p/:code" element={<LinkGate />} />
-          <Route path="/link-unavailable" element={<LinkUnavailable />} />
+          <Route element={<AuthShell />}>
+            <Route path="/sign-up" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/verify-email" element={<VerifyEmail />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/p/:code" element={<LinkGate />} />
+            <Route path="/link-unavailable" element={<LinkUnavailable />} />
+          </Route>
         </Routes>
       </UserProvider>
     </>

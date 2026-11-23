@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../../components/Layout/Layout';
 import { CircleLoader, Input } from '../../../components';
 import { api, ApiError } from '../../../utils/api/apiClient';
 import { notify, warn } from '../../../App';
@@ -62,10 +61,10 @@ const Teams: React.FC = () => {
   };
 
   return (
-    <Layout>
-      <div className="p-8">
-        <h1 className="text-3xl font-bold mb-6">Team Collaboration</h1>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+    <>
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6">Team Collaboration</h1>
+        <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
           <p className="text-gray-600 mb-8">
             Manage your team members and their roles. Collaborate on links and campaigns seamlessly.
           </p>
@@ -75,7 +74,7 @@ const Teams: React.FC = () => {
             </div>
           ) : (
             <div className="space-y-4">
-              <form onSubmit={handleInvite} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg gap-4">
+              <form onSubmit={handleInvite} className="flex flex-col sm:flex-row sm:items-end p-4 bg-gray-50 rounded-lg gap-4">
                 <div className="flex-1">
                   <p className="font-semibold mb-2">Invite a member</p>
                   <Input
@@ -90,13 +89,13 @@ const Teams: React.FC = () => {
                 <button
                   type="submit"
                   disabled={inviting}
-                  className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-60"
+                  className="bg-primary text-white px-4 py-2 rounded-lg text-sm font-medium disabled:opacity-60 whitespace-nowrap"
                 >
                   Invite Member
                 </button>
               </form>
-              <div className="border rounded-lg overflow-hidden">
-                <table className="w-full text-left text-sm">
+              <div className="border rounded-lg overflow-x-auto">
+                <table className="w-full min-w-[32rem] text-left text-sm">
                   <thead className="bg-gray-50 border-b">
                     <tr>
                       <th className="px-4 py-3 font-semibold">Name</th>
@@ -139,7 +138,7 @@ const Teams: React.FC = () => {
           )}
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

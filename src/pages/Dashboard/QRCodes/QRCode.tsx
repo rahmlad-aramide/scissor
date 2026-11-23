@@ -31,8 +31,8 @@ const QRCode: React.FC<QRCodeProps> = ({ shortUrl, longUrl }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg p-4 mx-auto my-4 w-[90%] flex flex-col md:flex-row justify-between">
-      <div className="grid grid-cols-12">
+    <div className="bg-white rounded-xl border border-neutral-200 p-4 w-full flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="grid min-w-0 grid-cols-12">
         <div className="col-span-12 md:col-span-3 p-4 border-2 border-gray-200 rounded-lg shadow flex items-center justify-center">
           {dataUrl ? (
             <img src={dataUrl} alt={shortUrl} className="mx-auto" />
@@ -45,7 +45,7 @@ const QRCode: React.FC<QRCodeProps> = ({ shortUrl, longUrl }) => {
             <div>
               Short link:{' '}
               <a
-                className="text-primary text-lg md:text-xl font-semibold break-words"
+                className="text-primary text-lg md:text-xl font-semibold break-all"
                 href={shortUrl}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -53,7 +53,7 @@ const QRCode: React.FC<QRCodeProps> = ({ shortUrl, longUrl }) => {
                 {shortUrl}
               </a>
             </div>
-            <div className="flex break-words">
+            <div className="flex items-start gap-1">
               <div>
                 <svg
                   stroke="currentColor"
@@ -70,7 +70,7 @@ const QRCode: React.FC<QRCodeProps> = ({ shortUrl, longUrl }) => {
                   <path d="M19 15l-6 6-1.42-1.42L15.17 16H4V4h2v10h9.17l-3.59-3.58L13 9l6 6z"></path>
                 </svg>
               </div>
-              <div className="flex overflow-x-auto">
+              <div className="min-w-0 break-all">
                 <a href={longUrl} target="_blank" rel="noopener noreferrer">
                   {longUrl}
                 </a>
@@ -79,7 +79,7 @@ const QRCode: React.FC<QRCodeProps> = ({ shortUrl, longUrl }) => {
           </div>
         </div>
       </div>
-      <div className="mt-4 md:mt-0 flex justify-evenly">
+      <div className="flex shrink-0 flex-wrap gap-2">
         <div
           onClick={() => handleCopy(shortUrl)}
           className="flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit"
@@ -88,7 +88,7 @@ const QRCode: React.FC<QRCodeProps> = ({ shortUrl, longUrl }) => {
         </div>
         <div
           onClick={handleDownload}
-          className="ml-0 md:ml-4 flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit"
+          className="flex px-2 py-1 cursor-pointer rounded-lg hover:scale-90 active:scale-100 transition duration-300 border-2 border-gray-300 bg-gray-100 h-fit"
         >
           <div className="mx-2">Download QR</div>
         </div>

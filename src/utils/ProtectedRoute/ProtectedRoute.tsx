@@ -7,8 +7,8 @@ const ProtectedRoute: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-gray-200 h-full md:h-[calc(100vh_-_60px)] overflow-y-auto">
-        <div className="flex mt-8 h-[50vh] bg-white m-10 rounded-lg justify-center items-center">
+      <div className="flex min-h-screen items-center justify-center bg-neutral-100">
+        <div>
           <CircleLoader color="#005AE2" />
         </div>
       </div>

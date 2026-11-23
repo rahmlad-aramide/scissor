@@ -13,3 +13,5 @@ export { default as Pricing } from './Pricing/Pricing';
 export { default as Revolutionize } from './Revolutionize/Revolutionize';
 export { default as TrimForm } from './TrimForm/TrimForm';
 export { default as WhyScissor } from './WhyScissor/WhyScissor';
+export { default as Modal } from './Modal/Modal';
+export { default as ClicksChart } from './ClicksChart/ClicksChart';

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import copy from 'clipboard-copy';
-import Layout from '../../../components/Layout/Layout';
 import { Button, Input } from '../../../components';
 import { notify, warn } from '../../../App';
 
@@ -25,11 +24,11 @@ const Integrations: React.FC = () => {
   };
 
   return (
-    <Layout>
-      <div className="p-8">
-        <h1 className="text-3xl font-bold mb-6">Integrations</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center relative">
+    <>
+      <div>
+        <h1 className="text-2xl sm:text-3xl font-bold mb-6">Integrations</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 min-[1200px]:grid-cols-3 gap-6">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center relative">
             <span className="absolute top-4 right-4 bg-gray-200 text-gray-600 px-2 py-1 rounded-full text-xs font-bold uppercase">
               Coming soon
             </span>
@@ -44,7 +43,7 @@ const Integrations: React.FC = () => {
               Connect
             </button>
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center relative">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center relative">
             <span className="absolute top-4 right-4 bg-gray-200 text-gray-600 px-2 py-1 rounded-full text-xs font-bold uppercase">
               Coming soon
             </span>
@@ -61,7 +60,7 @@ const Integrations: React.FC = () => {
               Connect
             </button>
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100">
             <h3 className="text-xl font-bold mb-4">UTM Builder</h3>
             <form onSubmit={handleGenerate} className="space-y-4">
               <div>
@@ -103,7 +102,7 @@ const Integrations: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center relative">
+          <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col items-center text-center relative">
             <span className="absolute top-4 right-4 bg-gray-200 text-gray-600 px-2 py-1 rounded-full text-xs font-bold uppercase">
               Coming soon
             </span>
@@ -116,7 +115,7 @@ const Integrations: React.FC = () => {
           </div>
         </div>
       </div>
-    </Layout>
+    </>
   );
 };
 

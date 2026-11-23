@@ -46,20 +46,6 @@ const Navbar: React.FC<NavbarProps> = (): ReactElement => {
           <ul className="hidden md:flex">
             <li>
               <NavHashLink
-                to="/dashboard"
-                smooth
-                className={
-                  activeLink === 0
-                    ? `text-primary text-lg font-medium mr-10`
-                    : `text-dark text-lg font-medium mr-10`
-                }
-                onClick={() => handleActiveLink(0)}
-              >
-                My Urls
-              </NavHashLink>
-            </li>
-            <li>
-              <NavHashLink
                 to="/#features"
                 smooth
                 className={
@@ -88,20 +74,6 @@ const Navbar: React.FC<NavbarProps> = (): ReactElement => {
             </li>
             <li>
               <NavHashLink
-                to="/dashboard/analytics"
-                smooth
-                className={
-                  activeLink === 3
-                    ? `text-primary text-lg font-medium mr-10`
-                    : `text-dark text-lg font-medium mr-10`
-                }
-                onClick={() => handleActiveLink(3)}
-              >
-                Analytics
-              </NavHashLink>
-            </li>
-            <li>
-              <NavHashLink
                 to="/#faqs"
                 smooth
                 className={
@@ -117,7 +89,10 @@ const Navbar: React.FC<NavbarProps> = (): ReactElement => {
           </ul>
           <div className="hidden md:flex items-center">
             {user ? (
-              <div>
+              <div className="flex items-center gap-6">
+                <Link to="/dashboard" className="text-primary font-semibold">
+                  Dashboard
+                </Link>
                 <button
                   onClick={handleLogout}
                   className={`group rounded-full py-2 px-8 bg-primary border border-primary text-white font-medium transition duration-300 hover:text-primary hover:bg-transparent active:scale-90`}
@@ -148,12 +123,13 @@ const Navbar: React.FC<NavbarProps> = (): ReactElement => {
           <div className="z-20 flex md:hidden">
             <button
               onClick={showMenu}
+              aria-label="Open menu"
               className="absolute text-primary top-0 right-2 flex h-12 items-center justify-center p-3 text-secondary transition active:scale-90 md:hidden"
             >
               <svg
                 stroke="currentColor"
                 fill="currentColor"
-                stroke-width="0"
+                strokeWidth="0"
                 viewBox="0 0 24 24"
                 role="graphics-document"
                 height="28"
@@ -169,18 +145,7 @@ const Navbar: React.FC<NavbarProps> = (): ReactElement => {
               ref={navRef}
               className={`fixed top-0 right-0 my-auto flex h-screen w-[70%] translate-x-[100%] flex-col items-center bg-white text-primary transition md:hidden`}
             >
-              <div
-                className="mb-4 mt-[50%] flex justify-center"
-                onClick={showMenu}
-              >
-                <HashLink
-                  to="/#"
-                  smooth
-                  className="px-4 decoration-2 underline-offset-4 hover:underline font-semibold"
-                >
-                  My Urls
-                </HashLink>
-              </div>
+              <div className="mt-[50%]" />
               <div className="my-4 flex justify-center" onClick={showMenu}>
                 <HashLink
                   to="/#features"
@@ -199,15 +164,7 @@ const Navbar: React.FC<NavbarProps> = (): ReactElement => {
                   Pricing
                 </HashLink>
               </div>
-              <div className="my-4 flex justify-center" onClick={showMenu}>
-                <Link
-                  to="/dashboard/analytics"
-                  className="px-4 decoration-2 underline-offset-4 hover:underline font-semibold"
-                >
-                  Analytics
-                </Link>
-              </div>
-              <div className="my-4 flex justify-center" onClick={showMenu}>
+                            <div className="my-4 flex justify-center" onClick={showMenu}>
                 <HashLink
                   to="/#faqs"
                   smooth
@@ -218,7 +175,10 @@ const Navbar: React.FC<NavbarProps> = (): ReactElement => {
               </div>
               <div className="flex flex-col items-center mt-2">
                 {user ? (
-                  <div>
+                  <div className="flex flex-col items-center gap-4">
+                    <Link to="/dashboard" onClick={showMenu} className="text-primary font-semibold">
+                      Dashboard
+                    </Link>
                     <button
                       onClick={handleLogout}
                       className={`group rounded-full py-2 px-8 bg-primary border border-primary text-white font-medium transition duration-300 hover:text-primary hover:bg-transparent active:scale-90`}
