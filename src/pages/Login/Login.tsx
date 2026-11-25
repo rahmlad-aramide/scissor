@@ -27,6 +27,8 @@ const Login: React.FC = () => {
   const [formFields, setFormFields] = useState<FormFields>(defaultFormFields);
   const [challengeToken, setChallengeToken] = useState<string | null>(null);
   const [totpCode, setTotpCode] = useState('');
+  const [needsVerification, setNeedsVerification] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
   const navigateTo = useNavigate();
   const { email, password } = formFields;
 
@@ -48,6 +50,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setNeedsVerification(false);
 
     try {
       const data = await api.post<{ requires2FA?: boolean; challengeToken?: string; user?: unknown }>(
@@ -65,11 +68,29 @@ const Login: React.FC = () => {
       await refreshUser();
       navigateToDashboard();
     } catch (error) {
+      if (error instanceof ApiError && error.status === 403) setNeedsVerification(true);
       warn(error instanceof ApiError ? error.message : 'Something went wrong, please try again!');
     } finally {
       setLoading(false);
     }
   };
+
+  const handleResendVerification = async () => {
+    if (resendCooldown > 0 || !email) return;
+    try {
+      await api.post('/auth/resend-verification', { email });
+      notify('Verification email sent. Check your inbox.');
+      setResendCooldown(60);
+    } catch (error) {
+      warn(error instanceof ApiError ? error.message : 'Could not resend the email, please try again!');
+    }
+  };
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const t = setTimeout(() => setResendCooldown((c) => c - 1), 1000);
+    return () => clearTimeout(t);
+  }, [resendCooldown]);
 
   const handleVerify2FA = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -203,6 +224,19 @@ const Login: React.FC = () => {
                         Forgot password?
                       </Link>
                     </div>
+                    {needsVerification && (
+                      <div className="mb-4 text-center text-sm text-neutral-600">
+                        Didn&apos;t get the email?{' '}
+                        <button
+                          type="button"
+                          onClick={handleResendVerification}
+                          disabled={resendCooldown > 0}
+                          className="text-primary underline disabled:text-neutral-400 disabled:no-underline"
+                        >
+                          {resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend verification email'}
+                        </button>
+                      </div>
+                    )}
                     <div>
                       <Button
                         disabled={loading}
