@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Input, CircleLoader } from '../../../components';
-import { api, ApiError } from '../../../utils/api/apiClient';
+import { api, API_URL, ApiError } from '../../../utils/api/apiClient';
 import { notify, warn } from '../../../App';
 import copy from 'clipboard-copy';
 
@@ -19,6 +19,140 @@ interface Usage {
   limit: number;
   windowSeconds: number;
 }
+
+const CodeBlock: React.FC<{ children: string }> = ({ children }) => (
+  <pre className="overflow-x-auto rounded-lg bg-neutral-900 p-4 text-xs leading-relaxed text-neutral-100">
+    <code>{children}</code>
+  </pre>
+);
+
+const Endpoint: React.FC<{ method: string; path: string; children: React.ReactNode }> = ({
+  method,
+  path,
+  children,
+}) => (
+  <div className="space-y-3">
+    <h3 className="flex flex-wrap items-center gap-2 text-base font-bold">
+      <span
+        className={`rounded px-2 py-0.5 text-xs font-bold text-white ${
+          method === 'POST' ? 'bg-green-600' : 'bg-primary'
+        }`}
+      >
+        {method}
+      </span>
+      <code className="font-mono text-sm">{path}</code>
+    </h3>
+    {children}
+  </div>
+);
+
+const ApiDocs: React.FC = () => (
+  <div className="mt-6 space-y-8 rounded-xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6">
+    <div>
+      <h2 className="mb-2 text-lg font-bold">API reference</h2>
+      <p className="text-sm text-gray-600">
+        Base URL: <code className="rounded bg-gray-100 px-1">{API_URL}/v1</code>. All requests and
+        responses are JSON.
+      </p>
+    </div>
+
+    <div className="space-y-3">
+      <h3 className="text-base font-bold">Authentication</h3>
+      <p className="text-sm text-gray-600">
+        Send your API key as a Bearer token on every request. Keys are shown only once, when created.
+      </p>
+      <CodeBlock>{`Authorization: Bearer <your-api-key>
+Content-Type: application/json`}</CodeBlock>
+    </div>
+
+    <Endpoint method="POST" path="/v1/links">
+      <p className="text-sm text-gray-600">Create a short link.</p>
+      <div className="overflow-x-auto rounded-lg border">
+        <table className="w-full min-w-[28rem] text-left text-sm">
+          <thead className="border-b bg-gray-50">
+            <tr>
+              <th className="px-4 py-2 font-semibold">Field</th>
+              <th className="px-4 py-2 font-semibold">Type</th>
+              <th className="px-4 py-2 font-semibold">Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b">
+              <td className="px-4 py-2 font-mono">longUrl</td>
+              <td className="px-4 py-2">string, required</td>
+              <td className="px-4 py-2">Full destination URL including http(s)://</td>
+            </tr>
+            <tr>
+              <td className="px-4 py-2 font-mono">alias</td>
+              <td className="px-4 py-2">string, optional</td>
+              <td className="px-4 py-2">Custom code: 3&ndash;32 letters, numbers, - or _</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p className="text-sm font-semibold">Example request</p>
+      <CodeBlock>{`curl -X POST ${API_URL}/v1/links \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{"longUrl": "https://example.com/some/long/path", "alias": "my-promo"}'`}</CodeBlock>
+      <p className="text-sm font-semibold">Response &mdash; 201 Created</p>
+      <CodeBlock>{`{
+  "code": "my-promo",
+  "shortUrl": "https://s.example.com/my-promo",
+  "longUrl": "https://example.com/some/long/path"
+}`}</CodeBlock>
+    </Endpoint>
+
+    <Endpoint method="GET" path="/v1/links">
+      <p className="text-sm text-gray-600">
+        List your 100 most recent links, newest first.
+      </p>
+      <p className="text-sm font-semibold">Example request</p>
+      <CodeBlock>{`curl ${API_URL}/v1/links \\
+  -H "Authorization: Bearer YOUR_API_KEY"`}</CodeBlock>
+      <p className="text-sm font-semibold">Response &mdash; 200 OK</p>
+      <CodeBlock>{`{
+  "links": [
+    {
+      "code": "my-promo",
+      "shortUrl": "https://s.example.com/my-promo",
+      "longUrl": "https://example.com/some/long/path",
+      "createdAt": "2026-11-25T10:15:00.000Z"
+    }
+  ]
+}`}</CodeBlock>
+    </Endpoint>
+
+    <div className="space-y-3">
+      <h3 className="text-base font-bold">Errors</h3>
+      <p className="text-sm text-gray-600">
+        Errors return a JSON body with an <code className="rounded bg-gray-100 px-1">error</code> message.
+        Validation errors also include <code className="rounded bg-gray-100 px-1">details</code>.
+      </p>
+      <div className="overflow-x-auto rounded-lg border">
+        <table className="w-full min-w-[28rem] text-left text-sm">
+          <thead className="border-b bg-gray-50">
+            <tr>
+              <th className="px-4 py-2 font-semibold">Status</th>
+              <th className="px-4 py-2 font-semibold">Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="border-b"><td className="px-4 py-2 font-mono">400</td><td className="px-4 py-2">Invalid body, invalid alias, or unsafe/invalid URL</td></tr>
+            <tr className="border-b"><td className="px-4 py-2 font-mono">401</td><td className="px-4 py-2">Missing, invalid, or revoked API key</td></tr>
+            <tr className="border-b"><td className="px-4 py-2 font-mono">409</td><td className="px-4 py-2">Alias already taken</td></tr>
+            <tr><td className="px-4 py-2 font-mono">429</td><td className="px-4 py-2">Rate limit exceeded (1000 requests per 15 minutes per key)</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <CodeBlock>{`// 409 Conflict
+{ "error": "That alias is already taken" }
+
+// 400 Bad Request
+{ "error": "Invalid request", "details": { "fieldErrors": { "longUrl": ["Invalid url"] } } }`}</CodeBlock>
+    </div>
+  </div>
+);
 
 const DeveloperPortal: React.FC = () => {
   const [keys, setKeys] = useState<ApiKeyRow[]>([]);
@@ -195,6 +329,7 @@ const DeveloperPortal: React.FC = () => {
             )}
           </div>
         </div>
+        <ApiDocs />
       </div>
     </>
   );
