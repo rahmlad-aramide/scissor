@@ -83,7 +83,7 @@ const TrimForm: React.FC = () => {
   return (
     <section
       id="analytics"
-      className="bg-trim-texture min-h-[40rem] md:min-h-[32.6875rem] flex justify-center"
+      className="bg-trim-texture min-h-[40rem] md:min-h-[32.6875rem] flex justify-center py-10 md:py-16"
     >
       <LoginModal isOpen={modalOpen} onClose={handleCloseModal} />
       <div className="flex w-full">

@@ -120,7 +120,7 @@ const NavSection: React.FC<{ title?: string; items: NavItem[] }> = ({
         <li key={to}>
           <NavLink to={to} end={end} className={linkClass}>
             <Icon className="h-5 w-5 shrink-0" />
-            <span className="truncate">{label}</span>
+            <span className="truncate pt-0.5">{label}</span>
           </NavLink>
         </li>
       ))}
@@ -138,7 +138,7 @@ const SidebarContent: React.FC<{ onLogout: () => void }> = ({ onLogout }) => {
           className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary/90 active:scale-95"
         >
           <PlusIcon className="h-4 w-4" />
-          Trim new link
+          <span className="pt-0.5">Trim new link</span>
         </Link>
       </div>
       <nav
